@@ -6,6 +6,14 @@ export default {
   ],
   theme: {
     extend: {},
+    // colors:{},
+    backgroundImage:{
+      'stn':"url(/src/assets/stn_avengers.png)"
+    },
+    fontFamily:{
+      "inter":["Inter"],
+      "inter-light":["Inter"]
+    }
   },
   plugins: [],
 }

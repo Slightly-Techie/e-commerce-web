@@ -1,8 +1,17 @@
+import "./index.css"
+import { Routes, Route } from 'react-router-dom'
+import Signup from './pages/Signup';
+import "./assets/Inter.ttf"
+import "./assets/IBMPlexMono-ExtraLight.ttf"
+import HomePage from "./pages/HomePage";
 function App() {
   return (
     <>
-      <div className="text-center">
-        <p className="font-bold">SLIGHTLY TECHIE E-COMMERCE WEB</p>
+      <div>
+        <Routes>
+          <Route path='/'element = {<Signup/>} />
+          <Route path="/homepage" element = {<HomePage/>} />
+        </Routes>
       </div>
     </>
   );
