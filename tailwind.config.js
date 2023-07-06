@@ -3,6 +3,9 @@ export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
     extend: {},
+    backgroundImage:{
+      'stn':"url(/src/assets/stn_avengers.png)"
+    },
     screens: {
       sm: "640px", // Small screens and above (640px)
       md: "768px", // Medium screens and above (768px)
