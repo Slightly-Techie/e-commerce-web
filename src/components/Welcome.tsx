@@ -6,9 +6,10 @@ const Welcome = ({
 }: React.HTMLAttributes<HTMLDivElement>) => {
   return (
     <div
-      className={cn("bg-black text-[#D9D9D9] h-full flex flex-col font-inter", {
-        className,
-      })}
+      className={cn(
+        "bg-black text-[#D9D9D9] h-full flex flex-col font-inter",
+        className
+      )}
       {...props}
     >
       <div className="max-h-48 xl:max-h-64 flex-1 bg-top bg-no-repeat bg-cover bg-[url(/assets/onboarding_img.png)] relative">
@@ -22,7 +23,7 @@ const Welcome = ({
 
       <div className="p-10 lg:pl-28 flex-1 flex flex-col justify-center">
         <img
-          src="/public/assets/return_icon.png"
+          src="/assets/return_icon.png"
           className="mb-5 lg:mb-7 w-12 xl:w-20"
           alt="..."
         />
