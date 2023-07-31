@@ -1,12 +1,25 @@
+import { ButtonSizeStyles, ButtonTypeStyles } from "../lib/styles";
 import { cn } from "../lib/utils";
+import { ButtonSize, ButtonType } from "../types";
 
-type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement>;
+type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
+  btnType?: ButtonType;
+  btnSize?: ButtonSize;
+};
 
-const Button = ({ className, ...props }: ButtonProps) => {
+const Button = ({
+  btnType = ButtonType.primary,
+  btnSize = ButtonSize.small,
+  className,
+  ...props
+}: ButtonProps) => {
   return (
     <button
+      disabled={btnType === ButtonType.disabled}
       className={cn(
-        "h-[48px] sm:h-[54px] px-5 w-full text-base sm:text-xl bg-black text-white",
+        "border border-transparent rounded-[4px] py-4 text-white",
+        ButtonSizeStyles[btnSize],
+        ButtonTypeStyles[btnType],
         className
       )}
       {...props}
