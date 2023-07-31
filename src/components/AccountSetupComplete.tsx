@@ -13,7 +13,7 @@ const AccountSetupComplete = () => {
       icon={
         <img
           className="w-[107px] mx-auto"
-          src="/public/assets/icons/done.svg"
+          src="assets/icons/done.svg"
           alt="..."
         />
       }
