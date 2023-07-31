@@ -13,3 +13,32 @@
 body {
   font-family: "Product Sans", sans-serif;
 }
+
+.main {
+  @apply block relative cursor-pointer;
+}
+
+input[type="checkbox"] {
+  visibility: hidden;
+}
+
+.geekmark {
+  @apply absolute h-5 w-5 left-0 border border-gray300 rounded-sm;
+}
+
+.main:hover input ~ .geekmark {
+  @apply border-gray500;
+}
+
+.main input:checked ~ .geekmark {
+  @apply bg-primary;
+}
+
+.geekmark:after {
+  @apply absolute content-[''] text-sm top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 hidden place-content-center h-3 w-3 text-white;
+}
+
+/* Display checkmark when checked */
+.main input:checked ~ .geekmark:after {
+  @apply grid font-bold content-['\2713'];
+}
