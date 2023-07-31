@@ -1,22 +1,22 @@
 import { Link } from "react-router-dom";
-import Form from "../components/formElements/Form";
-import Input from "../components/formElements/Input";
-import Label from "../components/formElements/Label";
-import Checkbox from "../components/formElements/Checkbox";
+import Form from "../../formElements/Form";
+import Input from "../../formElements/Input";
+import Label from "../../formElements/Label";
+import Checkbox from "../../formElements/Checkbox";
 import {
   AlertType,
   ButtonType,
   FormHelperType,
   SignupFormFields,
-} from "../types";
-import { TextSize } from "../types";
-import Alert from "../components/Alert";
-import { TextSizeStyles } from "../lib/styles";
-import Button from "./Button";
+} from "../../../types";
+import { TextSize } from "../../../types";
+import Alert from "../../Alert";
+import { TextSizeStyles } from "../../../lib/styles";
+import Button from "../../Button";
 import { useForm, SubmitHandler } from "react-hook-form";
-import FormHelper from "./formElements/FormHelper";
-import InputGroup from "./formElements/InputGroup";
-import { REGEXPATTERNS } from "../lib/regexPatterns";
+import FormHelper from "../../formElements/FormHelper";
+import InputGroup from "../../formElements/InputGroup";
+import { REGEXPATTERNS } from "../../../lib/regexPatterns";
 
 type FormProps = {
   formSubmit(data: SignupFormFields): void;
@@ -42,7 +42,6 @@ const CreateAccountForm = ({ formSubmit }: FormProps) => {
 
       <div className="space-y-4">
         <InputGroup>
-          <Label htmlFor="username">Username</Label>
           <Input
             {...register("username", {
               required: "Username is required",
@@ -51,6 +50,7 @@ const CreateAccountForm = ({ formSubmit }: FormProps) => {
                 message: "Enter a valid username",
               },
             })}
+            label="Username"
             id="username"
             icon={<img src="assets/icons/user.svg" alt="..." />}
             placeholder="Enter your username"
@@ -63,7 +63,6 @@ const CreateAccountForm = ({ formSubmit }: FormProps) => {
         </InputGroup>
 
         <InputGroup>
-          <Label htmlFor="email">Email</Label>
           <Input
             {...register("email", {
               required: "Email is required",
@@ -72,6 +71,7 @@ const CreateAccountForm = ({ formSubmit }: FormProps) => {
                 message: "Enter a valid email",
               },
             })}
+            label="Email"
             id="email"
             icon={<img src="assets/icons/envelope.svg" alt="..." />}
             placeholder="slightlytechie@gmail.com"
@@ -84,7 +84,6 @@ const CreateAccountForm = ({ formSubmit }: FormProps) => {
         </InputGroup>
 
         <InputGroup>
-          <Label htmlFor="password">Password</Label>
           <Input
             {...register("password", {
               required: "Password is required",
@@ -97,6 +96,7 @@ const CreateAccountForm = ({ formSubmit }: FormProps) => {
                 message: "Password should a be a mix of letters and symbols",
               },
             })}
+            label="Password"
             type="password"
             id="password"
             icon={<img src="assets/icons/lock-open.svg" alt="..." />}
@@ -110,7 +110,7 @@ const CreateAccountForm = ({ formSubmit }: FormProps) => {
         </InputGroup>
       </div>
 
-      <div className="space-x-3 flex items-start">
+      <div className="flex items-start space-x-3">
         <Checkbox
           {...register("agreeTerms", { required: "Tick this field" })}
           id="agreeTerms"

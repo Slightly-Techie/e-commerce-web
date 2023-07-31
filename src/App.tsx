@@ -3,13 +3,15 @@ import Signup from "./pages/Signup";
 import { Login } from "./pages/Login";
 import ForgotPassword from "./pages/ForgotPassword";
 import SetupAccount from "./pages/SetupAccount";
+import ResetPassword from "./pages/ResetPassword";
 
-function App() {
+function App () {
   return (
     <Routes>
       <Route path="/" element={<Signup />} />
       <Route path="/login" element={<Login />} />
       <Route path="/forgot-password" element={<ForgotPassword />} />
+      <Route path="/reset-password" element={<ResetPassword />} />
       <Route path="/setup-account" element={<SetupAccount />} />
     </Routes>
   );

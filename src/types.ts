@@ -54,3 +54,10 @@ export type SignupFormFields = {
   password: string;
   agreeTerms: boolean;
 };
+export type ForgotPasswordFormFields = {
+  email: string;
+};
+export type ResetPasswordFormFields = {
+  password: string;
+  confirm_password: string;
+};

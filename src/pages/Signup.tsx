@@ -3,8 +3,8 @@ import AuthLayout from "../components/AuthLayout";
 import Button from "../components/Button";
 import { ButtonType, SignupFormFields, SignupStage } from "../types";
 import { useState } from "react";
-import CreateAccountForm from "../components/CreateAccountForm";
-import VerifyCodeForm from "../components/VerifyCodeForm";
+import CreateAccountForm from "../components/forms/auth/CreateAccountForm";
+import VerifyCodeForm from "../components/forms/auth/VerifyCodeForm";
 
 const Signup = () => {
   const navigate = useNavigate();

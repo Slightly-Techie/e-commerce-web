@@ -1,17 +1,19 @@
+import { Link } from "react-router-dom";
+
 export const Login = () => {
   return (
-    <div className="grid lg:grid-cols-2 min-h-screen">
+    <div className="grid min-h-screen lg:grid-cols-2">
       <div className="flex items-center justify-center">
         <div className="flex flex-col w-full px-10 lg:px-32 xl:px-48">
           <img
             src="/assets/return_black.png"
             alt="return"
-            className="h-8 w-8 lg:hidden"
+            className="w-8 h-8 lg:hidden"
           />
-          <h1 className="text-2xl lg:text-3xl xl:text-4xl font-semibold py-2">
+          <h1 className="py-2 text-2xl font-semibold lg:text-3xl xl:text-4xl">
             Sign in to your account
           </h1>
-          <p className="text-sm lg:text-lg text-gray-400">
+          <p className="text-sm text-gray-400 lg:text-lg">
             Not registered?{" "}
             <span className="font-semibold text-black">create an account</span>
           </p>
@@ -23,7 +25,7 @@ export const Login = () => {
                 <input
                   type="text"
                   placeholder="Enter your username"
-                  className="p-2 focus:outline-none focus:border-b-black border-b-2"
+                  className="p-2 border-b-2 focus:outline-none focus:border-b-black"
                 />
               </div>
 
@@ -32,43 +34,43 @@ export const Login = () => {
                 <input
                   type="password"
                   placeholder="Enter your password"
-                  className="p-2 focus:outline-none focus:border-b-black border-b-2"
+                  className="p-2 border-b-2 focus:outline-none focus:border-b-black"
                 />
               </div>
             </div>
 
-            <div className="pt-5 xl:pt-10 flex items-center justify-between text-sm">
+            <div className="flex items-center justify-between pt-5 text-sm xl:pt-10">
               <div className="flex gap-x-2">
                 <input type="checkbox" />
                 <p>Remember me</p>
               </div>
 
-              <div>Forgot password?</div>
+              <Link to="/forgot-password">Forgot password?</Link>
             </div>
 
             <div className="pt-5 xl:pt-10">
-              <div className="bg-black p-2 text-center text-white">
+              <div className="p-2 text-center text-white bg-black">
                 <p>Sign In</p>
               </div>
             </div>
 
-            <div className="pt-5 xl:pt-10 flex justify-between items-center xl:gap-x-3">
-              <div className="border-b w-1/4 lg:w-1/3 xl:w-full"></div>
+            <div className="flex items-center justify-between pt-5 xl:pt-10 xl:gap-x-3">
+              <div className="w-1/4 border-b lg:w-1/3 xl:w-full"></div>
 
-              <p className="text-sm w-2/4 lg:w-1/3 xl:w-full text-center">
+              <p className="w-2/4 text-sm text-center lg:w-1/3 xl:w-full">
                 Or continue with
               </p>
 
-              <div className="border-b w-1/4 lg:w-1/3 xl:w-full"></div>
+              <div className="w-1/4 border-b lg:w-1/3 xl:w-full"></div>
             </div>
 
-            <div className="pt-5 xl:pt-10 flex justify-between items-center gap-x-5">
-              <div className="flex justify-center items-center gap-x-2 py-2 border w-full">
+            <div className="flex items-center justify-between pt-5 xl:pt-10 gap-x-5">
+              <div className="flex items-center justify-center w-full py-2 border gap-x-2">
                 <img src="/assets/Google.png" alt="" />
                 <p className="text-sm">Google</p>
               </div>
 
-              <div className="flex justify-center items-center gap-x-2 py-2 border w-full">
+              <div className="flex items-center justify-center w-full py-2 border gap-x-2">
                 <img src="/assets/GitHub.png" alt="" />
                 <p className="text-sm">Github</p>
               </div>
@@ -77,14 +79,14 @@ export const Login = () => {
         </div>
       </div>
 
-      <div className="hidden lg:block relative h-full">
+      <div className="relative hidden h-full lg:block">
         <img
           src="/assets/onboarding_img.png"
           alt=""
           className="w-full h-[500px] xl:h-[650px]"
         />
         <div
-          className="absolute top-0 left-0 right-0 bottom-0"
+          className="absolute top-0 bottom-0 left-0 right-0"
           style={{
             background:
               "linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8))",
@@ -93,13 +95,13 @@ export const Login = () => {
         ></div>
 
         <div className="absolute top-0 left-0 right-0 pt-[140px] xl:pt-[200px] h-full">
-          <div className="bg-black h-full flex flex-col justify-between text-white">
-            <div className="pl-20 pt-10 xl:pt-20">
+          <div className="flex flex-col justify-between h-full text-white bg-black">
+            <div className="pt-10 pl-20 xl:pt-20">
               <div className="">
                 <img src="/assets/return_icon.png" alt="" className="h-14" />
 
                 <div className="pt-5 xl:pt-10 xl:pr-72">
-                  <h1 className="text-3xl xl:text-4xl font-semibold">
+                  <h1 className="text-3xl font-semibold xl:text-4xl">
                     Welcome to Slightly Techie Market
                   </h1>
                 </div>
@@ -118,9 +120,9 @@ export const Login = () => {
               </div>
             </div>
 
-            <div className="flex items-end text-white py-10 border-t border-gray-500">
+            <div className="flex items-end py-10 text-white border-t border-gray-500">
               <div className="w-full">
-                <p className="text-center text-sm xl:text-base">
+                <p className="text-sm text-center xl:text-base">
                   Sign up to join Slightly Techie at app.slightlytechie.com
                 </p>
               </div>

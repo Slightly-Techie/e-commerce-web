@@ -1,14 +1,14 @@
-import Alert from "./Alert";
-import Form from "./formElements/Form";
-import Input from "./formElements/Input";
-import InputGroup from "./formElements/InputGroup";
-import Label from "./formElements/Label";
-import Button from "./Button";
-import { ButtonType, FormHelperType } from "../types";
+import Alert from "../../Alert";
+import Form from "../../formElements/Form";
+import Input from "../../formElements/Input";
+import InputGroup from "../../formElements/InputGroup";
+import Label from "../../formElements/Label";
+import Button from "../../Button";
+import { ButtonType, FormHelperType } from "../../../types";
 import { SubmitHandler, useForm } from "react-hook-form";
-import FormHelper from "./formElements/FormHelper";
-import { hideEmail } from "../lib/utils";
-import { REGEXPATTERNS } from "../lib/regexPatterns";
+import FormHelper from "../../formElements/FormHelper";
+import { hideEmail } from "../../../lib/utils";
+import { REGEXPATTERNS } from "../../../lib/regexPatterns";
 
 type FormValues = {
   code: string;
@@ -39,7 +39,6 @@ const VerifyCodeForm = ({ formSubmit, email }: FormProps) => {
       </Alert>
 
       <InputGroup>
-        <Label htmlFor="code">Verification code</Label>
         <Input
           type="number"
           {...register("code", {
@@ -50,6 +49,8 @@ const VerifyCodeForm = ({ formSubmit, email }: FormProps) => {
               message: "Should be exactly 6 digits",
             },
           })}
+          id="code"
+          label="Verification code"
           icon={<img src="assets/icons/lock-open.svg" alt="..." />}
           placeholder="Enter code"
         />
