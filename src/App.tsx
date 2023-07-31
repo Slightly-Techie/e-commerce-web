@@ -2,16 +2,16 @@ import { Routes, Route } from "react-router-dom";
 import Signup from "./pages/Signup";
 import { Login } from "./pages/Login";
 import ForgotPassword from "./pages/ForgotPassword";
+import SetupAccount from "./pages/SetupAccount";
 
 function App() {
   return (
-    <div>
-      <Routes>
-        <Route path="/" element={<Signup />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/forgot-password" element={<ForgotPassword />} />
-      </Routes>
-    </div>
+    <Routes>
+      <Route path="/" element={<Signup />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/forgot-password" element={<ForgotPassword />} />
+      <Route path="/setup-account" element={<SetupAccount />} />
+    </Routes>
   );
 }
 
