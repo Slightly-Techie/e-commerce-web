@@ -44,8 +44,6 @@ const Signup = () => {
           )}
         </div>
       </AuthLayout>
-
-      <div className="h-[50vh]"></div>
     </>
   );
 };
