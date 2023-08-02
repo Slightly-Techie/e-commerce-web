@@ -1,6 +1,10 @@
 import Form from "../../formElements/Form";
 import Input from "../../formElements/Input";
-import { ResetPasswordFormFields, ButtonType, FormHelperType } from "../../../types";
+import {
+  ResetPasswordFormFields,
+  ButtonType,
+  FormHelperType,
+} from "../../../types";
 import { TextSize } from "../../../types";
 import { TextSizeStyles } from "../../../lib/styles";
 import Button from "../../Button";
@@ -9,7 +13,11 @@ import FormHelper from "../../formElements/FormHelper";
 import InputGroup from "../../formElements/InputGroup";
 import { REGEXPATTERNS } from "../../../lib/regexPatterns";
 
-const ResetPasswordForm = () => {
+const ResetPasswordForm = ({
+  setSuccessful,
+}: {
+  setSuccessful: React.Dispatch<React.SetStateAction<boolean>>;
+}) => {
   const {
     register,
     handleSubmit,
@@ -18,6 +26,7 @@ const ResetPasswordForm = () => {
   } = useForm<ResetPasswordFormFields>();
 
   const onSubmit: SubmitHandler<ResetPasswordFormFields> = (data) => {
+    setSuccessful((prev) => !prev);
     console.log(data);
   };
   return (
