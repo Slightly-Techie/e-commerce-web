@@ -61,3 +61,7 @@ export type ResetPasswordFormFields = {
   password: string;
   confirm_password: string;
 };
+
+export type Code = {
+  code: number;
+};

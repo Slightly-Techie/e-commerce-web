@@ -1,6 +1,5 @@
 import Form from "../../formElements/Form";
 import Input from "../../formElements/Input";
-import Label from "../../formElements/Label";
 import {
   ForgotPasswordFormFields,
   ButtonType,
@@ -16,7 +15,11 @@ import FormHelper from "../../formElements/FormHelper";
 import InputGroup from "../../formElements/InputGroup";
 import { REGEXPATTERNS } from "../../../lib/regexPatterns";
 
-const ForgotPasswordForm = () => {
+const ForgotPasswordForm = ({
+  setSuccessful,
+}: {
+  setSuccessful: React.Dispatch<React.SetStateAction<boolean>>;
+}) => {
   const {
     register,
     handleSubmit,
@@ -24,6 +27,7 @@ const ForgotPasswordForm = () => {
   } = useForm<ForgotPasswordFormFields>();
 
   const onSubmit: SubmitHandler<ForgotPasswordFormFields> = (data) => {
+    setSuccessful((prev) => !prev);
     console.log(data);
   };
   return (
