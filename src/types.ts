@@ -54,3 +54,18 @@ export type SignupFormFields = {
   password: string;
   agreeTerms: boolean;
 };
+
+export type LoginFields = {
+  username: string;
+  password: string;
+  rememberMe: boolean;
+};
+
+export type PasswordResetState =
+  | "enter email"
+  | "enter password"
+  | "reset complete";
+
+type FormValue = {
+  [key: string]: unknown;
+};
