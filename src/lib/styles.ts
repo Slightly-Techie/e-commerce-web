@@ -45,6 +45,6 @@ export const ShadowTypeStyles = {
   [ShadowType.md]: "shadow-[0px_2px_4px_-2px_rgba(15,23,42,0.05),0px_4px_6px_-1px_rgba(15,23,42,0.10)]",
   [ShadowType.lg]: "shadow-[0px_10px_15px_-3px_rgba(15,23,42,0.07),0px_4px_6px_0px_rgba(15,23,42,0.05)]",
   [ShadowType.xl]: "shadow-[0px_20px_25px_-5px_rgba(15,23,42,0.10),0px_10px_10px_0px_rgba(15,23,42,0.05)]",
-  [ShadowType.xxl]: "box-shadow: 0px 25px 50px -12px rgba(15, 23, 42, 0.05);",
+  [ShadowType.xxl]: "shadow-[0px_25px_50px_-12px_rgba(15,23,42,0.05)]",
   [ShadowType.xxxl]: "shadow-[0px_30px_60px_-12px_rgba(15,23,42,0.25)]"
 };
