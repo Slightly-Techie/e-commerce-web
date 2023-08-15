@@ -41,6 +41,16 @@ type FormValues = {
   [key: string]: unknown;
 };
 
+export enum ShadowType {
+  xs = "xs",
+  sm = "sm",
+  md = "md",
+  lg = "lg",
+  xl = "xl",
+  xxl = "xxl",
+  xxxl = "xxxl",
+}
+
 type RegisterFormValues = UseFormRegister<FormValues>;
 
 export type RHFInputExtension = {
