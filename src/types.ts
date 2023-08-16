@@ -54,3 +54,23 @@ export type SignupFormFields = {
   password: string;
   agreeTerms: boolean;
 };
+
+export type SelectCountry = Array<{
+  flags: {
+    png: string;
+    svg: string;
+    alt: string;
+  };
+  name: {
+    common: string;
+  };
+  idd: {
+    root: string;
+    suffixes: string[];
+  };
+}>;
+
+export type ActiveSelectedCountry = {
+  svg: string;
+  countryCode: string;
+};
