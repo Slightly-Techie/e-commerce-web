@@ -7,7 +7,7 @@ type InputProps = React.InputHTMLAttributes<HTMLInputElement> & {
 };
 
 const Input = forwardRef<HTMLInputElement, InputProps>(
-  ({ icon, ...props }, ref) => {
+  ({ className, icon, ...props }, ref) => {
     const [isFocused, setIsFocused] = useState(false);
     const [customType, setCustomType] = useState("password");
 
@@ -15,7 +15,8 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
       <div
         className={cn(
           "rounded-[4px] border flex items-center",
-          isFocused ? "border-gray-500" : "border-gray300"
+          isFocused ? "border-gray-500" : "border-gray300",
+          className
         )}
       >
         {icon && (
