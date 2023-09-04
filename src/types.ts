@@ -65,3 +65,5 @@ export type ResetPasswordFormFields = {
 export type Code = {
   code: number;
 };
+
+export type ResetPasswordStatus = "successful" | "reset_password" | "code";

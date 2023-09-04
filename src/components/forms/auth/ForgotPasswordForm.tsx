@@ -14,12 +14,10 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import FormHelper from "../../formElements/FormHelper";
 import InputGroup from "../../formElements/InputGroup";
 import { REGEXPATTERNS } from "../../../lib/regexPatterns";
+import { useNavigate } from "react-router-dom";
 
-const ForgotPasswordForm = ({
-  setSuccessful,
-}: {
-  setSuccessful: React.Dispatch<React.SetStateAction<boolean>>;
-}) => {
+const ForgotPasswordForm = () => {
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -27,7 +25,7 @@ const ForgotPasswordForm = ({
   } = useForm<ForgotPasswordFormFields>();
 
   const onSubmit: SubmitHandler<ForgotPasswordFormFields> = (data) => {
-    setSuccessful((prev) => !prev);
+    navigate("/reset-password");
     console.log(data);
   };
   return (

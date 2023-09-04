@@ -4,6 +4,7 @@ import {
   ResetPasswordFormFields,
   ButtonType,
   FormHelperType,
+  ResetPasswordStatus,
 } from "../../../types";
 import { TextSize } from "../../../types";
 import { TextSizeStyles } from "../../../lib/styles";
@@ -14,9 +15,9 @@ import InputGroup from "../../formElements/InputGroup";
 import { REGEXPATTERNS } from "../../../lib/regexPatterns";
 
 const ResetPasswordForm = ({
-  setSuccessful,
+  setStatus,
 }: {
-  setSuccessful: React.Dispatch<React.SetStateAction<boolean>>;
+  setStatus: React.Dispatch<React.SetStateAction<ResetPasswordStatus>>;
 }) => {
   const {
     register,
@@ -26,7 +27,7 @@ const ResetPasswordForm = ({
   } = useForm<ResetPasswordFormFields>();
 
   const onSubmit: SubmitHandler<ResetPasswordFormFields> = (data) => {
-    setSuccessful((prev) => !prev);
+    setStatus("successful");
     console.log(data);
   };
   return (
@@ -62,15 +63,6 @@ const ResetPasswordForm = ({
       <InputGroup>
         <Input
           {...register("confirm_password", {
-            required: "Confirm password is required",
-            minLength: {
-              value: 8,
-              message: "Password cannot be less than 8 characters",
-            },
-            pattern: {
-              value: REGEXPATTERNS.password,
-              message: "Password should a be a mix of letters and symbols",
-            },
             validate: (value) =>
               value === watch("password") || "The passwords do not match",
           })}
