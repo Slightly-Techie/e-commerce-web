@@ -141,7 +141,7 @@ const CountrySelectInput = () => {
             />
           </div>
           <span className="-z-50">
-            {isOpen ? <BsChevronDown /> : <BsChevronUp />}
+            {isOpen ? <BsChevronUp /> : <BsChevronDown />}
           </span>
         </div>
         <Input
