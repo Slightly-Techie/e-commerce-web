@@ -1,21 +1,7 @@
-import { useState } from "react";
-import { SignupStage } from "../types";
-import CRMDownload from "../components/CRMDownload";
-import AccountSetupComplete from "../components/AccountSetupComplete";
+import ChooseAccountType from "../components/ChooseAccountType";
 
 const SetupAccount = () => {
-  const [signUpStage, setSignUpStage] = useState<SignupStage>("setup account");
-
-  const onDownloadComplete = () => setSignUpStage("setup complete");
-
-  return (
-    <>
-      {signUpStage === "setup account" && (
-        <CRMDownload handleDownloadComplete={onDownloadComplete} />
-      )}
-      {signUpStage === "setup complete" && <AccountSetupComplete />}
-    </>
-  );
+  return <ChooseAccountType />;
 };
 
 export default SetupAccount;

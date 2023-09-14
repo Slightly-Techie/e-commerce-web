@@ -1,10 +1,18 @@
-import { useEffect, useRef, useState, ChangeEvent } from "react";
-import { ActiveSelectedCountry, SelectCountry } from "../../types";
+import { useCallback, useEffect, useRef, useState, ChangeEvent } from "react";
+import { ActiveSelectedCountry, Country } from "../../types";
 import Input from "./Input";
 import { BsChevronUp, BsChevronDown } from "react-icons/bs";
+import { fetchCountries, sortCountries } from "../../lib/utils";
+import CountriesListDropdown from "../CountriesListDropdown";
+import { REGEXPATTERNS } from "../../lib/regexPatterns";
+import { useForm } from "react-hook-form";
 
-const CountrySelectInput = () => {
-  const [countriesList, setCountriesList] = useState<SelectCountry>([]);
+type Props = {
+  handleChange(phoneNumber: string): void;
+};
+
+const CountrySelectInput = ({ handleChange }: Props) => {
+  const [countriesList, setCountriesList] = useState<Country[]>([]);
   const [isOpen, setIsOpen] = useState(false);
   const [selectedCountry, setSelectedCountry] = useState<ActiveSelectedCountry>(
     { svg: "https://flagcdn.com/gh.svg", countryCode: "+233" }
@@ -13,15 +21,10 @@ const CountrySelectInput = () => {
   const menuRef = useRef<HTMLUListElement>(null);
   const menuButtonRef = useRef<HTMLDivElement>(null);
 
-  const FetchCountry = async (): Promise<SelectCountry> => {
-    const url = "https://restcountries.com/v3.1/all?fields=name,flags,idd";
-    const request = await fetch(url);
-    const response = await request.json();
-
-    return response;
-  };
-
-  const changeSelectedCountryOnClick = (svg: string, countryCode: string) => {
+  const changeSelectedCountryOnClick = ({
+    svg,
+    countryCode,
+  }: ActiveSelectedCountry) => {
     setIsOpen((isOpen) => !isOpen);
     if (!numberInputRef.current) return;
     if (numberInputRef.current.value.includes(countryCode)) return;
@@ -46,68 +49,58 @@ const CountrySelectInput = () => {
     if (countryCode.length < 2) return;
     if (countryCode.charAt(0) !== "+") return;
 
-    if (countryCode.substring(0, 2) === "+1") {
-      const MatchingCountry = countriesList.find((country) =>
-        country.name.common.includes("United States")
+    const updateCountry = (name: string) => {
+      const matchingCountry = countriesList.find((country) =>
+        country.name.common.includes(name)
       );
 
-      if (MatchingCountry)
-        return setSelectedCountry({
-          svg: MatchingCountry?.flags.svg,
-          countryCode: MatchingCountry?.idd.root,
+      matchingCountry &&
+        setSelectedCountry({
+          svg: matchingCountry?.flags.svg,
+          countryCode: matchingCountry?.idd.root,
         });
+    };
+
+    if (countryCode.substring(0, 2) === "+1") {
+      updateCountry("United States");
     }
 
     if (countryCode.substring(0, 3) === "+44") {
-      const MatchingCountry = countriesList.find((country) =>
-        country.name.common.includes("United Kingdom")
-      );
-
-      if (MatchingCountry)
-        return setSelectedCountry({
-          svg: MatchingCountry?.flags.svg,
-          countryCode: MatchingCountry?.idd.root,
-        });
+      updateCountry("United Kingdom");
     }
 
-    let MatchingCountry = countriesList.find(
+    const matchingCountry = countriesList.find(
       (country) => country.idd.root + country.idd.suffixes[0] === countryCode
     );
 
-    if (!MatchingCountry)
-      MatchingCountry = countriesList.find((country) =>
-        countryCode.includes(country.idd.root + country.idd.suffixes[0])
-      );
+    if (!matchingCountry) return;
 
-    if (!MatchingCountry) return;
+    if (selectedCountry.svg === matchingCountry.flags.svg) return;
 
-    if (selectedCountry.svg === MatchingCountry.flags.svg) return;
     setSelectedCountry({
-      svg: MatchingCountry.flags.svg,
-      countryCode: MatchingCountry.idd.root + MatchingCountry.idd.suffixes[0],
+      svg: matchingCountry.flags.svg,
+      countryCode: matchingCountry.idd.root + matchingCountry.idd.suffixes[0],
     });
   };
 
   useEffect(() => {
-    FetchCountry().then((response) => {
-      const sortedResponse = response
-        .sort((a, b) => a.name.common.localeCompare(b.name.common))
-        .filter((value) => {
-          if (!value.idd.root) return false;
-          if (value.name.common.length < 20) return true;
-        });
-      setCountriesList(sortedResponse);
+    fetchCountries().then((response) => {
+      setCountriesList(sortCountries(response));
     });
   }, []);
 
-  const handleOutsideClick = (e: MouseEvent) => {
+  const closeDropdown = () => {
+    setIsOpen(false);
+  };
+
+  const handleOutsideClick = useCallback((e: MouseEvent) => {
     if (
       !menuButtonRef.current?.contains(e.target as Node) &&
       !menuRef.current?.contains(e.target as Node)
     ) {
-      setIsOpen(false);
+      closeDropdown();
     }
-  };
+  }, []);
 
   useEffect(() => {
     if (isOpen) {
@@ -115,12 +108,10 @@ const CountrySelectInput = () => {
       return;
     }
 
-    document.removeEventListener("click", (e) => handleOutsideClick(e));
-
     return () => {
       document.removeEventListener("click", (e) => handleOutsideClick(e));
     };
-  }, [isOpen]);
+  }, [isOpen, handleOutsideClick]);
 
   return (
     <div className="flex flex-col relative">
@@ -148,46 +139,22 @@ const CountrySelectInput = () => {
           type="tel"
           placeholder="Phone Number"
           ref={numberInputRef}
-          onChange={(event) => changeSelectedCountryOnChange(event)}
+          onChange={(event) => {
+            changeSelectedCountryOnChange(event);
+            if (REGEXPATTERNS.internationalPhoneNumber.test(event.target.value))
+              handleChange(event.target.value);
+          }}
           className="border-none pl-2 group:"
         />
       </div>
-      <ul
-        className={`w-fit h-64 overflow-y-scroll shadow-lg flex flex-col top-16 left-0 bg-white ${
-          isOpen ? "absolute" : "hidden"
-        }`}
-        role="list-box"
-        ref={menuRef}
-      >
-        {countriesList.map((country, index) => {
-          const countryCode = country.name.common.includes("United States")
-            ? country.idd.root
-            : country.idd.root + country.idd.suffixes[0];
-          const {
-            flags: { svg },
-            name: { common },
-          } = country;
-          return (
-            <li
-              role="option"
-              key={index}
-              className="flex items-center gap-4 px-4 active:bg-blue-300 hover:bg-slate-200 cursor-pointer py-2"
-              onClick={() => changeSelectedCountryOnClick(svg, countryCode)}
-            >
-              <div className="w-8 h-4 md:w-10 md:h-6">
-                <img
-                  src={svg}
-                  className="w-full h-full object-cover"
-                  alt={common}
-                />
-              </div>
-              <option value={countryCode} key={index}>
-                {common} {countryCode !== "undefined" && `(${countryCode})`}
-              </option>
-            </li>
-          );
-        })}
-      </ul>
+      {countriesList.length > 0 && (
+        <CountriesListDropdown
+          ref={menuRef}
+          countriesList={countriesList}
+          handleChange={changeSelectedCountryOnClick}
+          isOpen={isOpen}
+        />
+      )}
     </div>
   );
 };
