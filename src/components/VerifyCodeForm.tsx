@@ -27,7 +27,6 @@ const VerifyCodeForm = ({ formSubmit, email }: FormProps) => {
   } = useForm<FormValues>();
 
   const onSubmit: SubmitHandler<FormValues> = (data) => {
-    console.log({ data });
     formSubmit();
   };
 
@@ -44,7 +43,6 @@ const VerifyCodeForm = ({ formSubmit, email }: FormProps) => {
           type="number"
           {...register("code", {
             required: "Code is required",
-
             pattern: {
               value: REGEXPATTERNS.verificationCode,
               message: "Should be exactly 6 digits",

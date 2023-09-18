@@ -34,7 +34,9 @@ export enum FormHelperType {
 export type SignupStage =
   | "enter details"
   | "verify code"
-  | "setup account"
+  | "choose account type"
+  | "setup st account"
+  | "setup non st account"
   | "setup complete";
 
 type FormValues = {
@@ -65,7 +67,7 @@ export type SignupFormFields = {
   agreeTerms: boolean;
 };
 
-export type SelectCountry = Array<{
+export type Country = {
   flags: {
     png: string;
     svg: string;
@@ -78,9 +80,11 @@ export type SelectCountry = Array<{
     root: string;
     suffixes: string[];
   };
-}>;
+};
 
 export type ActiveSelectedCountry = {
   svg: string;
   countryCode: string;
 };
+
+export type UserType = "Slightly Techie" | "Non Slightly Techie";
