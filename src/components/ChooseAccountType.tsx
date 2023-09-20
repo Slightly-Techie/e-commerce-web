@@ -3,39 +3,79 @@ import { BsCodeSlash } from "react-icons/bs";
 import { PiUserBold } from "react-icons/pi";
 import TimelineStep from "./TimelineStep";
 import { cn } from "../lib/utils";
-import { UserType } from "../types";
+import { AlertType, ButtonType, User, UserType } from "../types";
 import Button from "./Button";
 import SetupAccountLayout from "./SetupAccountLayout";
 import { useNavigate } from "react-router-dom";
 import { useSignupStageStore } from "../store/signupStageStore";
+import { useUserStore } from "../store/userStore";
+import { SET_ACCOUNT } from "../lib/queries";
+import { useMutation } from "@apollo/client";
+import { useAlertStore } from "../store/alertStore";
 
 const ChooseAccountType = () => {
-  const [userType, setUserType] = useState<
-    "Slightly Techie" | "Non Slightly Techie"
-  >("Slightly Techie");
+  const [userType, setUserType] = useState<UserType>("TECHIE");
 
   const navigate = useNavigate();
   const { changeStage } = useSignupStageStore();
+  const { showAlert } = useAlertStore();
+  const { token, user, login } = useUserStore();
+
+  const [updateUser, { loading }] = useMutation(SET_ACCOUNT);
 
   const handleSubmit = () => {
-    if (userType === "Slightly Techie") {
-      changeStage("setup st account");
-      navigate("/setup-account/st-member");
-      changeStage("setup st account");
-    } else {
-      navigate("/setup-account/non-st-member");
-      changeStage("setup non st account");
-    }
+    updateUser({ variables: { input: { accountType: userType } } })
+      .then(({ data }) => {
+        if (data.setAccount.status === 400) {
+          showAlert({
+            alertType: AlertType.error,
+            alertText: "Account not registered with CRM",
+          });
+        }
+
+        if (data.setAccount.errors) {
+          data.setAccount.errors.forEach(({ message }: { message: string }) => {
+            showAlert({
+              alertType: AlertType.error,
+              alertText: message,
+            });
+          });
+        }
+
+        if (data.setAccount.user) {
+          login({ user: data.setAccount.user as User, token: token as string });
+          showAlert({
+            alertType: AlertType.success,
+            alertText: "User account updated",
+          });
+
+          if (userType === "TECHIE") {
+            navigate("/setup-account/st-member");
+            changeStage("setup st account");
+          } else {
+            navigate("/setup-account/non-st-member");
+            changeStage("setup non st account");
+          }
+        }
+      })
+      .catch((err) => {
+        showAlert({
+          alertType: AlertType.error,
+          alertText: err.message,
+        });
+      });
   };
 
   const ACCOUNTTYPES = [
     {
-      name: "Slightly Techie",
+      title: "Slightly Techie",
+      name: "TECHIE",
       desc: "Member of Slightly Techie Network",
       icon: <BsCodeSlash size={20} />,
     },
     {
-      name: "Non Slightly Techie",
+      title: "Non Slightly Techie",
+      name: "NON_TECHIE",
       desc: "Not a member of Slightly Techie Network",
       icon: <PiUserBold size={20} />,
     },
@@ -54,7 +94,7 @@ const ChooseAccountType = () => {
         </div>
 
         <div className="space-y-6 mb-[50px]">
-          {ACCOUNTTYPES.map(({ name, icon, desc }) => (
+          {ACCOUNTTYPES.map(({ name, icon, desc, title }) => (
             <div
               key={name}
               className={cn(
@@ -75,7 +115,7 @@ const ChooseAccountType = () => {
               </div>
 
               <div>
-                <p className="text-lg font-bold">{name}</p>
+                <p className="text-lg font-bold">{title}</p>
                 <p className="text-gray500">{desc}</p>
               </div>
             </div>
@@ -83,7 +123,13 @@ const ChooseAccountType = () => {
         </div>
 
         <div className="flex justify-end">
-          <Button onClick={handleSubmit}>Continue</Button>
+          <Button
+            onClick={handleSubmit}
+            btnType={loading ? ButtonType.disabled : ButtonType.primary}
+            disabled={loading}
+          >
+            {loading ? "Checking CRM" : "Continue"}
+          </Button>
         </div>
       </div>
     </SetupAccountLayout>

@@ -5,7 +5,6 @@ import { BsChevronUp, BsChevronDown } from "react-icons/bs";
 import { fetchCountries, sortCountries } from "../../lib/utils";
 import CountriesListDropdown from "../CountriesListDropdown";
 import { REGEXPATTERNS } from "../../lib/regexPatterns";
-import { useForm } from "react-hook-form";
 
 type Props = {
   handleChange(phoneNumber: string): void;
@@ -141,8 +140,7 @@ const CountrySelectInput = ({ handleChange }: Props) => {
           ref={numberInputRef}
           onChange={(event) => {
             changeSelectedCountryOnChange(event);
-            if (REGEXPATTERNS.internationalPhoneNumber.test(event.target.value))
-              handleChange(event.target.value);
+            handleChange(event.target.value);
           }}
           className="border-none pl-2 group:"
         />

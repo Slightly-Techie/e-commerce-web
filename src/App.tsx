@@ -1,4 +1,4 @@
-import { Routes, Route, useNavigate } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import Signup from "./pages/Signup";
 import { Login } from "./pages/Login";
 import ForgotPassword from "./pages/ForgotPassword";
@@ -6,9 +6,6 @@ import SetupAccount from "./pages/SetupAccount";
 import VerifySignupCode from "./pages/VerifySignupCode";
 import STMemberSetup from "./components/STMemberSetup";
 import NonSTMemberSetup from "./components/NonSTMemberSetup";
-import { useEffect } from "react";
-import { SETUPACCOUNTROUTES } from "./lib/routes";
-import { useSignupStageStore } from "./store/signupStageStore";
 import AccountSetupComplete from "./components/AccountSetupComplete";
 
 function App() {
