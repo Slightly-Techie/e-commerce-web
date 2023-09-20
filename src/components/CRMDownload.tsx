@@ -35,10 +35,10 @@ const CRMDownload = ({
         profile: "Some interesting fact",
       });
 
-      setTimeout(() => handleDownloadComplete(), 500);
+      setTimeout(() => handleDownloadComplete(), 10000);
     };
 
-    const timeout = setTimeout(fetchUserData, 3000);
+    const timeout = setTimeout(fetchUserData, 10000);
 
     return () => clearTimeout(timeout);
   }, [handleDownloadComplete]);

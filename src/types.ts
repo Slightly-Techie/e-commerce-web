@@ -13,6 +13,7 @@ export enum AlertType {
   info = "info",
   error = "error",
   warning = "warning",
+  success = "success",
 }
 
 export enum ButtonType {
@@ -64,7 +65,6 @@ export type SignupFormFields = {
   username: string;
   email: string;
   password: string;
-  agreeTerms: boolean;
 };
 
 export type Country = {
@@ -87,4 +87,26 @@ export type ActiveSelectedCountry = {
   countryCode: string;
 };
 
-export type UserType = "Slightly Techie" | "Non Slightly Techie";
+export type UserType = "NON_TECHIE" | "TECHIE";
+
+export type User = {
+  accountType: UserType;
+  createdAt: Date;
+  email: string;
+  emailConfirmed: boolean;
+  firstName: string;
+  id: string;
+  lastName: string;
+  phoneNumber: string;
+  socialLinks: {
+    github: string;
+  };
+  updatedAt: Date;
+  username: string;
+};
+
+export type UserSignupDetails = Pick<User, "email" | "username"> & {
+  password: string;
+};
+
+export type AlertArgs = { alertType: AlertType; alertText: string };
