@@ -95,3 +95,16 @@ export const VERIFY_CODE = gql`
     }
   }
 `;
+
+export const RESEND_VERFICATION = gql`
+  mutation resendOTP($input: ResendConfirmationEmailInput!) {
+    resendEmailOtp(input: $input) {
+      errors {
+        message
+        property
+      }
+      status
+      success
+    }
+  }
+`;
