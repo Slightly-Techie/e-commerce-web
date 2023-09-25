@@ -3,23 +3,13 @@ import { SignupFormFields } from "../types";
 import { useState } from "react";
 import CreateAccountForm from "../components/CreateAccountForm";
 import { useSignupStageStore } from "../store/signupStageStore";
+import { useMutation } from "@apollo/client";
+import { CREATE_USER } from "../lib/queries";
 
 const Signup = () => {
-  const [userData, setUserData] = useState<SignupFormFields>(
-    {} as SignupFormFields
-  );
-
-  const { changeStage } = useSignupStageStore();
-
-  const onSubmit = (data: SignupFormFields) => {
-    setUserData(data);
-
-    changeStage("verify code");
-  };
-
   return (
     <AuthLayout>
-      <CreateAccountForm formSubmit={onSubmit} />
+      <CreateAccountForm />
     </AuthLayout>
   );
 };

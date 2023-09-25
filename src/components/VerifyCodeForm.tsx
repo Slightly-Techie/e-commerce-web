@@ -4,38 +4,125 @@ import Input from "./formElements/Input";
 import InputGroup from "./formElements/InputGroup";
 import Label from "./formElements/Label";
 import Button from "./Button";
-import { ButtonType, FormHelperType } from "../types";
+import { AlertType, ButtonType, FormHelperType } from "../types";
 import { SubmitHandler, useForm } from "react-hook-form";
 import FormHelper from "./formElements/FormHelper";
 import { hideEmail } from "../lib/utils";
-import { REGEXPATTERNS } from "../lib/regexPatterns";
+import { useSignupStageStore } from "../store/signupStageStore";
+import { useUserStore } from "../store/userStore";
+import { useMutation } from "@apollo/client";
+import { RESEND_VERFICATION, VERIFY_CODE } from "../lib/queries";
+import { useAlertStore } from "../store/alertStore";
+import { useEffect, useState } from "react";
 
 type FormValues = {
   code: string;
 };
 
-type FormProps = {
-  formSubmit(): void;
-  email: string;
-};
-
-const VerifyCodeForm = ({ formSubmit, email }: FormProps) => {
+const VerifyCodeForm = () => {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<FormValues>();
 
-  const onSubmit: SubmitHandler<FormValues> = (data) => {
-    formSubmit();
+  const [resendTime, setResendTime] = useState(0);
+
+  const { changeStage } = useSignupStageStore();
+  const { user, updateToken } = useUserStore();
+  const { showAlert } = useAlertStore();
+
+  const [verifyCode, { loading }] = useMutation(VERIFY_CODE);
+  const [resendVCode, { loading: sendingVCode }] =
+    useMutation(RESEND_VERFICATION);
+
+  const convertTime = (time: number): { mins: string; secs: string } => {
+    const calcMins = Math.floor(time / 60);
+    const calcSecs = time % 60;
+
+    const padd = (_: number): string => {
+      return String(_).padStart(2, "0");
+    };
+
+    return { mins: padd(calcMins), secs: padd(calcSecs) };
   };
+
+  const onSubmit: SubmitHandler<FormValues> = (formData) => {
+    verifyCode({
+      variables: { input: { token: formData.code } },
+    }).then(({ data }) => {
+      setResendTime(30);
+      if (data.confirmEmail.success) {
+        showAlert({
+          alertType: AlertType.info,
+          alertText: "Verification successful",
+        });
+        updateToken(data.confirmEmail.token);
+        changeStage("choose account type");
+        reset();
+      } else {
+        data.confirmEmail.errors.forEach(
+          ({ message }: { message: string; property: string }) => {
+            showAlert({
+              alertType: AlertType.error,
+              alertText: message,
+            });
+          }
+        );
+      }
+    });
+  };
+
+  const handleResendVerification = () => {
+    setResendTime(30);
+    resendVCode({ variables: { input: { email: user?.email } } })
+      .then(({ data: { resendEmailOtp } }) => {
+        if (resendEmailOtp.success) {
+          showAlert({
+            alertType: AlertType.success,
+            alertText: "New token has been sent to your email",
+          });
+        }
+        if (resendEmailOtp.errors) {
+          resendEmailOtp.errors.forEach(({ message }: { message: string }) => {
+            showAlert({
+              alertType: AlertType.error,
+              alertText: message,
+            });
+          });
+        }
+      })
+      .catch((err) => {
+        console.log({ err });
+        showAlert({
+          alertType: AlertType.error,
+          alertText: "Request failed",
+        });
+      });
+  };
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (resendTime > 0) {
+        setResendTime((prev) => {
+          if (prev > 0) return prev - 1;
+          return 0;
+        });
+      }
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [resendTime]);
 
   return (
     <Form onSubmit={handleSubmit(onSubmit)} title="Get code from email">
-      <Alert>
-        To confirm your identity, please enter the verification code that was
-        sent to {hideEmail(email)}
-      </Alert>
+      {user && (
+        <Alert>
+          To confirm your identity, please enter the verification code that was
+          sent to {hideEmail(user.email)}
+        </Alert>
+      )}
 
       <InputGroup>
         <Label htmlFor="code">Verification code</Label>
@@ -43,10 +130,10 @@ const VerifyCodeForm = ({ formSubmit, email }: FormProps) => {
           type="number"
           {...register("code", {
             required: "Code is required",
-            pattern: {
-              value: REGEXPATTERNS.verificationCode,
-              message: "Should be exactly 6 digits",
-            },
+            // pattern: {
+            //   value: REGEXPATTERNS.verificationCode,
+            //   message: "Should be exactly 6 digits",
+            // },
           })}
           icon={<img src="assets/icons/lock-open.svg" alt="..." />}
           placeholder="Enter code"
@@ -58,12 +145,34 @@ const VerifyCodeForm = ({ formSubmit, email }: FormProps) => {
         )}
       </InputGroup>
 
-      <Button
-        btnType={errors.code ? ButtonType.disabled : ButtonType.primary}
-        className="w-full"
-      >
-        Verify
-      </Button>
+      {resendTime > 0 && (
+        <p>Resend code after {convertTime(resendTime).secs} seconds</p>
+      )}
+
+      <div className="flex gap-3">
+        <Button
+          type="button"
+          btnType={
+            sendingVCode || resendTime > 0
+              ? ButtonType.disabled
+              : ButtonType.secondary
+          }
+          className="w-full"
+          onClick={handleResendVerification}
+        >
+          Resend code
+        </Button>
+
+        <Button
+          type="submit"
+          btnType={
+            errors.code || loading ? ButtonType.disabled : ButtonType.primary
+          }
+          className="w-full"
+        >
+          Verify
+        </Button>
+      </div>
     </Form>
   );
 };
