@@ -22,12 +22,8 @@ const Alert = ({ className, type = AlertType.info, ...props }: AlertProps) => {
       )}
       {...props}
     >
-      <div className="flex gap-3 items-center">
-        <img
-          src={alertIcons[type]}
-          className="w-[22px] h-[22px] flex-1"
-          alt="..."
-        />
+      <div className="flex items-start gap-3">
+        <img src={alertIcons[type]} className="w-[22px] h-[22px]" alt="..." />
 
         <p className={TextSizeStyles.verySmall}>{props.children}</p>
       </div>

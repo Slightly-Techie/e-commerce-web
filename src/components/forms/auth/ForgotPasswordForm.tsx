@@ -6,15 +6,16 @@ import {
   FormHelperType,
   AlertType,
 } from "../../../types";
-import { TextSize } from "../../../types";
 import Alert from "../../Alert";
-import { TextSizeStyles } from "../../../lib/styles";
 import Button from "../../Button";
 import { useForm, SubmitHandler } from "react-hook-form";
 import FormHelper from "../../formElements/FormHelper";
 import InputGroup from "../../formElements/InputGroup";
 import { REGEXPATTERNS } from "../../../lib/regexPatterns";
 import { useNavigate } from "react-router-dom";
+import { useMutation } from "@apollo/client";
+
+import { FORGOT_PASSWORD } from "../../../services/auth/queries";
 
 const ForgotPasswordForm = () => {
   const navigate = useNavigate();
@@ -23,20 +24,43 @@ const ForgotPasswordForm = () => {
     handleSubmit,
     formState: { errors },
   } = useForm<ForgotPasswordFormFields>();
+  const [forgottenPasswordSubmit, { data, loading }] =
+    useMutation(FORGOT_PASSWORD);
 
   const onSubmit: SubmitHandler<ForgotPasswordFormFields> = (data) => {
-    navigate("/reset-password");
-    console.log(data);
+    forgottenPasswordSubmit({
+      variables: {
+        input: { email: data.email },
+      },
+    });
   };
+
+  if (data?.forgotPassword?.success) {
+    return navigate("/reset-password");
+  }
+
+  const isError = () => {
+    if (data?.forgotPassword?.errors.length > 0) {
+      return (
+        <Alert type={AlertType.error}>
+          {data?.forgotPassword?.errors.map(
+            (error: { message: string }, idx: number) => (
+              <span key={idx}>{error?.message}</span>
+            )
+          )}
+        </Alert>
+      );
+    }
+  };
+
   return (
     <Form title="Forgot password?" onSubmit={handleSubmit(onSubmit)}>
+      {isError()}
       <Alert type={AlertType.info}>
-        Please double-check that you are using the same email address that you
-        used to sign up for CRM.
+        If the email address exists, you will be sent an email with instructions
+        on how to reset your password.
       </Alert>
-      <p className={"text-gray500 " + TextSizeStyles[TextSize.body]}>
-        No worries, we&lsquo;ll send you reset instructions.
-      </p>
+
       <InputGroup>
         <Input
           {...register("email", {
@@ -59,6 +83,7 @@ const ForgotPasswordForm = () => {
       </InputGroup>
       <Button
         className="w-full"
+        disabled={loading}
         btnType={errors.email ? ButtonType.disabled : ButtonType.primary}
       >
         Continue

@@ -67,3 +67,11 @@ export type Code = {
 };
 
 export type ResetPasswordStatus = "successful" | "reset_password" | "code";
+
+export type ForgotPasswordPayload = {
+  clientMutationId?: string;
+  errors: Array<{ message: string; property: string }>;
+  status: number;
+  success: boolean;
+};
+export type ErrorResponse = Array<{ message: string; property: string }>;

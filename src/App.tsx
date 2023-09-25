@@ -4,8 +4,13 @@ import { Login } from "./pages/Login";
 import ForgotPassword from "./pages/ForgotPassword";
 import SetupAccount from "./pages/SetupAccount";
 import ResetPassword from "./pages/ResetPassword";
+import { loadErrorMessages, loadDevMessages } from "@apollo/client/dev";
 
-function App () {
+// Adds messages only in a dev environment
+loadDevMessages();
+loadErrorMessages();
+
+function App() {
   return (
     <Routes>
       <Route path="/" element={<Signup />} />
