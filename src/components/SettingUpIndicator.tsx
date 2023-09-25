@@ -11,7 +11,7 @@ const SettingUpIndicator = ({ loading = true }: { loading?: boolean }) => {
         cy="95"
         r="91"
         id="gutter"
-        className="transition-all duration-700"
+        className="transition-all duration-[8000ms]"
         stroke={loading ? "#F1F5F9" : "#16A34A"}
         stroke-width="8"
       />

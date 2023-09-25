@@ -4,8 +4,9 @@ import Alert from "./Alert";
 import { AlertType } from "../types";
 import SettingUpIndicator from "./SettingUpIndicator";
 import SetupAccountLayout from "./SetupAccountLayout";
+import { useSignupStageStore } from "../store/signupStageStore";
 
-const CRMDownload = () => {
+const STMemberSetup = () => {
   type UserData = {
     username: string;
     name: string;
@@ -17,6 +18,8 @@ const CRMDownload = () => {
     profile: "",
   });
 
+  const { changeStage } = useSignupStageStore();
+
   useEffect(() => {
     // Fetch user data
 
@@ -27,12 +30,17 @@ const CRMDownload = () => {
         name: "John Doe",
         profile: "Some interesting fact",
       });
+
+      setTimeout(() => {
+        console.log("Downloaded user data");
+        changeStage("setup complete");
+      }, 1000);
     };
 
-    const timeout = setTimeout(fetchUserData, 10000);
+    const timeout = setTimeout(fetchUserData, 3000);
 
     return () => clearTimeout(timeout);
-  }, []);
+  }, [changeStage]);
 
   return (
     <SetupAccountLayout
@@ -75,4 +83,4 @@ const CRMDownload = () => {
   );
 };
 
-export default CRMDownload;
+export default STMemberSetup;

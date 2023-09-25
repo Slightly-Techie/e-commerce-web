@@ -4,13 +4,20 @@ import { AlertType } from "../types";
 
 type AlertProps = React.HTMLAttributes<HTMLDivElement> & {
   type?: AlertType;
+  global?: boolean;
 };
 
-const Alert = ({ className, type = AlertType.info, ...props }: AlertProps) => {
+const Alert = ({
+  className,
+  type = AlertType.info,
+  global = false,
+  ...props
+}: AlertProps) => {
   const alertIcons = {
-    [AlertType.error]: "assets/icons/error.svg",
-    [AlertType.info]: "assets/icons/info.svg",
-    [AlertType.warning]: "assets/icons/warning.svg",
+    [AlertType.error]: "/assets/icons/danger.svg",
+    [AlertType.info]: "/assets/icons/info.svg",
+    [AlertType.warning]: "/assets/icons/warning.svg",
+    [AlertType.success]: "/assets/icons/success.svg",
   };
 
   return (
@@ -18,6 +25,7 @@ const Alert = ({ className, type = AlertType.info, ...props }: AlertProps) => {
       className={cn(
         "p-4 rounded-[4px] border",
         AlertTypeStyles[type],
+        global && "bg-white text-base md:text-xl max-w-sm",
         className
       )}
       {...props}

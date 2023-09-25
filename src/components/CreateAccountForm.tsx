@@ -1,41 +1,89 @@
 import { Link } from "react-router-dom";
-import Form from "../../formElements/Form";
-import Input from "../../formElements/Input";
-import Label from "../../formElements/Label";
-import Checkbox from "../../formElements/Checkbox";
+import Form from "../components/formElements/Form";
+import Input from "../components/formElements/Input";
 import {
   AlertType,
   ButtonType,
   FormHelperType,
   SignupFormFields,
-} from "../../../types";
-import { TextSize } from "../../../types";
-import Alert from "../../Alert";
-import { TextSizeStyles } from "../../../lib/styles";
-import Button from "../../Button";
+} from "../types";
+import { TextSize } from "../types";
+import Alert from "./Alert";
+import { TextSizeStyles } from "../lib/styles";
+import Button from "./Button";
 import { useForm, SubmitHandler } from "react-hook-form";
-import FormHelper from "../../formElements/FormHelper";
-import InputGroup from "../../formElements/InputGroup";
-import { REGEXPATTERNS } from "../../../lib/regexPatterns";
+import FormHelper from "./formElements/FormHelper";
+import InputGroup from "./formElements/InputGroup";
+import { REGEXPATTERNS } from "../lib/regexPatterns";
+import { useMutation } from "@apollo/client";
+import { CREATE_USER } from "../lib/queries";
+import { useSignupStageStore } from "../store/signupStageStore";
+import { useUserStore } from "../store/userStore";
+import { useAlertStore } from "../store/alertStore";
 
-type FormProps = {
-  formSubmit(data: SignupFormFields): void;
-};
-
-const CreateAccountForm = ({ formSubmit }: FormProps) => {
+const CreateAccountForm = () => {
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<SignupFormFields>();
 
+  const { changeStage } = useSignupStageStore();
+  const { login } = useUserStore();
+
+  const [createUser, { error, loading }] = useMutation(CREATE_USER);
+
   const onSubmit: SubmitHandler<SignupFormFields> = (data) => {
-    formSubmit(data);
+    createUser({
+      variables: {
+        input: {
+          email: data.email,
+          password: data.password,
+          username: data.username,
+        },
+      },
+    })
+      .then(({ data }) => {
+        if (data.createUser.user) {
+          login({ user: data.createUser.user, token: data.createUser.token });
+          showAlert({
+            alertType: AlertType.info,
+            alertText: "Account details captured",
+          });
+          changeStage("verify code");
+          return;
+        }
+
+        if (data.createUser.errors) {
+          data.createUser.errors.forEach(
+            (err: { message: string | null; property: string }) => {
+              showAlert({
+                alertType: AlertType.info,
+                alertText: err.property,
+              });
+            }
+          );
+        }
+      })
+      .catch(() => {
+        showAlert({
+          alertType: AlertType.error,
+          alertText: String(error?.message),
+        });
+      });
   };
+
+  const { showAlert } = useAlertStore();
 
   return (
     <Form title="Create Account" onSubmit={handleSubmit(onSubmit)}>
-      <Alert type={AlertType.info}>
+      {error && <Alert type={AlertType.error}>{error.message}</Alert>}
+      <Alert
+        type={AlertType.info}
+        onClick={() =>
+          showAlert({ alertType: AlertType.info, alertText: "some info" })
+        }
+      >
         Please double-check that you are using the same email address that you
         used to sign up for CRM.
       </Alert>
@@ -110,26 +158,16 @@ const CreateAccountForm = ({ formSubmit }: FormProps) => {
         </InputGroup>
       </div>
 
-      <div className="flex items-start space-x-3">
-        <Checkbox
-          {...register("agreeTerms", { required: "Tick this field" })}
-          id="agreeTerms"
-          labelText="I agree to the terms & conditions"
-        />
-      </div>
-
       <Button
         className="w-full"
+        disabled={loading}
         btnType={
-          errors.agreeTerms ||
-          errors.email ||
-          errors.password ||
-          errors.username
+          errors.email || errors.password || errors.username || loading
             ? ButtonType.disabled
             : ButtonType.primary
         }
       >
-        Submit
+        {loading ? "Submitting" : "Submit"}
       </Button>
 
       <p className={"text-gray500 " + TextSizeStyles[TextSize.small]}>

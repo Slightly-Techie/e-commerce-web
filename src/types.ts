@@ -13,6 +13,7 @@ export enum AlertType {
   info = "info",
   error = "error",
   warning = "warning",
+  success = "success",
 }
 
 export enum ButtonType {
@@ -34,12 +35,24 @@ export enum FormHelperType {
 export type SignupStage =
   | "enter details"
   | "verify code"
-  | "setup account"
+  | "choose account type"
+  | "setup st account"
+  | "setup non st account"
   | "setup complete";
 
 type FormValues = {
   [key: string]: unknown;
 };
+
+export enum ShadowType {
+  xs = "xs",
+  sm = "sm",
+  md = "md",
+  lg = "lg",
+  xl = "xl",
+  xxl = "xxl",
+  xxxl = "xxxl",
+}
 
 type RegisterFormValues = UseFormRegister<FormValues>;
 
@@ -52,11 +65,12 @@ export type SignupFormFields = {
   username: string;
   email: string;
   password: string;
-  agreeTerms: boolean;
 };
+
 export type ForgotPasswordFormFields = {
   email: string;
 };
+
 export type ResetPasswordFormFields = {
   password: string;
   confirm_password: string;
@@ -75,3 +89,47 @@ export type ForgotPasswordPayload = {
   success: boolean;
 };
 export type ErrorResponse = Array<{ message: string; property: string }>;
+
+export type Country = {
+  flags: {
+    png: string;
+    svg: string;
+    alt: string;
+  };
+  name: {
+    common: string;
+  };
+  idd: {
+    root: string;
+    suffixes: string[];
+  };
+};
+
+export type ActiveSelectedCountry = {
+  svg: string;
+  countryCode: string;
+};
+
+export type UserType = "NON_TECHIE" | "TECHIE";
+
+export type User = {
+  accountType: UserType;
+  createdAt: Date;
+  email: string;
+  emailConfirmed: boolean;
+  firstName: string;
+  id: string;
+  lastName: string;
+  phoneNumber: string;
+  socialLinks: {
+    github: string;
+  };
+  updatedAt: Date;
+  username: string;
+};
+
+export type UserSignupDetails = Pick<User, "email" | "username"> & {
+  password: string;
+};
+
+export type AlertArgs = { alertType: AlertType; alertText: string };
