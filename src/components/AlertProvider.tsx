@@ -13,7 +13,7 @@ const AlertProvider = () => {
 
     timerRef.current = setTimeout(() => {
       hideAlert();
-    }, 2000);
+    }, 3000);
   }, [alerts, hideAlert]);
 
   return alerts.length > 0 ? (

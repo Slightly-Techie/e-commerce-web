@@ -14,10 +14,10 @@ const Alert = ({
   ...props
 }: AlertProps) => {
   const alertIcons = {
-    [AlertType.error]: "assets/icons/danger.svg",
-    [AlertType.info]: "assets/icons/info.svg",
-    [AlertType.warning]: "assets/icons/warning.svg",
-    [AlertType.success]: "assets/icons/success.svg",
+    [AlertType.error]: "/assets/icons/danger.svg",
+    [AlertType.info]: "/assets/icons/info.svg",
+    [AlertType.warning]: "/assets/icons/warning.svg",
+    [AlertType.success]: "/assets/icons/success.svg",
   };
 
   return (

@@ -5,14 +5,7 @@ import { AlertType } from "../types";
 import SettingUpIndicator from "./SettingUpIndicator";
 import SetupAccountLayout from "./SetupAccountLayout";
 
-const CRMDownload = ({
-  handleDownloadComplete = () => {
-    alert("Download complete");
-    return;
-  },
-}: {
-  handleDownloadComplete(): void;
-}) => {
+const CRMDownload = () => {
   type UserData = {
     username: string;
     name: string;
@@ -34,14 +27,12 @@ const CRMDownload = ({
         name: "John Doe",
         profile: "Some interesting fact",
       });
-
-      setTimeout(() => handleDownloadComplete(), 10000);
     };
 
     const timeout = setTimeout(fetchUserData, 10000);
 
     return () => clearTimeout(timeout);
-  }, [handleDownloadComplete]);
+  }, []);
 
   return (
     <SetupAccountLayout

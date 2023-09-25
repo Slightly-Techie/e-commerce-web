@@ -12,7 +12,7 @@ const AccountSetupComplete = () => {
   const { changeStage } = useSignupStageStore();
 
   useEffect(() => {
-    const pop = setTimeout(() => setPopConfetti(true), 500);
+    const pop = setTimeout(() => setPopConfetti(true), 700);
 
     return () => clearTimeout(pop);
   }, []);
@@ -31,7 +31,7 @@ const AccountSetupComplete = () => {
         </>
       }
     >
-      {popConfetti && <Confetti particleCount={500} force={0.8} />}
+      {popConfetti && <Confetti particleCount={500} force={0.9} />}
 
       <Button
         btnType={ButtonType.primary}
