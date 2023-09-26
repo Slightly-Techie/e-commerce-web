@@ -1,15 +1,16 @@
 import AuthLayout from "../components/AuthLayout";
-import { SignupFormFields } from "../types";
-import { useState } from "react";
 import CreateAccountForm from "../components/CreateAccountForm";
-import { useSignupStageStore } from "../store/signupStageStore";
-import { useMutation } from "@apollo/client";
-import { CREATE_USER } from "../lib/queries";
+import SetupAccountRouter from "../components/SetupAccountRouter";
 
 const Signup = () => {
   return (
-    <AuthLayout>
-      <CreateAccountForm />
+    <AuthLayout
+      buttonRoute="/login"
+      buttonText="Already have an account? Login"
+    >
+      <SetupAccountRouter>
+        <CreateAccountForm />
+      </SetupAccountRouter>
     </AuthLayout>
   );
 };

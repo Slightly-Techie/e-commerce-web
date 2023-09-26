@@ -3,10 +3,16 @@ import Signup from "./pages/Signup";
 import { Login } from "./pages/Login";
 import ForgotPassword from "./pages/ForgotPassword";
 import SetupAccount from "./pages/SetupAccount";
+import ResetPassword from "./pages/ResetPassword";
+import { loadErrorMessages, loadDevMessages } from "@apollo/client/dev";
 import VerifySignupCode from "./pages/VerifySignupCode";
 import STMemberSetup from "./components/STMemberSetup";
 import NonSTMemberSetup from "./components/NonSTMemberSetup";
 import AccountSetupComplete from "./components/AccountSetupComplete";
+
+// Adds messages only in a dev environment
+loadDevMessages();
+loadErrorMessages();
 
 function App() {
   return (
@@ -15,6 +21,8 @@ function App() {
       <Route path="/sign-up" element={<Signup />} />
       <Route path="/login" element={<Login />} />
       <Route path="/forgot-password" element={<ForgotPassword />} />
+      <Route path="/reset-password" element={<ResetPassword />} />
+      <Route path="/setup-account" element={<SetupAccount />} />
       <Route path="/verify-code" element={<VerifySignupCode />} />
       <Route path="/setup-account" element={<SetupAccount />}></Route>
       <Route path="/setup-account/st-member" element={<STMemberSetup />} />

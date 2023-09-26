@@ -2,7 +2,6 @@ import Alert from "./Alert";
 import Form from "./formElements/Form";
 import Input from "./formElements/Input";
 import InputGroup from "./formElements/InputGroup";
-import Label from "./formElements/Label";
 import Button from "./Button";
 import { AlertType, ButtonType, FormHelperType } from "../types";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -125,7 +124,6 @@ const VerifyCodeForm = () => {
       )}
 
       <InputGroup>
-        <Label htmlFor="code">Verification code</Label>
         <Input
           type="number"
           {...register("code", {
@@ -135,6 +133,8 @@ const VerifyCodeForm = () => {
             //   message: "Should be exactly 6 digits",
             // },
           })}
+          id="code"
+          label="Verification code"
           icon={<img src="assets/icons/lock-open.svg" alt="..." />}
           placeholder="Enter code"
         />

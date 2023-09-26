@@ -67,6 +67,29 @@ export type SignupFormFields = {
   password: string;
 };
 
+export type ForgotPasswordFormFields = {
+  email: string;
+};
+
+export type ResetPasswordFormFields = {
+  password: string;
+  confirm_password: string;
+};
+
+export type Code = {
+  code: number;
+};
+
+export type ResetPasswordStatus = "successful" | "reset_password" | "code";
+
+export type ForgotPasswordPayload = {
+  clientMutationId?: string;
+  errors: Array<{ message: string; property: string }>;
+  status: number;
+  success: boolean;
+};
+export type ErrorResponse = Array<{ message: string; property: string }>;
+
 export type Country = {
   flags: {
     png: string;
