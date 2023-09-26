@@ -21,18 +21,11 @@ const ResetPassword = () => {
   };
   return (
     <>
-      <AuthLayout>
-        {/* can this be added to AuthLayoutComponent or made into its own component ?? */}
+      <AuthLayout
+        buttonRoute="/login"
+        buttonText="Already have an account? Login"
+      >
         <div className="flex flex-col items-end py-8">
-          <div className="grid header place-content-end">
-            <Button
-              btnType={ButtonType.secondary}
-              onClick={() => navigate("/login")}
-              className="text-white w-fit"
-            >
-              Back To Login
-            </Button>
-          </div>
           {renderByStatus[status]}
         </div>
       </AuthLayout>

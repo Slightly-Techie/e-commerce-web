@@ -56,9 +56,9 @@ const CreateAccountForm = () => {
 
         if (data.createUser.errors) {
           data.createUser.errors.forEach(
-            (err: { message: string | null; property: string }) => {
+            (err: { message: string; property: string }) => {
               showAlert({
-                alertType: AlertType.info,
+                alertType: AlertType.error,
                 alertText: err.property,
               });
             }

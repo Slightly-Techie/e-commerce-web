@@ -3,18 +3,15 @@ import { Link } from "react-router-dom";
 import Text from "./Text";
 import { ButtonType, TextSize } from "../types";
 import Button from "./Button";
-import { useEffect } from "react";
-import { useSignupStageStore } from "../store/signupStageStore";
-import { SETUPACCOUNTROUTES } from "../lib/routes";
 
-const AuthLayout = ({ children }: { children: React.ReactNode }) => {
+type AuthLayoutProps = {
+  buttonText?: string;
+  buttonRoute?: string;
+  children: React.ReactNode;
+};
+
+const AuthLayout = ({ children, buttonRoute, buttonText }: AuthLayoutProps) => {
   const navigate = useNavigate();
-
-  const { currentStage } = useSignupStageStore();
-
-  useEffect(() => {
-    navigate(SETUPACCOUNTROUTES[currentStage]);
-  }, [currentStage, navigate]);
 
   return (
     <div className="text-white bg-[url(assets/images/sign-up-bg.jpg)] bg-cover bg-center bg-no-repeat">
@@ -43,13 +40,15 @@ const AuthLayout = ({ children }: { children: React.ReactNode }) => {
 
         <div className="py-8">
           <div className="header grid place-content-end">
-            <Button
-              btnType={ButtonType.secondary}
-              onClick={() => navigate("/login")}
-              className="w-fit text-white"
-            >
-              Already have an account? Login
-            </Button>
+            {buttonText && buttonRoute && (
+              <Button
+                btnType={ButtonType.secondary}
+                onClick={() => navigate(buttonRoute)}
+                className="w-fit text-white"
+              >
+                {buttonText}
+              </Button>
+            )}
           </div>
 
           {children}
