@@ -1,4 +1,5 @@
 import AuthLayout from "../components/AuthLayout";
+<<<<<<< HEAD
 import CreateAccountForm from "../components/CreateAccountForm";
 import SetupAccountRouter from "../components/SetupAccountRouter";
 
@@ -11,6 +12,14 @@ const Signup = () => {
       <SetupAccountRouter>
         <CreateAccountForm />
       </SetupAccountRouter>
+=======
+import CreateAccountForm from "../components/forms/auth/CreateAccountForm";
+
+const Signup = () => {
+  return (
+    <AuthLayout>
+      <CreateAccountForm />
+>>>>>>> c79c0a4 (mm)
     </AuthLayout>
   );
 };

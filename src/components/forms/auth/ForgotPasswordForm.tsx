@@ -14,8 +14,7 @@ import InputGroup from "../../formElements/InputGroup";
 import { REGEXPATTERNS } from "../../../lib/regexPatterns";
 import { useNavigate } from "react-router-dom";
 import { useMutation } from "@apollo/client";
-
-import { FORGOT_PASSWORD } from "../../../services/auth/queries";
+import { FORGOT_PASSWORD } from "../../../lib/queries";
 
 const ForgotPasswordForm = () => {
   const navigate = useNavigate();
@@ -36,7 +35,7 @@ const ForgotPasswordForm = () => {
   };
 
   if (data?.forgotPassword?.success) {
-    return navigate("/reset-password");
+    navigate("/reset-password");
   }
 
   const isError = () => {

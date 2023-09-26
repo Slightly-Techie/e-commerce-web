@@ -1,6 +1,11 @@
 import { Link } from "react-router-dom";
+<<<<<<< HEAD:src/components/CreateAccountForm.tsx
 import Form from "../components/formElements/Form";
 import Input from "../components/formElements/Input";
+=======
+
+import Input from "../../formElements/Input";
+>>>>>>> c79c0a4 (mm):src/components/forms/auth/CreateAccountForm.tsx
 import {
   AlertType,
   ButtonType,
@@ -12,6 +17,7 @@ import Alert from "./Alert";
 import { TextSizeStyles } from "../lib/styles";
 import Button from "./Button";
 import { useForm, SubmitHandler } from "react-hook-form";
+<<<<<<< HEAD:src/components/CreateAccountForm.tsx
 import FormHelper from "./formElements/FormHelper";
 import InputGroup from "./formElements/InputGroup";
 import { REGEXPATTERNS } from "../lib/regexPatterns";
@@ -20,6 +26,17 @@ import { CREATE_USER } from "../lib/queries";
 import { useSignupStageStore } from "../store/signupStageStore";
 import { useUserStore } from "../store/userStore";
 import { useAlertStore } from "../store/alertStore";
+=======
+import FormHelper from "../../formElements/FormHelper";
+import InputGroup from "../../formElements/InputGroup";
+import { REGEXPATTERNS } from "../../../lib/regexPatterns";
+import { useMutation } from "@apollo/client";
+import { CREATE_USER } from "../../../lib/queries";
+import { useSignupStageStore } from "../../../store/signupStageStore";
+import { useUserStore } from "../../../store/userStore";
+import { useAlertStore } from "../../../store/alertStore";
+import Form from "../../formElements/Form";
+>>>>>>> c79c0a4 (mm):src/components/forms/auth/CreateAccountForm.tsx
 
 const CreateAccountForm = () => {
   const {
@@ -56,9 +73,15 @@ const CreateAccountForm = () => {
 
         if (data.createUser.errors) {
           data.createUser.errors.forEach(
+<<<<<<< HEAD:src/components/CreateAccountForm.tsx
             (err: { message: string; property: string }) => {
               showAlert({
                 alertType: AlertType.error,
+=======
+            (err: { message: string | null; property: string }) => {
+              showAlert({
+                alertType: AlertType.info,
+>>>>>>> c79c0a4 (mm):src/components/forms/auth/CreateAccountForm.tsx
                 alertText: err.property,
               });
             }
