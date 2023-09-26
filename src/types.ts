@@ -70,7 +70,6 @@ export type SignupFormFields = {
 export type ForgotPasswordFormFields = {
   email: string;
 };
-<<<<<<< HEAD
 
 export type ResetPasswordFormFields = {
   password: string;
@@ -134,7 +133,3 @@ export type UserSignupDetails = Pick<User, "email" | "username"> & {
 };
 
 export type AlertArgs = { alertType: AlertType; alertText: string };
-=======
-
-export type ResetPasswordStatus = "successful" | "reset_password" | "code";
->>>>>>> c79c0a4 (mm)

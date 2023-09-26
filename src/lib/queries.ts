@@ -108,8 +108,6 @@ export const RESEND_VERFICATION = gql`
     }
   }
 `;
-<<<<<<< HEAD
-=======
 
 export const FORGOT_PASSWORD = gql(`
 mutation forgottenPasswordMutation($input:ForgotPasswordInput! ) {
@@ -131,4 +129,3 @@ export const RESET_PASSWORD = gql(`
           }
         }
   `);
->>>>>>> c79c0a4 (mm)
