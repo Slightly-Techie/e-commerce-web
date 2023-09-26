@@ -15,46 +15,48 @@ import { REGEXPATTERNS } from "../../../lib/regexPatterns";
 import { useNavigate } from "react-router-dom";
 import { useMutation } from "@apollo/client";
 import { FORGOT_PASSWORD } from "../../../lib/queries";
+import { useAlertStore } from "../../../store/alertStore";
 
 const ForgotPasswordForm = () => {
   const navigate = useNavigate();
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<ForgotPasswordFormFields>();
-  const [forgottenPasswordSubmit, { data, loading }] =
-    useMutation(FORGOT_PASSWORD);
+  const { showAlert } = useAlertStore();
+
+  const [forgottenPasswordSubmit, { loading }] = useMutation(FORGOT_PASSWORD);
 
   const onSubmit: SubmitHandler<ForgotPasswordFormFields> = (data) => {
     forgottenPasswordSubmit({
       variables: {
         input: { email: data.email },
       },
+    }).then(({ data }) => {
+      if (data.forgotPassword.success) {
+        showAlert({
+          alertType: AlertType.success,
+          alertText: "Email sent successfully",
+        });
+        reset();
+        navigate("/reset-password");
+      } else {
+        data.forgotPassword.errors.forEach(
+          ({ message }: { message: string; property: string }) => {
+            showAlert({
+              alertType: AlertType.error,
+              alertText: message,
+            });
+          }
+        );
+      }
     });
-  };
-
-  if (data?.forgotPassword?.success) {
-    navigate("/reset-password");
-  }
-
-  const isError = () => {
-    if (data?.forgotPassword?.errors.length > 0) {
-      return (
-        <Alert type={AlertType.error}>
-          {data?.forgotPassword?.errors.map(
-            (error: { message: string }, idx: number) => (
-              <span key={idx}>{error?.message}</span>
-            )
-          )}
-        </Alert>
-      );
-    }
   };
 
   return (
     <Form title="Forgot password?" onSubmit={handleSubmit(onSubmit)}>
-      {isError()}
       <Alert type={AlertType.info}>
         If the email address exists, you will be sent an email with instructions
         on how to reset your password.
