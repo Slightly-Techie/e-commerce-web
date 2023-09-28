@@ -21,10 +21,7 @@ const ResetPassword = () => {
   };
   return (
     <>
-      <AuthLayout
-        buttonRoute="/login"
-        buttonText="Already have an account? Login"
-      >
+      <AuthLayout buttonRoute="/forgot-password" buttonText="back">
         <div className="flex flex-col items-end py-8">
           {renderByStatus[status]}
         </div>
