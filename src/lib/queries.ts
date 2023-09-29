@@ -119,9 +119,21 @@ mutation forgottenPasswordMutation($input:ForgotPasswordInput! ) {
     }
   }
   `);
+
 export const RESET_PASSWORD = gql(`
     mutation resetPassword($input: ResetPasswordInput!) {
         resetPassword(input: $input){
+            clientMutationId
+            errors{message}
+            status
+            success
+          }
+        }
+  `);
+
+export const VERIFY_PASSWORD_RESET_TOKEN = gql(`
+    mutation resetPAsswordToken($input: VerifyResetTokenInput!) {
+      verifyResetToken(input: $input){
             clientMutationId
             errors{message}
             status

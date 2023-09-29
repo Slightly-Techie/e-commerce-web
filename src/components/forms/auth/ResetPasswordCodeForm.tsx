@@ -5,6 +5,7 @@ import {
   FormHelperType,
   Code,
   ResetPasswordStatus,
+  AlertType,
 } from "../../../types";
 import { TextSize } from "../../../types";
 import { TextSizeStyles } from "../../../lib/styles";
@@ -13,20 +14,61 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import FormHelper from "../../formElements/FormHelper";
 import InputGroup from "../../formElements/InputGroup";
 import { REGEXPATTERNS } from "../../../lib/regexPatterns";
+import useTimer from "../../../hooks/useTimer";
+import { useMutation } from "@apollo/client";
+import { VERIFY_PASSWORD_RESET_TOKEN } from "../../../lib/queries";
+import { useAlertStore } from "../../../store/alertStore";
+import { convertTime } from "../../../lib/utils";
+import { useState } from "react";
 
 const ResetPasswordCodeForm = ({
   setStatus,
+  setCode,
 }: {
   setStatus: React.Dispatch<React.SetStateAction<ResetPasswordStatus>>;
+  setCode: React.Dispatch<React.SetStateAction<Code | null>>;
 }) => {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<Code>();
 
+  const [resendTime, setResendTime] = useTimer();
+  const [showResendButton, setShowResendButton] = useState(false);
+  const [verifyResetPasswordCode, { loading }] = useMutation(
+    VERIFY_PASSWORD_RESET_TOKEN
+  );
+
+  const { showAlert } = useAlertStore();
+
   const onSubmit: SubmitHandler<Code> = (data) => {
-    setStatus("reset_password");
+    verifyResetPasswordCode({
+      variables: { input: { resetToken: data.code } },
+    }).then(({ data }) => {
+      setResendTime(30);
+      setShowResendButton(true);
+      if (data.verifyResetToken.success) {
+        showAlert({
+          alertType: AlertType.info,
+          alertText: "Verification successful",
+        });
+        setStatus("reset_password");
+        setCode(data.code);
+        reset();
+      } else {
+        data.verifyResetToken.errors.forEach(
+          ({ message }: { message: string; property: string }) => {
+            showAlert({
+              alertType: AlertType.error,
+              alertText: message,
+            });
+          }
+        );
+      }
+    });
+
     console.log(data);
   };
   return (
@@ -62,13 +104,29 @@ const ResetPasswordCodeForm = ({
           </FormHelper>
         )}
       </InputGroup>
+      {resendTime > 0 && (
+        <p>Resend code after {convertTime(resendTime).secs} seconds</p>
+      )}
 
       <Button
         className="w-full"
-        btnType={errors.code ? ButtonType.disabled : ButtonType.primary}
+        disabled={loading}
+        btnType={
+          errors.code || loading ? ButtonType.disabled : ButtonType.primary
+        }
       >
         Reset Password
       </Button>
+      {showResendButton && (
+        <Button
+          type="button"
+          btnType={resendTime > 0 ? ButtonType.disabled : ButtonType.secondary}
+          className="w-full"
+          onClick={() => setStatus("resend_code")}
+        >
+          Resend code
+        </Button>
+      )}
     </Form>
   );
 };

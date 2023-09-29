@@ -6,13 +6,13 @@ import Button from "./Button";
 import { AlertType, ButtonType, FormHelperType } from "../types";
 import { SubmitHandler, useForm } from "react-hook-form";
 import FormHelper from "./formElements/FormHelper";
-import { hideEmail } from "../lib/utils";
+import { convertTime, hideEmail } from "../lib/utils";
 import { useSignupStageStore } from "../store/signupStageStore";
 import { useUserStore } from "../store/userStore";
 import { useMutation } from "@apollo/client";
 import { RESEND_VERFICATION, VERIFY_CODE } from "../lib/queries";
 import { useAlertStore } from "../store/alertStore";
-import { useEffect, useState } from "react";
+import useTimer from "../hooks/useTimer";
 
 type FormValues = {
   code: string;
@@ -26,7 +26,7 @@ const VerifyCodeForm = () => {
     formState: { errors },
   } = useForm<FormValues>();
 
-  const [resendTime, setResendTime] = useState(0);
+  const [resendTime, setResendTime] = useTimer();
 
   const { changeStage } = useSignupStageStore();
   const { user, updateToken } = useUserStore();
@@ -35,17 +35,6 @@ const VerifyCodeForm = () => {
   const [verifyCode, { loading }] = useMutation(VERIFY_CODE);
   const [resendVCode, { loading: sendingVCode }] =
     useMutation(RESEND_VERFICATION);
-
-  const convertTime = (time: number): { mins: string; secs: string } => {
-    const calcMins = Math.floor(time / 60);
-    const calcSecs = time % 60;
-
-    const padd = (_: number): string => {
-      return String(_).padStart(2, "0");
-    };
-
-    return { mins: padd(calcMins), secs: padd(calcSecs) };
-  };
 
   const onSubmit: SubmitHandler<FormValues> = (formData) => {
     verifyCode({
@@ -100,19 +89,6 @@ const VerifyCodeForm = () => {
         });
       });
   };
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      if (resendTime > 0) {
-        setResendTime((prev) => {
-          if (prev > 0) return prev - 1;
-          return 0;
-        });
-      }
-    }, 1000);
-
-    return () => clearInterval(interval);
-  }, [resendTime]);
 
   return (
     <Form onSubmit={handleSubmit(onSubmit)} title="Get code from email">

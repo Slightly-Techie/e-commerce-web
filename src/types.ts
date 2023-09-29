@@ -80,7 +80,11 @@ export type Code = {
   code: number;
 };
 
-export type ResetPasswordStatus = "successful" | "reset_password" | "code";
+export type ResetPasswordStatus =
+  | "successful"
+  | "reset_password"
+  | "code"
+  | "resend_code";
 
 export type ForgotPasswordPayload = {
   clientMutationId?: string;

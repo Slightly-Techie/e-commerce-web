@@ -2,22 +2,24 @@ import { useNavigate } from "react-router-dom";
 import AuthLayout from "../components/AuthLayout";
 import Button from "../components/Button";
 import ResetPasswordForm from "../components/forms/auth/ResetPasswordForm";
-import { ButtonType, ResetPasswordStatus, TextSize } from "../types";
+import { ButtonType, Code, ResetPasswordStatus, TextSize } from "../types";
 import { useState, Dispatch, SetStateAction } from "react";
 import { TextSizeStyles } from "../lib/styles";
-import ResetPasswordCodeForm from "../components/forms/auth/ResetPasswordCodeFrom";
+import ResetPasswordCodeForm from "../components/forms/auth/ResetPasswordCodeForm";
+import ResendResetPasswordCodeForm from "../components/forms/auth/ResendResetPasswordCodeForm";
 
 const ResetPassword = () => {
-  const navigate = useNavigate();
   const [status, setStatus] = useState<ResetPasswordStatus>("code");
   const [loading, setLoading] = useState<boolean>(false);
+  const [code, setCode] = useState<null | Code>(null);
 
   const renderByStatus = {
     successful: (
       <PasswordResetSuccessful loading={loading} setLoading={setLoading} />
     ),
-    reset_password: <ResetPasswordForm setStatus={setStatus} />,
-    code: <ResetPasswordCodeForm setStatus={setStatus} />,
+    reset_password: <ResetPasswordForm setStatus={setStatus} code={code} />,
+    code: <ResetPasswordCodeForm setStatus={setStatus} setCode={setCode} />,
+    resend_code: <ResendResetPasswordCodeForm setStatus={setStatus} />,
   };
   return (
     <>
