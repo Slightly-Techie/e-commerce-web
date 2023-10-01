@@ -26,7 +26,7 @@ const ResetPasswordCodeForm = ({
   setCode,
 }: {
   setStatus: React.Dispatch<React.SetStateAction<ResetPasswordStatus>>;
-  setCode: React.Dispatch<React.SetStateAction<Code | null>>;
+  setCode: React.Dispatch<React.SetStateAction<number | null>>;
 }) => {
   const {
     register,
@@ -43,9 +43,9 @@ const ResetPasswordCodeForm = ({
 
   const { showAlert } = useAlertStore();
 
-  const onSubmit: SubmitHandler<Code> = (data) => {
+  const onSubmit: SubmitHandler<Code> = (submitData) => {
     verifyResetPasswordCode({
-      variables: { input: { resetToken: data.code } },
+      variables: { input: { resetToken: submitData.code } },
     }).then(({ data }) => {
       setResendTime(30);
       setShowResendButton(true);
@@ -55,7 +55,7 @@ const ResetPasswordCodeForm = ({
           alertText: "Verification successful",
         });
         setStatus("reset_password");
-        setCode(data.code);
+        setCode(submitData?.code);
         reset();
       } else {
         data.verifyResetToken.errors.forEach(
@@ -68,8 +68,6 @@ const ResetPasswordCodeForm = ({
         );
       }
     });
-
-    console.log(data);
   };
   return (
     <Form title="Reset Password Code" onSubmit={handleSubmit(onSubmit)}>
@@ -81,16 +79,16 @@ const ResetPasswordCodeForm = ({
           {...register("code", {
             required: "please insert the code sent to your email ",
             maxLength: {
-              value: 6,
-              message: "code cannot be more than 6 characters",
+              value: 7,
+              message: "code cannot be more than 7 characters",
             },
             minLength: {
-              value: 6,
-              message: "code cannot be less than 6 characters",
+              value: 5,
+              message: "code cannot be less than 5 characters",
             },
             pattern: {
-              value: REGEXPATTERNS.verificationCode,
-              message: "Should be exactly 6 digits",
+              value: REGEXPATTERNS.number,
+              message: "input should only contain digits",
             },
           })}
           type="text"

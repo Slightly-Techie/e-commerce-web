@@ -11,7 +11,7 @@ import ResendResetPasswordCodeForm from "../components/forms/auth/ResendResetPas
 const ResetPassword = () => {
   const [status, setStatus] = useState<ResetPasswordStatus>("code");
   const [loading, setLoading] = useState<boolean>(false);
-  const [code, setCode] = useState<null | Code>(null);
+  const [code, setCode] = useState<null | number>(null);
 
   const renderByStatus = {
     successful: (

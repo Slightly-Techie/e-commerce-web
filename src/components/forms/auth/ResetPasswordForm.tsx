@@ -24,7 +24,7 @@ const ResetPasswordForm = ({
   code,
 }: {
   setStatus: React.Dispatch<React.SetStateAction<ResetPasswordStatus>>;
-  code: Code | null;
+  code: number | null;
 }) => {
   const {
     register,
@@ -47,7 +47,7 @@ const ResetPasswordForm = ({
         },
       },
     }).then(({ data }) => {
-      if (data.forgotPassword.success) {
+      if (data.resetPassword.success) {
         showAlert({
           alertType: AlertType.success,
           alertText: "password reset successfully",
