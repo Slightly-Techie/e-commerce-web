@@ -19,7 +19,7 @@ const AuthLayout = ({ children, buttonRoute, buttonText }: AuthLayoutProps) => {
         <div className="pt-[200px] pb-8 flex justify-between flex-col">
           <div className="space-y-4">
             <Text size={TextSize.large}>Welcome to</Text>
-            <h1 className="font-anton  max-w-[460px] text-5xl leading-[50px] md:text-[70px] md:leading-[84px]">
+            <h1 className="  max-w-[460px] text-5xl leading-[50px] md:text-[70px] md:leading-[84px]">
               <span className="line-through">Slightly</span> Techie Ecommerce
               space
             </h1>

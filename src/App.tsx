@@ -10,6 +10,7 @@ import AccountSetupComplete from "./components/AccountSetupComplete";
 import ResetPassword from "./pages/ResetPassword";
 import { loadErrorMessages, loadDevMessages } from "@apollo/client/dev";
 import NonSTError from "./components/NonSTError";
+import HomePage from "./pages/HomePage";
 
 // Adds messages only in a dev environment
 loadDevMessages();
@@ -18,7 +19,7 @@ loadErrorMessages();
 function App() {
   return (
     <Routes>
-      <Route path="/" element={<Signup />} />
+      <Route path="/" element={<HomePage />} />
       <Route path="/sign-up" element={<Signup />} />
       <Route path="/login" element={<Login />} />
       <Route path="/forgot-password" element={<ForgotPassword />} />
@@ -41,4 +42,3 @@ function App() {
 }
 
 export default App;
-
