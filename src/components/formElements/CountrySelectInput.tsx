@@ -4,7 +4,6 @@ import Input from "./Input";
 import { BsChevronUp, BsChevronDown } from "react-icons/bs";
 import { fetchCountries, sortCountries } from "../../lib/utils";
 import CountriesListDropdown from "../CountriesListDropdown";
-import { REGEXPATTERNS } from "../../lib/regexPatterns";
 
 type Props = {
   handleChange(phoneNumber: string): void;
@@ -158,3 +157,4 @@ const CountrySelectInput = ({ handleChange }: Props) => {
 };
 
 export default CountrySelectInput;
+
