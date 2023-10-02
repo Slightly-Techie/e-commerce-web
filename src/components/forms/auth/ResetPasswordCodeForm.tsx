@@ -65,7 +65,7 @@ const ResetPasswordCodeForm = ({
     });
   };
   return (
-    <Form title="Reset Password Code" onSubmit={() => handleSubmit(onSubmit)}>
+    <Form title="Reset Password Code" onSubmit={handleSubmit(onSubmit)}>
       <p className={"text-gray500 " + TextSizeStyles[TextSize.body]}>
         Insert the 6 digit code sent to your email
       </p>

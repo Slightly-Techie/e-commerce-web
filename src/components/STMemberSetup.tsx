@@ -40,6 +40,13 @@ const STMemberSetup = () => {
         return;
       }
 
+      if (user?.accountType === "TECHIE") {
+        setUserDataState("success");
+        setTimeout(() => {
+          changeStage("setup complete");
+        }, 500);
+      }
+
       if (user) {
         setUserProfile({
           firstName: user.firstName,
