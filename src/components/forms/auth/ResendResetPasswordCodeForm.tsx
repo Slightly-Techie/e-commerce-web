@@ -5,7 +5,6 @@ import {
   ButtonType,
   FormHelperType,
   AlertType,
-  ResetPasswordStatus,
 } from "../../../types";
 import Alert from "../../Alert";
 import Button from "../../Button";

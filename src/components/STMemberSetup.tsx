@@ -69,7 +69,7 @@ const STMemberSetup = () => {
       description="Importing your details from CRM. This may take a few minutes."
     >
       <ul className="max-w-xs mb-24 w-full p-[10px] border rounded-md border-gray300">
-        {Object.entries(userProfile).map(([key, value]) => (
+        {Object.entries(userProfile).map(([key]) => (
           <li
             key={key}
             className={cn(
