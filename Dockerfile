@@ -5,7 +5,9 @@ COPY ./package*.json .
 RUN npm install
 ENV NODE_ENV=production
 COPY . .
-RUN npm run build
+RUN --mount=type=secret,id=VITE_BASE_URL \
+    VITE_BASE_URL="$(cat /run/secrets/VITE_BASE_URL)" \
+    npm run build
 
 FROM node:16-alpine
 WORKDIR /app
