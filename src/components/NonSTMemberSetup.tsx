@@ -54,10 +54,10 @@ const NonSTMemberSetup = () => {
           console.log({ response });
 
           if (response.updateUser.errors) {
-            response.response.errors.foeEach(
+            response.updateUser.errors.forEach(
               ({ message }: { message: string }) => {
                 showAlert({ alertType: AlertType.error, alertText: message });
-              }
+              },
             );
           }
 
@@ -83,7 +83,7 @@ const NonSTMemberSetup = () => {
       // changeStage("setup complete");
     } else {
       setError("root", {
-        message: Enter a valid phone number. Eg: +233550000000,
+        message: "Enter a valid phone number. Eg: +233550000000",
       });
     }
   };
