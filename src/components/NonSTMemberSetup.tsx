@@ -83,7 +83,7 @@ const NonSTMemberSetup = () => {
       // changeStage("setup complete");
     } else {
       setError("root", {
-        message: `Enter a valid phone number. Eg: +233550000000`,
+        message: Enter a valid phone number. Eg: +233550000000,
       });
     }
   };
@@ -109,7 +109,6 @@ const NonSTMemberSetup = () => {
                 {...register("firstName", {
                   required: "First name is required",
                 })}
-                className="px-4"
               />
               {errors.firstName && (
                 <FormHelper type={FormHelperType.error}>
@@ -123,7 +122,6 @@ const NonSTMemberSetup = () => {
               <Input
                 placeholder="Enter your last name"
                 {...register("lastName", { required: "Last name is required" })}
-                className="px-4"
               />
               {errors.firstName && (
                 <FormHelper type={FormHelperType.error}>
