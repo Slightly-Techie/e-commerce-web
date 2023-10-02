@@ -57,7 +57,7 @@ const NonSTMemberSetup = () => {
             response.response.errors.foeEach(
               ({ message }: { message: string }) => {
                 showAlert({ alertType: AlertType.error, alertText: message });
-              }
+              },
             );
           }
 
@@ -83,7 +83,7 @@ const NonSTMemberSetup = () => {
       // changeStage("setup complete");
     } else {
       setError("root", {
-        message: Enter a valid phone number. Eg: +233550000000,
+        message: "Enter a valid phone number. Eg: +233550000000",
       });
     }
   };
