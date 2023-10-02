@@ -54,7 +54,7 @@ const NonSTMemberSetup = () => {
           console.log({ response });
 
           if (response.updateUser.errors) {
-            response.response.errors.foeEach(
+            response.response.errors.forEach(
               ({ message }: { message: string }) => {
                 showAlert({ alertType: AlertType.error, alertText: message });
               },
