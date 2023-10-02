@@ -63,7 +63,7 @@ const ResetPasswordForm = ({ code }: { code: number | null }) => {
   };
 
   return (
-    <Form title="Reset password" onSubmit={() => handleSubmit(onSubmit)}>
+    <Form title="Reset password" onSubmit={handleSubmit(onSubmit)}>
       <p className={"text-gray500 " + TextSizeStyles[TextSize.body]}>
         Give yourself a new password, let's try to remember it this time.
       </p>

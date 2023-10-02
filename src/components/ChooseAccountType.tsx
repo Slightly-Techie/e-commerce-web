@@ -49,8 +49,6 @@ const ChooseAccountType = () => {
           navigate("/setup-account/st-member");
           changeStage("setup st account");
         }
-
-        // For demonstration's sake
       })
       .catch((err) => {
         showAlert({

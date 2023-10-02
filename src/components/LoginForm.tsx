@@ -14,6 +14,7 @@ import { REGEXPATTERNS } from "../lib/regexPatterns";
 import FormHelper from "./formElements/FormHelper";
 import { useUserStore } from "../store/userStore";
 import { Link, useNavigate } from "react-router-dom";
+import { useSignupStageStore } from "../store/signupStageStore";
 
 type FormValues = {
   email: string;
@@ -32,6 +33,8 @@ const LoginForm = () => {
     formState: { errors },
   } = useForm<FormValues>();
 
+  const { changeStage } = useSignupStageStore();
+
   const onSubmit: SubmitHandler<FormValues> = (formData) => {
     loginUser({
       variables: {
@@ -48,6 +51,15 @@ const LoginForm = () => {
           });
           navigate("/");
           return;
+        }
+
+        if (!data.login.user.emailConfirmed) {
+          changeStage("verify code");
+
+          showAlert({
+            alertType: AlertType.error,
+            alertText: "Please verify your account",
+          });
         }
 
         if (data.login.errors) {
