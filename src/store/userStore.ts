@@ -9,7 +9,7 @@ type StoreState = {
   user: User | null;
   login({ user, token }: UserArgs): void;
   logout(): void;
-  updateToken: (toekn: string) => void;
+  updateToken: (token: string) => void;
 };
 
 export const useUserStore = create<StoreState>()(

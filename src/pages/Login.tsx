@@ -20,7 +20,6 @@ export const Login = () => {
               Don't have an account? Sign up
             </Button>
           </div>
-
           <LoginForm />
         </div>
       </AuthLayout>

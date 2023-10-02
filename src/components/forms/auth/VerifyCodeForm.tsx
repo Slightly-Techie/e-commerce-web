@@ -1,19 +1,18 @@
-import Alert from "./Alert";
-import Form from "./formElements/Form";
-import Input from "./formElements/Input";
-import InputGroup from "./formElements/InputGroup";
-import Button from "./Button";
-import { AlertType, ButtonType, FormHelperType } from "../types";
+import Alert from "../../Alert";
+import Form from "../../formElements/Form";
+import Input from "../../formElements/Input";
+import InputGroup from "../../formElements/InputGroup";
+import Button from "../../Button";
+import { AlertType, ButtonType, FormHelperType } from "../../../types";
 import { SubmitHandler, useForm } from "react-hook-form";
-import FormHelper from "./formElements/FormHelper";
-import { convertTime, hideEmail } from "../lib/utils";
-import { useSignupStageStore } from "../store/signupStageStore";
-import { useUserStore } from "../store/userStore";
+import FormHelper from "../../formElements/FormHelper";
+import { convertTime, hideEmail } from "../../../lib/utils";
+import { useSignupStageStore } from "../../../store/signupStageStore";
+import { useUserStore } from "../../../store/userStore";
+import { useAlertStore } from "../../../store/alertStore";
 import { useMutation } from "@apollo/client";
-import { RESEND_VERFICATION, VERIFY_CODE } from "../lib/queries";
-import { useAlertStore } from "../store/alertStore";
-import { useState } from "react";
-import useTimer from "../hooks/useTimer";
+import { RESEND_VERFICATION, VERIFY_CODE } from "../../../lib/queries";
+import useTimer from "../../../hooks/useTimer";
 
 type FormValues = {
   code: string;
@@ -28,7 +27,6 @@ const VerifyCodeForm = () => {
   } = useForm<FormValues>();
 
   const [resendTime, setResendTime] = useTimer();
-  const [showResendBtn, setShowResendBtn] = useState(false);
 
   const { changeStage } = useSignupStageStore();
   const { user, updateToken } = useUserStore();
@@ -43,7 +41,6 @@ const VerifyCodeForm = () => {
       variables: { input: { token: formData.code } },
     }).then(({ data }) => {
       setResendTime(30);
-      setShowResendBtn(true);
       if (data.confirmEmail.success) {
         showAlert({
           alertType: AlertType.info,
@@ -139,20 +136,18 @@ const VerifyCodeForm = () => {
           Verify
         </Button>
 
-        {showResendBtn && (
-          <Button
-            type="button"
-            btnType={
-              sendingVCode || resendTime > 0
-                ? ButtonType.disabled
-                : ButtonType.secondary
-            }
-            className="w-full"
-            onClick={handleResendVerification}
-          >
-            Resend code
-          </Button>
-        )}
+        <Button
+          type="button"
+          btnType={
+            sendingVCode || resendTime > 0
+              ? ButtonType.disabled
+              : ButtonType.secondary
+          }
+          className="w-full"
+          onClick={handleResendVerification}
+        >
+          Resend code
+        </Button>
       </div>
     </Form>
   );

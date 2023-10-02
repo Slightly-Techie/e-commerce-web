@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
 import Form from "../components/formElements/Form";
 import Input from "../components/formElements/Input";
-import Label from "../components/formElements/Label";
 import {
   AlertType,
   ButtonType,
@@ -9,7 +8,7 @@ import {
   SignupFormFields,
 } from "../types";
 import { TextSize } from "../types";
-import Alert from "../components/Alert";
+import Alert from "./Alert";
 import { TextSizeStyles } from "../lib/styles";
 import Button from "./Button";
 import { useForm, SubmitHandler } from "react-hook-form";
@@ -57,9 +56,9 @@ const CreateAccountForm = () => {
 
         if (data.createUser.errors) {
           data.createUser.errors.forEach(
-            (err: { message: string | null; property: string }) => {
+            (err: { message: string; property: string }) => {
               showAlert({
-                alertType: AlertType.info,
+                alertType: AlertType.error,
                 alertText: err.property,
               });
             }
@@ -91,7 +90,6 @@ const CreateAccountForm = () => {
 
       <div className="space-y-4">
         <InputGroup>
-          <Label htmlFor="username">Username</Label>
           <Input
             {...register("username", {
               required: "Username is required",
@@ -100,6 +98,7 @@ const CreateAccountForm = () => {
                 message: "Enter a valid username",
               },
             })}
+            label="Username"
             id="username"
             icon={<img src="assets/icons/user.svg" alt="..." />}
             placeholder="Enter your username"
@@ -112,7 +111,6 @@ const CreateAccountForm = () => {
         </InputGroup>
 
         <InputGroup>
-          <Label htmlFor="email">Email</Label>
           <Input
             {...register("email", {
               required: "Email is required",
@@ -121,6 +119,7 @@ const CreateAccountForm = () => {
                 message: "Enter a valid email",
               },
             })}
+            label="Email"
             id="email"
             icon={<img src="assets/icons/envelope.svg" alt="..." />}
             placeholder="slightlytechie@gmail.com"
@@ -133,7 +132,6 @@ const CreateAccountForm = () => {
         </InputGroup>
 
         <InputGroup>
-          <Label htmlFor="password">Password</Label>
           <Input
             {...register("password", {
               required: "Password is required",
@@ -146,6 +144,7 @@ const CreateAccountForm = () => {
                 message: "Password should a be a mix of letters and symbols",
               },
             })}
+            label="Password"
             type="password"
             id="password"
             icon={<img src="assets/icons/lock-open.svg" alt="..." />}

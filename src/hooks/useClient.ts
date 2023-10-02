@@ -1,5 +1,5 @@
 // import { useCallback, useState, useEffect } from "react";
-import { client, getClient } from "../client";
+import { client, getClient } from "../lib/apollo-config";
 import { useUserStore } from "../store/userStore";
 
 const useClient = () => {

@@ -43,3 +43,14 @@ export const sortCountries: (countries: Country[]) => Country[] = (
 
   return sorted;
 };
+
+export const convertTime = (time: number): { mins: string; secs: string } => {
+  const calcMins = Math.floor(time / 60);
+  const calcSecs = time % 60;
+
+  const padd = (_: number): string => {
+    return String(_).padStart(2, "0");
+  };
+
+  return { mins: padd(calcMins), secs: padd(calcSecs) };
+};
