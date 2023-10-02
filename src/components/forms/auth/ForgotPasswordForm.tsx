@@ -35,25 +35,32 @@ const ForgotPasswordForm = () => {
       variables: {
         input: { email },
       },
-    }).then(({ data }) => {
-      if (data.forgotPassword.success) {
+    })
+      .then(({ data }) => {
+        if (data.forgotPassword.success) {
+          showAlert({
+            alertType: AlertType.success,
+            alertText: "Email sent successfully",
+          });
+          reset();
+          navigate("/reset-password", { state: { email } });
+        } else {
+          data.forgotPassword.errors.forEach(
+            ({ message }: { message: string; property: string }) => {
+              showAlert({
+                alertType: AlertType.error,
+                alertText: message,
+              });
+            }
+          );
+        }
+      })
+      .catch(() => {
         showAlert({
-          alertType: AlertType.success,
-          alertText: "Email sent successfully",
+          alertType: AlertType.error,
+          alertText: "Request failed",
         });
-        reset();
-        navigate("/reset-password", { state: { email } });
-      } else {
-        data.forgotPassword.errors.forEach(
-          ({ message }: { message: string; property: string }) => {
-            showAlert({
-              alertType: AlertType.error,
-              alertText: message,
-            });
-          }
-        );
-      }
-    });
+      });
   };
 
   return (
@@ -86,11 +93,14 @@ const ForgotPasswordForm = () => {
       <Button
         className="w-full"
         disabled={loading}
-        btnType={errors.email ? ButtonType.disabled : ButtonType.primary}
+        btnType={
+          errors.email || loading ? ButtonType.disabled : ButtonType.primary
+        }
       >
-        Continue
+        {loading ? "Sending..." : "Continue"}
       </Button>
     </Form>
   );
 };
 export default ForgotPasswordForm;
+

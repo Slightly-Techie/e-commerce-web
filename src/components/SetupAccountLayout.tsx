@@ -11,6 +11,7 @@ type Props = {
   description?: string;
   icon?: React.ReactNode;
   normal?: boolean;
+  reroute?: boolean;
 };
 
 const SetupAccountLayout = ({
@@ -19,13 +20,14 @@ const SetupAccountLayout = ({
   description,
   icon,
   normal = true,
+  reroute = true,
 }: Props) => {
   const navigate = useNavigate();
   const { currentStage } = useSignupStageStore();
 
   useEffect(() => {
-    navigate(SETUPACCOUNTROUTES[currentStage]);
-  }, [currentStage, navigate]);
+    if (reroute) navigate(SETUPACCOUNTROUTES[currentStage]);
+  }, [currentStage, navigate, reroute]);
 
   return (
     <div className="max-w-screen-xl px-[40px] lg:px-[60px] mx-auto min-h-screen flex flex-col">
@@ -35,13 +37,13 @@ const SetupAccountLayout = ({
 
       <div className="flex-1 py-20 flex flex-col justify-center items-center">
         {normal && (
-          <div className="max-w-[300px] w-full mb-6 text-center">
+          <div className="max-w-[410px] w-full mb-6 text-center">
             <div className="space-y-8">
               {icon}
 
               <div>
                 <h1 className={TextSizeStyles.heading5}>{title}</h1>
-                <p className={cn("text-gray500")}>{description}</p>
+                <p className={cn("text-gray500 text-balance")}>{description}</p>
               </div>
             </div>
           </div>
@@ -54,3 +56,4 @@ const SetupAccountLayout = ({
 };
 
 export default SetupAccountLayout;
+

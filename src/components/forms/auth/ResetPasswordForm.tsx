@@ -4,8 +4,6 @@ import {
   ResetPasswordFormFields,
   ButtonType,
   FormHelperType,
-  ResetPasswordStatus,
-  Code,
   AlertType,
 } from "../../../types";
 import { TextSize } from "../../../types";
@@ -18,14 +16,9 @@ import { REGEXPATTERNS } from "../../../lib/regexPatterns";
 import { useMutation } from "@apollo/client";
 import { RESET_PASSWORD } from "../../../lib/queries";
 import { useAlertStore } from "../../../store/alertStore";
+import { useResetPasswordStageStore } from "../../../store/resetPasswordStageStore";
 
-const ResetPasswordForm = ({
-  setStatus,
-  code,
-}: {
-  setStatus: React.Dispatch<React.SetStateAction<ResetPasswordStatus>>;
-  code: number | null;
-}) => {
+const ResetPasswordForm = ({ code }: { code: number | null }) => {
   const {
     register,
     handleSubmit,
@@ -35,6 +28,8 @@ const ResetPasswordForm = ({
   } = useForm<ResetPasswordFormFields>();
   const { showAlert } = useAlertStore();
   const [forgottenPasswordSubmit, { loading }] = useMutation(RESET_PASSWORD);
+
+  const { changeStage } = useResetPasswordStageStore();
 
   const onSubmit: SubmitHandler<ResetPasswordFormFields> = (data) => {
     const { password, confirm_password } = data;
@@ -53,7 +48,7 @@ const ResetPasswordForm = ({
           alertText: "password reset successfully",
         });
         reset();
-        setStatus("successful");
+        changeStage("successful");
       } else {
         data.forgotPassword.errors.forEach(
           ({ message }: { message: string; property: string }) => {
@@ -68,7 +63,7 @@ const ResetPasswordForm = ({
   };
 
   return (
-    <Form title="Reset password" onSubmit={handleSubmit(onSubmit)}>
+    <Form title="Reset password" onSubmit={() => handleSubmit(onSubmit)}>
       <p className={"text-gray500 " + TextSizeStyles[TextSize.body]}>
         Give yourself a new password, let's try to remember it this time.
       </p>
@@ -128,3 +123,4 @@ const ResetPasswordForm = ({
   );
 };
 export default ResetPasswordForm;
+

@@ -12,7 +12,7 @@ const AccountSetupComplete = () => {
   const { changeStage } = useSignupStageStore();
 
   useEffect(() => {
-    const pop = setTimeout(() => setPopConfetti(true), 700);
+    const pop = setTimeout(() => setPopConfetti(true), 200);
 
     return () => clearTimeout(pop);
   }, []);
@@ -47,3 +47,4 @@ const AccountSetupComplete = () => {
 };
 
 export default AccountSetupComplete;
+

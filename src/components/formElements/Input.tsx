@@ -28,7 +28,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
             <label
               htmlFor={props.id}
               className={cn(
-                "self-stretch grid place-content-center cursor-pointer w-8 flex-shrink-0",
+                "self-stretch grid place-content-center cursor-pointer w-8 flex-shrink-0 mx-2",
                 isFocused ? "text-gray-500" : "text-gray300"
               )}
             >
@@ -43,8 +43,9 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
             onFocus={() => setIsFocused(true)}
             onBlur={() => setIsFocused(false)}
             className={cn(
-              "placeholder:text-gray-300 border-none bg-transparent border flex-1 w-full py-3 outline-none px-4",
-              props.type !== "password" ? "pr-4" : "pr-1"
+              "placeholder:text-gray-300 border-none bg-transparent border flex-1 w-full py-3 outline-none pr-4",
+              props.type !== "password" ? "pr-4" : "pr-1",
+              !icon && "pl-4"
             )}
           />
 
@@ -76,3 +77,4 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
 
 Input.displayName = "Input";
 export default Input;
+

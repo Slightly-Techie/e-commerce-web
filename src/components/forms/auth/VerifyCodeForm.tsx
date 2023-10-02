@@ -125,7 +125,17 @@ const VerifyCodeForm = () => {
         <p>Resend code after {convertTime(resendTime).secs} seconds</p>
       )}
 
-      <div className="flex gap-3">
+      <div className="flex flex-col gap-3">
+        <Button
+          type="submit"
+          btnType={
+            errors.code || loading ? ButtonType.disabled : ButtonType.primary
+          }
+          className="w-full"
+        >
+          Verify
+        </Button>
+
         <Button
           type="button"
           btnType={
@@ -138,19 +148,10 @@ const VerifyCodeForm = () => {
         >
           Resend code
         </Button>
-
-        <Button
-          type="submit"
-          btnType={
-            errors.code || loading ? ButtonType.disabled : ButtonType.primary
-          }
-          className="w-full"
-        >
-          Verify
-        </Button>
       </div>
     </Form>
   );
 };
 
 export default VerifyCodeForm;
+

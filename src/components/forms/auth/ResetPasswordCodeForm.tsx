@@ -1,12 +1,6 @@
 import Form from "../../formElements/Form";
 import Input from "../../formElements/Input";
-import {
-  ButtonType,
-  FormHelperType,
-  Code,
-  ResetPasswordStatus,
-  AlertType,
-} from "../../../types";
+import { ButtonType, FormHelperType, Code, AlertType } from "../../../types";
 import { TextSize } from "../../../types";
 import { TextSizeStyles } from "../../../lib/styles";
 import Button from "../../Button";
@@ -20,12 +14,11 @@ import { VERIFY_PASSWORD_RESET_TOKEN } from "../../../lib/queries";
 import { useAlertStore } from "../../../store/alertStore";
 import { convertTime } from "../../../lib/utils";
 import { useState } from "react";
+import { useResetPasswordStageStore } from "../../../store/resetPasswordStageStore";
 
 const ResetPasswordCodeForm = ({
-  setStatus,
   setCode,
 }: {
-  setStatus: React.Dispatch<React.SetStateAction<ResetPasswordStatus>>;
   setCode: React.Dispatch<React.SetStateAction<number | null>>;
 }) => {
   const {
@@ -43,6 +36,8 @@ const ResetPasswordCodeForm = ({
 
   const { showAlert } = useAlertStore();
 
+  const { changeStage } = useResetPasswordStageStore();
+
   const onSubmit: SubmitHandler<Code> = (submitData) => {
     verifyResetPasswordCode({
       variables: { input: { resetToken: submitData.code } },
@@ -54,7 +49,7 @@ const ResetPasswordCodeForm = ({
           alertType: AlertType.info,
           alertText: "Verification successful",
         });
-        setStatus("reset_password");
+        changeStage("reset_password");
         setCode(submitData?.code);
         reset();
       } else {
@@ -70,7 +65,7 @@ const ResetPasswordCodeForm = ({
     });
   };
   return (
-    <Form title="Reset Password Code" onSubmit={handleSubmit(onSubmit)}>
+    <Form title="Reset Password Code" onSubmit={() => handleSubmit(onSubmit)}>
       <p className={"text-gray500 " + TextSizeStyles[TextSize.body]}>
         Insert the 6 digit code sent to your email
       </p>
@@ -120,7 +115,7 @@ const ResetPasswordCodeForm = ({
           type="button"
           btnType={resendTime > 0 ? ButtonType.disabled : ButtonType.secondary}
           className="w-full"
-          onClick={() => setStatus("resend_code")}
+          onClick={() => changeStage("resend_code")}
         >
           Resend code
         </Button>
@@ -129,3 +124,4 @@ const ResetPasswordCodeForm = ({
   );
 };
 export default ResetPasswordCodeForm;
+
