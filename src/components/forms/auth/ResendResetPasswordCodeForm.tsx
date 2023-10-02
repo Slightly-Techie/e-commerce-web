@@ -17,12 +17,9 @@ import { useMutation } from "@apollo/client";
 import { FORGOT_PASSWORD } from "../../../lib/queries";
 import { useAlertStore } from "../../../store/alertStore";
 import { useLocation } from "react-router-dom";
+import { useResetPasswordStageStore } from "../../../store/resetPasswordStageStore";
 
-const ResendResetPasswordCodeForm = ({
-  setStatus,
-}: {
-  setStatus: React.Dispatch<React.SetStateAction<ResetPasswordStatus>>;
-}) => {
+const ResendResetPasswordCodeForm = () => {
   const {
     register,
     handleSubmit,
@@ -33,6 +30,8 @@ const ResendResetPasswordCodeForm = ({
   const location = useLocation();
   const data = location.state;
   const [forgottenPasswordSubmit, { loading }] = useMutation(FORGOT_PASSWORD);
+
+  const { changeStage } = useResetPasswordStageStore();
 
   const onSubmit: SubmitHandler<ForgotPasswordFormFields> = (data) => {
     forgottenPasswordSubmit({
@@ -46,7 +45,7 @@ const ResendResetPasswordCodeForm = ({
           alertText: "Email sent successfully",
         });
         reset();
-        setStatus("code");
+        changeStage("code");
       } else {
         data.forgotPassword.errors.forEach(
           ({ message }: { message: string; property: string }) => {
@@ -100,7 +99,7 @@ const ResendResetPasswordCodeForm = ({
       <Button
         className="w-full"
         btnType={ButtonType.secondary}
-        onClick={() => setStatus("code")}
+        onClick={() => changeStage("code")}
       >
         I have my code
       </Button>
@@ -108,3 +107,4 @@ const ResendResetPasswordCodeForm = ({
   );
 };
 export default ResendResetPasswordCodeForm;
+

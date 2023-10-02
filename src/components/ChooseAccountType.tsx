@@ -19,20 +19,13 @@ const ChooseAccountType = () => {
   const navigate = useNavigate();
   const { changeStage } = useSignupStageStore();
   const { showAlert } = useAlertStore();
-  const { token, user, login } = useUserStore();
+  const { token, login } = useUserStore();
 
   const [updateUser, { loading }] = useMutation(SET_ACCOUNT);
 
   const handleSubmit = () => {
     updateUser({ variables: { input: { accountType: userType } } })
       .then(({ data }) => {
-        if (data.setAccount.status === 400) {
-          showAlert({
-            alertType: AlertType.error,
-            alertText: "Account not registered with CRM",
-          });
-        }
-
         if (data.setAccount.errors) {
           data.setAccount.errors.forEach(({ message }: { message: string }) => {
             showAlert({
@@ -48,15 +41,16 @@ const ChooseAccountType = () => {
             alertType: AlertType.success,
             alertText: "User account updated",
           });
-
-          if (userType === "TECHIE") {
-            navigate("/setup-account/st-member");
-            changeStage("setup st account");
-          } else {
-            navigate("/setup-account/non-st-member");
-            changeStage("setup non st account");
-          }
         }
+        if (userType === "NON_TECHIE") {
+          navigate("/setup-account/non-st-member");
+          changeStage("setup non st account");
+        } else {
+          navigate("/setup-account/st-member");
+          changeStage("setup st account");
+        }
+
+        // For demonstration's sake
       })
       .catch((err) => {
         showAlert({
@@ -137,3 +131,4 @@ const ChooseAccountType = () => {
 };
 
 export default ChooseAccountType;
+

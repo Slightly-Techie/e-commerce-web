@@ -12,6 +12,7 @@ import { useUserStore } from "../store/userStore";
 import { useMutation } from "@apollo/client";
 import { RESEND_VERFICATION, VERIFY_CODE } from "../lib/queries";
 import { useAlertStore } from "../store/alertStore";
+import { useState } from "react";
 import useTimer from "../hooks/useTimer";
 
 type FormValues = {
@@ -27,6 +28,7 @@ const VerifyCodeForm = () => {
   } = useForm<FormValues>();
 
   const [resendTime, setResendTime] = useTimer();
+  const [showResendBtn, setShowResendBtn] = useState(false);
 
   const { changeStage } = useSignupStageStore();
   const { user, updateToken } = useUserStore();
@@ -41,6 +43,7 @@ const VerifyCodeForm = () => {
       variables: { input: { token: formData.code } },
     }).then(({ data }) => {
       setResendTime(30);
+      setShowResendBtn(true);
       if (data.confirmEmail.success) {
         showAlert({
           alertType: AlertType.info,
@@ -125,20 +128,7 @@ const VerifyCodeForm = () => {
         <p>Resend code after {convertTime(resendTime).secs} seconds</p>
       )}
 
-      <div className="flex gap-3">
-        <Button
-          type="button"
-          btnType={
-            sendingVCode || resendTime > 0
-              ? ButtonType.disabled
-              : ButtonType.secondary
-          }
-          className="w-full"
-          onClick={handleResendVerification}
-        >
-          Resend code
-        </Button>
-
+      <div className="flex flex-col gap-3">
         <Button
           type="submit"
           btnType={
@@ -148,9 +138,25 @@ const VerifyCodeForm = () => {
         >
           Verify
         </Button>
+
+        {showResendBtn && (
+          <Button
+            type="button"
+            btnType={
+              sendingVCode || resendTime > 0
+                ? ButtonType.disabled
+                : ButtonType.secondary
+            }
+            className="w-full"
+            onClick={handleResendVerification}
+          >
+            Resend code
+          </Button>
+        )}
       </div>
     </Form>
   );
 };
 
 export default VerifyCodeForm;
+
