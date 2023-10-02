@@ -1,18 +1,18 @@
-import Alert from "./Alert";
-import Form from "./formElements/Form";
-import Input from "./formElements/Input";
-import InputGroup from "./formElements/InputGroup";
-import Button from "./Button";
-import { AlertType, ButtonType, FormHelperType } from "../types";
+import Alert from "../../Alert";
+import Form from "../../formElements/Form";
+import Input from "../../formElements/Input";
+import InputGroup from "../../formElements/InputGroup";
+import Button from "../../Button";
+import { AlertType, ButtonType, FormHelperType } from "../../../types";
 import { SubmitHandler, useForm } from "react-hook-form";
-import FormHelper from "./formElements/FormHelper";
-import { convertTime, hideEmail } from "../lib/utils";
-import { useSignupStageStore } from "../store/signupStageStore";
-import { useUserStore } from "../store/userStore";
+import FormHelper from "../../formElements/FormHelper";
+import { convertTime, hideEmail } from "../../../lib/utils";
+import { useSignupStageStore } from "../../../store/signupStageStore";
+import { useUserStore } from "../../../store/userStore";
+import { useAlertStore } from "../../../store/alertStore";
 import { useMutation } from "@apollo/client";
-import { RESEND_VERFICATION, VERIFY_CODE } from "../lib/queries";
-import { useAlertStore } from "../store/alertStore";
-import useTimer from "../hooks/useTimer";
+import { RESEND_VERFICATION, VERIFY_CODE } from "../../../lib/queries";
+import useTimer from "../../../hooks/useTimer";
 
 type FormValues = {
   code: string;

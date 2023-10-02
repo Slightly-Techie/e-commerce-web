@@ -5,6 +5,7 @@ import {
   ButtonType,
   FormHelperType,
   AlertType,
+  ResetPasswordStatus,
 } from "../../../types";
 import Alert from "../../Alert";
 import Button from "../../Button";
@@ -12,13 +13,16 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import FormHelper from "../../formElements/FormHelper";
 import InputGroup from "../../formElements/InputGroup";
 import { REGEXPATTERNS } from "../../../lib/regexPatterns";
-import { useNavigate } from "react-router-dom";
 import { useMutation } from "@apollo/client";
 import { FORGOT_PASSWORD } from "../../../lib/queries";
 import { useAlertStore } from "../../../store/alertStore";
+import { useLocation } from "react-router-dom";
 
-const ForgotPasswordForm = () => {
-  const navigate = useNavigate();
+const ResendResetPasswordCodeForm = ({
+  setStatus,
+}: {
+  setStatus: React.Dispatch<React.SetStateAction<ResetPasswordStatus>>;
+}) => {
   const {
     register,
     handleSubmit,
@@ -26,14 +30,14 @@ const ForgotPasswordForm = () => {
     formState: { errors },
   } = useForm<ForgotPasswordFormFields>();
   const { showAlert } = useAlertStore();
-
+  const location = useLocation();
+  const data = location.state;
   const [forgottenPasswordSubmit, { loading }] = useMutation(FORGOT_PASSWORD);
 
   const onSubmit: SubmitHandler<ForgotPasswordFormFields> = (data) => {
-    const { email } = data;
     forgottenPasswordSubmit({
       variables: {
-        input: { email },
+        input: { email: data.email },
       },
     }).then(({ data }) => {
       if (data.forgotPassword.success) {
@@ -42,7 +46,7 @@ const ForgotPasswordForm = () => {
           alertText: "Email sent successfully",
         });
         reset();
-        navigate("/reset-password", { state: { email } });
+        setStatus("code");
       } else {
         data.forgotPassword.errors.forEach(
           ({ message }: { message: string; property: string }) => {
@@ -57,7 +61,7 @@ const ForgotPasswordForm = () => {
   };
 
   return (
-    <Form title="Forgot password?" onSubmit={handleSubmit(onSubmit)}>
+    <Form title="Resend reset password code" onSubmit={handleSubmit(onSubmit)}>
       <Alert type={AlertType.info}>
         If the email address exists, you will be sent an email with instructions
         on how to reset your password.
@@ -72,6 +76,7 @@ const ForgotPasswordForm = () => {
               message: "Enter a valid email",
             },
           })}
+          defaultValue={data?.email || ""}
           label="Email"
           id="email"
           icon={<img src="assets/icons/envelope.svg" alt="..." />}
@@ -86,11 +91,20 @@ const ForgotPasswordForm = () => {
       <Button
         className="w-full"
         disabled={loading}
-        btnType={errors.email ? ButtonType.disabled : ButtonType.primary}
+        btnType={
+          errors.email || loading ? ButtonType.disabled : ButtonType.primary
+        }
       >
-        Continue
+        Resend
+      </Button>
+      <Button
+        className="w-full"
+        btnType={ButtonType.secondary}
+        onClick={() => setStatus("code")}
+      >
+        I have my code
       </Button>
     </Form>
   );
 };
-export default ForgotPasswordForm;
+export default ResendResetPasswordCodeForm;

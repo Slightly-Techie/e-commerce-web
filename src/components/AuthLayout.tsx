@@ -39,12 +39,12 @@ const AuthLayout = ({ children, buttonRoute, buttonText }: AuthLayoutProps) => {
         </div>
 
         <div className="py-8">
-          <div className="header grid place-content-end">
+          <div className="grid header place-content-end">
             {buttonText && buttonRoute && (
               <Button
                 btnType={ButtonType.secondary}
                 onClick={() => navigate(buttonRoute)}
-                className="w-fit text-white"
+                className="text-white w-fit"
               >
                 {buttonText}
               </Button>

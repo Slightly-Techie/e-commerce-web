@@ -3,12 +3,13 @@ import Signup from "./pages/Signup";
 import { Login } from "./pages/Login";
 import ForgotPassword from "./pages/ForgotPassword";
 import SetupAccount from "./pages/SetupAccount";
-import ResetPassword from "./pages/ResetPassword";
-import { loadErrorMessages, loadDevMessages } from "@apollo/client/dev";
 import VerifySignupCode from "./pages/VerifySignupCode";
 import STMemberSetup from "./components/STMemberSetup";
 import NonSTMemberSetup from "./components/NonSTMemberSetup";
 import AccountSetupComplete from "./components/AccountSetupComplete";
+import ResetPassword from "./pages/ResetPassword";
+import { loadErrorMessages, loadDevMessages } from "@apollo/client/dev";
+
 
 // Adds messages only in a dev environment
 loadDevMessages();

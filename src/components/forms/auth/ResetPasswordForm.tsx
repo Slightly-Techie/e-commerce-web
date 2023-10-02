@@ -5,6 +5,8 @@ import {
   ButtonType,
   FormHelperType,
   ResetPasswordStatus,
+  Code,
+  AlertType,
 } from "../../../types";
 import { TextSize } from "../../../types";
 import { TextSizeStyles } from "../../../lib/styles";
@@ -13,23 +15,58 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import FormHelper from "../../formElements/FormHelper";
 import InputGroup from "../../formElements/InputGroup";
 import { REGEXPATTERNS } from "../../../lib/regexPatterns";
+import { useMutation } from "@apollo/client";
+import { RESET_PASSWORD } from "../../../lib/queries";
+import { useAlertStore } from "../../../store/alertStore";
 
 const ResetPasswordForm = ({
   setStatus,
+  code,
 }: {
   setStatus: React.Dispatch<React.SetStateAction<ResetPasswordStatus>>;
+  code: number | null;
 }) => {
   const {
     register,
     handleSubmit,
     watch,
+    reset,
     formState: { errors },
   } = useForm<ResetPasswordFormFields>();
+  const { showAlert } = useAlertStore();
+  const [forgottenPasswordSubmit, { loading }] = useMutation(RESET_PASSWORD);
 
   const onSubmit: SubmitHandler<ResetPasswordFormFields> = (data) => {
-    setStatus("successful");
-    console.log(data);
+    const { password, confirm_password } = data;
+    forgottenPasswordSubmit({
+      variables: {
+        input: {
+          resetToken: code,
+          newPassword: password,
+          passwordConfirmation: confirm_password,
+        },
+      },
+    }).then(({ data }) => {
+      if (data.resetPassword.success) {
+        showAlert({
+          alertType: AlertType.success,
+          alertText: "password reset successfully",
+        });
+        reset();
+        setStatus("successful");
+      } else {
+        data.forgotPassword.errors.forEach(
+          ({ message }: { message: string; property: string }) => {
+            showAlert({
+              alertType: AlertType.error,
+              alertText: message,
+            });
+          }
+        );
+      }
+    });
   };
+
   return (
     <Form title="Reset password" onSubmit={handleSubmit(onSubmit)}>
       <p className={"text-gray500 " + TextSizeStyles[TextSize.body]}>
@@ -80,7 +117,10 @@ const ResetPasswordForm = ({
       </InputGroup>
       <Button
         className="w-full"
-        btnType={errors.password ? ButtonType.disabled : ButtonType.primary}
+        disabled={loading}
+        btnType={
+          errors.password || loading ? ButtonType.disabled : ButtonType.primary
+        }
       >
         Reset Password
       </Button>
