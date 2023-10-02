@@ -1,5 +1,33 @@
 import { gql } from "@apollo/client";
 
+export const LOGIN = gql`
+  mutation login($input: LoginInput!) {
+    login(input: $input) {
+      errors {
+        message
+        property
+      }
+      status
+      token
+      user {
+        accountType
+        createdAt
+        email
+        emailConfirmed
+        firstName
+        id
+        lastName
+        phoneNumber
+        socialLinks {
+          github
+        }
+        updatedAt
+        username
+      }
+    }
+  }
+`;
+
 export const CREATE_USER = gql`
   mutation createAccount($input: CreateUserInput!) {
     createUser(input: $input) {
@@ -141,3 +169,4 @@ export const VERIFY_PASSWORD_RESET_TOKEN = gql(`
           }
         }
   `);
+
