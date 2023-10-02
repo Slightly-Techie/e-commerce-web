@@ -1,12 +1,11 @@
-
 version: "3"
 
 services:
   ecommerce:
-    build: 
+    build:
       context: .
       dockerfile: Dockerfile
-    environment
+    environment:
       - VITE_BASE_URL=${VITE_BASE_URL}
     ports:
       - "3000:8080"
