@@ -1,4 +1,5 @@
 /** @type {import('tailwindcss').Config} */
+
 export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
@@ -56,6 +57,8 @@ export default {
         warning500: "#F59E0B",
         warning600: "#D97706",
         warning700: "#B45309",
+
+        // Shadcn
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
