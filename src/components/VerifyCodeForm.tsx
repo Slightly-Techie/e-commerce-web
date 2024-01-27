@@ -7,7 +7,6 @@ import { AlertType, ButtonType, FormHelperType } from "../types";
 import { SubmitHandler, useForm } from "react-hook-form";
 import FormHelper from "./formElements/FormHelper";
 import { convertTime, hideEmail } from "../lib/utils";
-import { useSignupStageStore } from "../store/signupStageStore";
 import { useUserStore } from "../store/userStore";
 import { useMutation } from "@apollo/client";
 import { RESEND_VERFICATION, VERIFY_CODE } from "../lib/queries";
@@ -19,7 +18,7 @@ type FormValues = {
   code: string;
 };
 
-const VerifyCodeForm = () => {
+const VerifyCodeForm = ({ handleFormSubmit }: { handleFormSubmit(): void }) => {
   const {
     register,
     handleSubmit,
@@ -29,11 +28,8 @@ const VerifyCodeForm = () => {
 
   const [resendTime, setResendTime] = useTimer();
   const [showResendBtn, setShowResendBtn] = useState(false);
-
-  const { changeStage } = useSignupStageStore();
   const { user, updateToken } = useUserStore();
   const { showAlert } = useAlertStore();
-
   const [verifyCode, { loading }] = useMutation(VERIFY_CODE);
   const [resendVCode, { loading: sendingVCode }] =
     useMutation(RESEND_VERFICATION);
@@ -50,7 +46,7 @@ const VerifyCodeForm = () => {
           alertText: "Verification successful",
         });
         updateToken(data.confirmEmail.token);
-        changeStage("choose account type");
+        handleFormSubmit();
         reset();
       } else {
         data.confirmEmail.errors.forEach(
