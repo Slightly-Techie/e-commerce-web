@@ -1,6 +1,14 @@
+import { DollarSignIcon } from "lucide-react";
 import signature from "../assets/images/signature.png";
 import Text from "../components/Text";
 import { TextSize } from "../types";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 
 const HomePage = () => {
   return (
