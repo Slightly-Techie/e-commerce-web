@@ -11,11 +11,11 @@ export const Login = () => {
     <>
       <AuthLayout>
         <div className="py-5">
-          <div className="header grid place-content-end">
+          <div className="grid header place-content-end">
             <Button
               btnType={ButtonType.secondary}
-              onClick={() => navigate("/")}
-              className="w-fit text-white"
+              onClick={() => navigate("/sign-")}
+              className="text-white w-fit"
             >
               Don't have an account? Sign up
             </Button>
