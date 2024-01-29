@@ -130,7 +130,7 @@ const LoginForm = () => {
       </div>
 
       <div className="flex justify-between">
-        <div className="space-x-3 flex items-start">
+        <div className="flex items-start space-x-3">
           <Checkbox id="remember" labelText="Remember me" />
         </div>
 
