@@ -36,10 +36,10 @@ export default function SideNav() {
             icon: <Search />,
           },
           {
-            title: "Saved Products",
+            title: "Favorites",
             to: "#",
             icon: <Heart />,
-            badgeValue: 16,
+            badgeValue: 1,
           },
           {
             title: "Track Orders",
@@ -68,7 +68,7 @@ const Bio = () => {
         </Avatar>
         <div>
           <p className="text-sm">Michael Mensah</p>
-          <Badge>ST Member</Badge>
+          <Badge className="bg-[#FDF0D5] text-[#6F4400]">ST Member</Badge>
         </div>
       </div>
       <DropdownMenu>

@@ -18,13 +18,13 @@ interface NavProps {
 
 const buttonStyleInActive = "bg-background text-secondary ";
 
-const buttonStyleActive = "bg-muted text-foreground";
+const buttonStyleActive = "bg-gray100 border border-gray200 text-foreground";
 
 const buttonStyle =
-  "rounded-md p-3 flex w-full hover:bg-muted hover:text-foreground text-product-sans group *:hover:bg-background";
+  "rounded-md p-3 flex w-full hover:bg-gray100 hover:text-foreground text-product-sans group *:hover:bg-background";
 
 const Badge = ({ value }: { value: number }) => (
-  <div className="flex items-center justify-center w-6 h-6 ml-auto text-xs font-bold rounded-full bg-muted text-foreground">
+  <div className="flex items-center justify-center w-6 h-6 ml-auto text-xs font-bold text-white rounded-full bg-error600 text-foreground">
     <p>{value}</p>
   </div>
 );
