@@ -66,6 +66,11 @@ export type SignupFormFields = {
   email: string;
   password: string;
 };
+export type FilterFormFields = {
+  categories?: string;
+  price?: number[];
+  discount_percentage?: string;
+};
 
 export type ForgotPasswordFormFields = {
   email: string;

@@ -28,6 +28,7 @@ export default {
         error700: "#B91C1C",
         // Gray
         gray50: "#F8FAFC",
+        gray75: "#FAFAFA",
         gray100: "#F1F5F9",
         gray200: "#E2E8F0",
         gray300: "#CBD5E1",
