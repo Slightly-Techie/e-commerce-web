@@ -1,4 +1,3 @@
-import SideNav from "@/components/SideNav";
 import signature from "../assets/images/signature.png";
 import Text from "../components/Text";
 import { TextSize } from "../types";
@@ -6,7 +5,6 @@ import { TextSize } from "../types";
 const HomePage = () => {
   return (
     <>
-      <SideNav />
       <div className="relative text-white bg-[url(assets/images/space-bg.png)] bg-cover bg-center bg-no-repeat min-h-screen">
         <div className="max-w-screen-xl px-[40px] lg:px-[60px] mx-auto grid grid-cols-2 min-h-screen items-center">
           <div className="space-y-12 ">
