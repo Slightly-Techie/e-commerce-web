@@ -3,7 +3,7 @@
 import "dotenv/config";
 import fs from "fs";
 
-const url = process.env.VITE_API_URL;
+const url = process.env.VITE_BASE_URL;
 
 export async function generateGraphQLConfig() {
   const colors = { red: "\x1b[31m", green: "\x1b[36m%s\x1b[0m" };

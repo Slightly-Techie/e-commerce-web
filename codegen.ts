@@ -3,7 +3,7 @@ import "dotenv/config";
 
 const config: CodegenConfig = {
   overwrite: true,
-  schema: import.meta.env.VITE_API_URL,
+  schema: import.meta.env.VITE_BASE_URL,
   documents: ["src/graphql/**/*.gql"],
   generates: {
     "./src/__generated__/gql.tsx": {
