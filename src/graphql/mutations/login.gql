@@ -1,0 +1,31 @@
+mutation Login {
+  login(input: { password: "string" }) {
+    clientMutationId
+    errors {
+      message
+      property
+    }
+    status
+    token
+    user {
+      accountType
+      createdAt
+      email
+      emailConfirmed
+      firstName
+      id
+      lastName
+      phoneNumber
+      socialLinks {
+        github
+        instagram
+        linkedin
+        twitter
+        website
+        youtube
+      }
+      updatedAt
+      username
+    }
+  }
+}
