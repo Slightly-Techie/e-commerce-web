@@ -1,21 +1,20 @@
-import Form from "../../formElements/Form";
-import Input from "../../formElements/Input";
+import { useForgotPasswordMutation } from "@/__generated__/gql";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
+import { REGEXPATTERNS } from "../../../lib/regexPatterns";
+import { useAlertStore } from "../../../store/alertStore";
 import {
-  ForgotPasswordFormFields,
-  ButtonType,
-  FormHelperType,
   AlertType,
+  ButtonType,
+  ForgotPasswordFormFields,
+  FormHelperType,
 } from "../../../types";
 import Alert from "../../Alert";
 import Button from "../../Button";
-import { useForm, SubmitHandler } from "react-hook-form";
+import Form from "../../formElements/Form";
 import FormHelper from "../../formElements/FormHelper";
+import Input from "../../formElements/Input";
 import InputGroup from "../../formElements/InputGroup";
-import { REGEXPATTERNS } from "../../../lib/regexPatterns";
-import { useNavigate } from "react-router-dom";
-import { useMutation } from "@apollo/client";
-import { FORGOT_PASSWORD } from "../../../lib/queries";
-import { useAlertStore } from "../../../store/alertStore";
 
 const ForgotPasswordForm = () => {
   const navigate = useNavigate();
@@ -27,7 +26,7 @@ const ForgotPasswordForm = () => {
   } = useForm<ForgotPasswordFormFields>();
   const { showAlert } = useAlertStore();
 
-  const [forgottenPasswordSubmit, { loading }] = useMutation(FORGOT_PASSWORD);
+  const [forgottenPasswordSubmit, { loading }] = useForgotPasswordMutation();
 
   const onSubmit: SubmitHandler<ForgotPasswordFormFields> = (data) => {
     const { email } = data;
@@ -37,22 +36,23 @@ const ForgotPasswordForm = () => {
       },
     })
       .then(({ data }) => {
-        if (data.forgotPassword.success) {
+        const success = data?.forgotPassword?.success;
+        const errors = data?.forgotPassword?.errors;
+
+        if (success) {
           showAlert({
             alertType: AlertType.success,
             alertText: "Email sent successfully",
           });
           reset();
           navigate("/reset-password", { state: { email } });
-        } else {
-          data.forgotPassword.errors.forEach(
-            ({ message }: { message: string; property: string }) => {
-              showAlert({
-                alertType: AlertType.error,
-                alertText: message,
-              });
-            }
-          );
+        } else if (errors) {
+          errors.forEach((err) => {
+            showAlert({
+              alertType: AlertType.error,
+              alertText: err.message || err.property,
+            });
+          });
         }
       })
       .catch(() => {
@@ -103,4 +103,3 @@ const ForgotPasswordForm = () => {
   );
 };
 export default ForgotPasswordForm;
-

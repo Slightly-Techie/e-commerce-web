@@ -2,19 +2,30 @@ import { CodegenConfig } from "@graphql-codegen/cli";
 import "dotenv/config";
 
 const config: CodegenConfig = {
-  // Paste API URL
+  overwrite: true,
   schema: import.meta.env.VITE_API_URL,
-  documents: ["src/**/*.gql"],
+  documents: ["src/graphql/**/*.gql"],
   generates: {
-    "./src/__generated__/": {
-      preset: "client",
+    "./src/__generated__/gql.tsx": {
+      // preset: "client",
+      plugins: [
+        "typescript",
+        "typescript-operations",
+        "typescript-react-apollo",
+        {
+          add: {
+            content: "/* eslint-disable */",
+          },
+        },
+      ],
+      config: {
+        withComponent: true,
+      },
       presetConfig: {
-        gqlTagName: "gql",
+        gqlTagName: "graphql",
       },
     },
   },
-  ignoreNoDocuments: true,
-  overwrite: true,
 };
 
 export default config;

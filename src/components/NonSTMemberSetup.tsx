@@ -1,21 +1,20 @@
+import { useUpdataUserMutation } from "@/__generated__/gql";
 import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
+import { REGEXPATTERNS } from "../lib/regexPatterns";
+import { useAlertStore } from "../store/alertStore";
+import { useSignupStageStore } from "../store/signupStageStore";
+import { useUserStore } from "../store/userStore";
+import { AlertType, ButtonType, FormHelperType } from "../types";
 import Button from "./Button";
 import SetupAccountLayout from "./SetupAccountLayout";
 import TimelineStep from "./TimelineStep";
 import CountrySelectInput from "./formElements/CountrySelectInput";
+import FormHelper from "./formElements/FormHelper";
 import Input from "./formElements/Input";
 import InputGroup from "./formElements/InputGroup";
 import Label from "./formElements/Label";
-import FormHelper from "./formElements/FormHelper";
-import { AlertType, ButtonType, FormHelperType, User } from "../types";
-import { REGEXPATTERNS } from "../lib/regexPatterns";
-import { useSignupStageStore } from "../store/signupStageStore";
-import { useNavigate } from "react-router-dom";
-import { useMutation } from "@apollo/client";
-import { UPDATE_USER } from "../lib/queries";
-import { useAlertStore } from "../store/alertStore";
-import { useUserStore } from "../store/userStore";
 
 type PersonalInfoFields = {
   firstName: string;
@@ -43,36 +42,36 @@ const NonSTMemberSetup = () => {
     return REGEXPATTERNS.phoneNumber.test(phoneNumber);
   };
 
-  const [updateUser, { loading }] = useMutation(UPDATE_USER);
+  const [updateUser, { loading }] = useUpdataUserMutation();
 
   const onSubmit: SubmitHandler<PersonalInfoFields> = (data) => {
     if (validatePhoneNumber()) {
       // do something with the data
 
-      updateUser({ variables: { Input: { userInput: data } } })
+      updateUser({ variables: { input: { userInput: data } } })
         .then(({ data: response }) => {
-          console.log({ response });
+          const errors = response?.updateUser?.errors;
+          const user = response?.updateUser?.user;
 
-          if (response.updateUser.errors) {
-            response.updateUser.errors.forEach(
-              ({ message }: { message: string }) => {
-                showAlert({ alertType: AlertType.error, alertText: message });
-              },
-            );
+          if (errors) {
+            errors.forEach((err) => {
+              showAlert({
+                alertType: AlertType.error,
+                alertText: err.message || err.property,
+              });
+            });
           }
 
-          if (response.updateUser.user) {
+          if (user) {
             showAlert({
               alertType: AlertType.success,
               alertText: "Account details updated",
             });
-            login({ user: response.user as User, token: token as string });
+            login({ user: user, token: token as string });
             changeStage("setup complete");
           }
         })
         .catch(() => {
-          // console.log(err);
-
           showAlert({
             alertType: AlertType.error,
             alertText: "Request failed",
@@ -90,7 +89,7 @@ const NonSTMemberSetup = () => {
 
   return (
     <SetupAccountLayout>
-      <div className="max-w-[500px] mx-auto">
+      <div className="mx-auto max-w-[500px]">
         <TimelineStep steps={2} currentStep={2} />
 
         <div className="mb-12">
@@ -101,7 +100,7 @@ const NonSTMemberSetup = () => {
         </div>
 
         <form onSubmit={handleSubmit(onSubmit)}>
-          <div className="inner p-10 rounded-[10px] space-y-6 border border-[#d9d9d9] mb-[50px]">
+          <div className="inner mb-[50px] space-y-6 rounded-[10px] border border-[#d9d9d9] p-10">
             <InputGroup>
               <Label>First name</Label>
               <Input
@@ -153,7 +152,7 @@ const NonSTMemberSetup = () => {
 
           <div className="flex justify-between">
             <Button
-              className="bg-transparent text-black border border-gray300 hover:bg-transparent"
+              className="border border-gray300 bg-transparent text-black hover:bg-transparent"
               type="button"
               onClick={() => navigate(-1)}
             >

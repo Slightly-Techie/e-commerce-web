@@ -1,10 +1,9 @@
-mutation Login($input: LoginInput!) {
-  login(input: $input) {
+mutation setAccountType($input: SetAccountInput!) {
+  setAccountType(input: $input) {
     errors {
       ...ErrorFields
     }
     status
-    token
     user {
       ...UserFields
     }

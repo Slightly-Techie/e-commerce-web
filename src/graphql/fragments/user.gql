@@ -1,0 +1,15 @@
+fragment UserFields on User {
+  accountType
+  createdAt
+  email
+  emailConfirmed
+  firstName
+  id
+  lastName
+  phoneNumber
+  socialLinks {
+    ...SocialLinksFields
+  }
+  updatedAt
+  username
+}

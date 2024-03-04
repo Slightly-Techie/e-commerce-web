@@ -1,48 +1,50 @@
+import { Account, useSetAccountTypeMutation } from "@/__generated__/gql";
 import { useState } from "react";
 import { BsCodeSlash } from "react-icons/bs";
 import { PiUserBold } from "react-icons/pi";
-import TimelineStep from "./TimelineStep";
-import { cn } from "../lib/utils";
-import { AlertType, ButtonType, User, UserType } from "../types";
-import Button from "./Button";
-import SetupAccountLayout from "./SetupAccountLayout";
 import { useNavigate } from "react-router-dom";
+import { cn } from "../lib/utils";
+import { useAlertStore } from "../store/alertStore";
 import { useSignupStageStore } from "../store/signupStageStore";
 import { useUserStore } from "../store/userStore";
-import { SET_ACCOUNT } from "../lib/queries";
-import { useMutation } from "@apollo/client";
-import { useAlertStore } from "../store/alertStore";
+import { AlertType, ButtonType } from "../types";
+import Button from "./Button";
+import SetupAccountLayout from "./SetupAccountLayout";
+import TimelineStep from "./TimelineStep";
 
 const ChooseAccountType = () => {
-  const [userType, setUserType] = useState<UserType>("TECHIE");
+  const [userType, setUserType] = useState<Account>(Account.Techie);
 
   const navigate = useNavigate();
   const { changeStage } = useSignupStageStore();
   const { showAlert } = useAlertStore();
   const { token, login } = useUserStore();
 
-  const [updateUser, { loading }] = useMutation(SET_ACCOUNT);
+  const [updateUser, { loading }] = useSetAccountTypeMutation();
 
   const handleSubmit = () => {
     updateUser({ variables: { input: { accountType: userType } } })
       .then(({ data }) => {
-        if (data.setAccount.errors) {
-          data.setAccount.errors.forEach(({ message }: { message: string }) => {
+        const errors = data?.setAccountType?.errors;
+        const user = data?.setAccountType?.user;
+
+        if (errors) {
+          errors.forEach((err) => {
             showAlert({
               alertType: AlertType.error,
-              alertText: message,
+              alertText: err.message || err.property,
             });
           });
         }
 
-        if (data.setAccount.user) {
-          login({ user: data.setAccount.user as User, token: token as string });
+        if (user) {
+          login({ user, token: token as string });
           showAlert({
             alertType: AlertType.success,
             alertText: "User account updated",
           });
         }
-        if (userType === "NON_TECHIE") {
+        if (userType === Account.NonTechie) {
           navigate("/setup-account/non-st-member");
           changeStage("setup non st account");
         } else {
@@ -61,13 +63,13 @@ const ChooseAccountType = () => {
   const ACCOUNTTYPES = [
     {
       title: "Slightly Techie",
-      name: "TECHIE",
+      name: Account.Techie,
       desc: "Member of Slightly Techie Network",
       icon: <BsCodeSlash size={20} />,
     },
     {
       title: "Non Slightly Techie",
-      name: "NON_TECHIE",
+      name: Account.NonTechie,
       desc: "Not a member of Slightly Techie Network",
       icon: <PiUserBold size={20} />,
     },
@@ -75,7 +77,7 @@ const ChooseAccountType = () => {
 
   return (
     <SetupAccountLayout>
-      <div className="max-w-[500px] w-full mx-auto px-5">
+      <div className="mx-auto w-full max-w-[500px] px-5">
         <TimelineStep steps={2} currentStep={1} />
 
         <div className="mb-12">
@@ -85,22 +87,22 @@ const ChooseAccountType = () => {
           </small>
         </div>
 
-        <div className="space-y-6 mb-[50px]">
+        <div className="mb-[50px] space-y-6">
           {ACCOUNTTYPES.map(({ name, icon, desc, title }) => (
             <div
               key={name}
               className={cn(
-                "px-5 py-7 rounded-xl flex gap-4 border cursor-pointer",
+                "flex cursor-pointer gap-4 rounded-xl border px-5 py-7",
                 userType === name
                   ? "border-gray400 bg-gray100"
-                  : "bg-transparent"
+                  : "bg-transparent",
               )}
-              onClick={() => setUserType(name as UserType)}
+              onClick={() => setUserType(name)}
             >
               <div
                 className={cn(
-                  "icon flex-shrink-0 grid place-content-center rounded-full h-[44px] w-[44px]",
-                  userType === name && "bg-primary text-white"
+                  "icon grid h-[44px] w-[44px] flex-shrink-0 place-content-center rounded-full",
+                  userType === name && "bg-primary text-white",
                 )}
               >
                 {icon}
@@ -129,4 +131,3 @@ const ChooseAccountType = () => {
 };
 
 export default ChooseAccountType;
-
