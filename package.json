@@ -5,11 +5,12 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build",
+    "build": "npm run generate-gql-config && npm run generate && npm run prettier && tsc && vite build",
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
+    "prettier": "prettier . --write",
     "generate-gql-config": "node generateGraphQLConfig.js",
-    "generate": "graphql-codegen"
+    "generate": "graphql-codegen --config codegen.ts"
   },
   "dependencies": {
     "@apollo/client": "^3.8.3",

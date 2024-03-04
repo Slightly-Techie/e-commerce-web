@@ -1,16 +1,16 @@
-import { User } from "@/__generated__/graphql";
-import { create } from "zustand";
-import { devtools, persist } from "zustand/middleware";
+import { User } from "@/__generated__/gql"
+import { create } from "zustand"
+import { devtools, persist } from "zustand/middleware"
 
-type UserArgs = { user: User; token: string };
+type UserArgs = { user: User; token: string }
 
 type StoreState = {
-  token: string | null;
-  user: User | null;
-  login({ user, token }: UserArgs): void;
-  logout(): void;
-  updateToken: (token: string) => void;
-};
+  token: string | null
+  user: User | null
+  login({ user, token }: UserArgs): void
+  logout(): void
+  updateToken: (token: string) => void
+}
 
 export const useUserStore = create<StoreState>()(
   devtools(
@@ -25,4 +25,4 @@ export const useUserStore = create<StoreState>()(
       { name: "userStore" },
     ),
   ),
-);
+)

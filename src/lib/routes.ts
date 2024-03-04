@@ -1,4 +1,4 @@
-import { SignupStage } from "../types";
+import { SignupStage } from "../types"
 
 export const SETUPACCOUNTROUTES: Record<SignupStage, string> = {
   "enter details": "/sign-up",
@@ -7,4 +7,4 @@ export const SETUPACCOUNTROUTES: Record<SignupStage, string> = {
   "setup non st account": "/setup-account/non-st-member",
   "setup st account": "/setup-account/st-member",
   "setup complete": "/setup-account/complete",
-};
+}

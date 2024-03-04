@@ -1,11 +1,11 @@
-import { create } from "zustand";
-import { ResetPasswordStatus } from "../types";
-import { devtools, persist } from "zustand/middleware";
+import { create } from "zustand"
+import { devtools, persist } from "zustand/middleware"
+import { ResetPasswordStatus } from "../types"
 
 type StoreState = {
-  currentStage: ResetPasswordStatus;
-  changeStage(stage: ResetPasswordStatus): void;
-};
+  currentStage: ResetPasswordStatus
+  changeStage(stage: ResetPasswordStatus): void
+}
 
 export const useResetPasswordStageStore = create<StoreState>()(
   devtools(
@@ -14,7 +14,7 @@ export const useResetPasswordStageStore = create<StoreState>()(
         currentStage: "code",
         changeStage: (stage) => set(() => ({ currentStage: stage })),
       }),
-      { name: "resetPasswordStageStore" }
-    )
-  )
-);
+      { name: "resetPasswordStageStore" },
+    ),
+  ),
+)

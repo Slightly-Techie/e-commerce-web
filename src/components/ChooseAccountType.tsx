@@ -1,64 +1,64 @@
-import { Account, useSetAccountTypeMutation } from "@/__generated__/gql";
-import { useState } from "react";
-import { BsCodeSlash } from "react-icons/bs";
-import { PiUserBold } from "react-icons/pi";
-import { useNavigate } from "react-router-dom";
-import { cn } from "../lib/utils";
-import { useAlertStore } from "../store/alertStore";
-import { useSignupStageStore } from "../store/signupStageStore";
-import { useUserStore } from "../store/userStore";
-import { AlertType, ButtonType } from "../types";
-import Button from "./Button";
-import SetupAccountLayout from "./SetupAccountLayout";
-import TimelineStep from "./TimelineStep";
+import { Account, useSetAccountTypeMutation } from "@/__generated__/gql"
+import { useState } from "react"
+import { BsCodeSlash } from "react-icons/bs"
+import { PiUserBold } from "react-icons/pi"
+import { useNavigate } from "react-router-dom"
+import { cn } from "../lib/utils"
+import { useAlertStore } from "../store/alertStore"
+import { useSignupStageStore } from "../store/signupStageStore"
+import { useUserStore } from "../store/userStore"
+import { AlertType, ButtonType } from "../types"
+import Button from "./Button"
+import SetupAccountLayout from "./SetupAccountLayout"
+import TimelineStep from "./TimelineStep"
 
 const ChooseAccountType = () => {
-  const [userType, setUserType] = useState<Account>(Account.Techie);
+  const [userType, setUserType] = useState<Account>(Account.Techie)
 
-  const navigate = useNavigate();
-  const { changeStage } = useSignupStageStore();
-  const { showAlert } = useAlertStore();
-  const { token, login } = useUserStore();
+  const navigate = useNavigate()
+  const { changeStage } = useSignupStageStore()
+  const { showAlert } = useAlertStore()
+  const { token, login } = useUserStore()
 
-  const [updateUser, { loading }] = useSetAccountTypeMutation();
+  const [updateUser, { loading }] = useSetAccountTypeMutation()
 
   const handleSubmit = () => {
     updateUser({ variables: { input: { accountType: userType } } })
       .then(({ data }) => {
-        const errors = data?.setAccountType?.errors;
-        const user = data?.setAccountType?.user;
+        const errors = data?.setAccountType?.errors
+        const user = data?.setAccountType?.user
 
         if (errors) {
           errors.forEach((err) => {
             showAlert({
               alertType: AlertType.error,
               alertText: err.message || err.property,
-            });
-          });
+            })
+          })
         }
 
         if (user) {
-          login({ user, token: token as string });
+          login({ user, token: token as string })
           showAlert({
             alertType: AlertType.success,
             alertText: "User account updated",
-          });
+          })
         }
         if (userType === Account.NonTechie) {
-          navigate("/setup-account/non-st-member");
-          changeStage("setup non st account");
+          navigate("/setup-account/non-st-member")
+          changeStage("setup non st account")
         } else {
-          navigate("/setup-account/st-member");
-          changeStage("setup st account");
+          navigate("/setup-account/st-member")
+          changeStage("setup st account")
         }
       })
       .catch((err) => {
         showAlert({
           alertType: AlertType.error,
           alertText: err.message,
-        });
-      });
-  };
+        })
+      })
+  }
 
   const ACCOUNTTYPES = [
     {
@@ -73,7 +73,7 @@ const ChooseAccountType = () => {
       desc: "Not a member of Slightly Techie Network",
       icon: <PiUserBold size={20} />,
     },
-  ];
+  ]
 
   return (
     <SetupAccountLayout>
@@ -127,7 +127,7 @@ const ChooseAccountType = () => {
         </div>
       </div>
     </SetupAccountLayout>
-  );
-};
+  )
+}
 
-export default ChooseAccountType;
+export default ChooseAccountType

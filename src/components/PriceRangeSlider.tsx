@@ -1,43 +1,43 @@
-import { Slider } from "./ui/slider";
-import * as SliderPrimitive from "@radix-ui/react-slider";
-import React from "react";
-import Input from "./formElements/Input";
+import * as SliderPrimitive from "@radix-ui/react-slider"
+import React from "react"
+import Input from "./formElements/Input"
+import { Slider } from "./ui/slider"
 export default function PriceRangeSlider({
   withManualInput = true,
   bars_number = 15,
   onChangeInputValues,
   ...props
 }: {
-  withManualInput?: boolean;
-  bars_number?: number;
-  onChangeInputValues: (val: (string | number)[]) => void;
+  withManualInput?: boolean
+  bars_number?: number
+  onChangeInputValues: (val: (string | number)[]) => void
 } & React.ComponentProps<typeof SliderPrimitive.Root>) {
-  const range = props?.value;
-  const max = props?.max || 100;
+  const range = props?.value
+  const max = props?.max || 100
 
   const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const minVal = range && range[0] ? (range[0] > 0 ? range[0] : 0) : "";
-    const maxVal = range && range[1] ? (range[1] <= max ? range[1] : max) : "";
-    const newRange = [minVal, maxVal];
+    const minVal = range && range[0] ? (range[0] > 0 ? range[0] : 0) : ""
+    const maxVal = range && range[1] ? (range[1] <= max ? range[1] : max) : ""
+    const newRange = [minVal, maxVal]
     if (e.target.name == "from") {
-      newRange[0] = +e.target.value;
+      newRange[0] = +e.target.value
     }
     if (e.target.name == "to") {
-      newRange[1] = +e.target.value;
+      newRange[1] = +e.target.value
     }
-    onChangeInputValues(newRange);
-  };
+    onChangeInputValues(newRange)
+  }
 
   return (
     <>
       <div className="relative flex items-end justify-between">
         {[...Array(bars_number)].map((_, index) => {
-          const barRange = (index * max) / (bars_number - 1);
+          const barRange = (index * max) / (bars_number - 1)
           const isInRange =
             range &&
             range.length === 2 &&
             range[0] <= barRange &&
-            barRange <= range[1];
+            barRange <= range[1]
 
           return (
             <div
@@ -51,12 +51,12 @@ export default function PriceRangeSlider({
                 top: "0",
               }}
             />
-          );
+          )
         })}
       </div>
       <Slider {...props} className="" />
       {withManualInput && (
-        <div className="flex mt-4 space-x-4 font-medium">
+        <div className="mt-4 flex space-x-4 font-medium">
           <div>
             <Input
               label="From"
@@ -81,5 +81,5 @@ export default function PriceRangeSlider({
         </div>
       )}
     </>
-  );
+  )
 }

@@ -1,21 +1,21 @@
-import { cn } from "../lib/utils";
-import { ActiveSelectedCountry, Country } from "../types";
+import { cn } from "../lib/utils"
+import { ActiveSelectedCountry, Country } from "../types"
 
-import { forwardRef } from "react";
+import { forwardRef } from "react"
 
 type Props = {
-  handleChange(country: ActiveSelectedCountry): void;
-  countriesList: Country[];
-  isOpen: boolean;
-};
+  handleChange(country: ActiveSelectedCountry): void
+  countriesList: Country[]
+  isOpen: boolean
+}
 
 const CountriesListDropdown = forwardRef<HTMLUListElement, Props>(
   ({ countriesList, handleChange, isOpen }, ref) => {
     return (
       <ul
         className={cn(
-          `w-fit h-64 overflow-y-scroll shadow-lg flex flex-col top-16 left-0 bg-white`,
-          isOpen ? "absolute" : "hidden"
+          `left-0 top-16 flex h-64 w-fit flex-col overflow-y-scroll bg-white shadow-lg`,
+          isOpen ? "absolute" : "hidden",
         )}
         role="list-box"
         ref={ref}
@@ -24,19 +24,19 @@ const CountriesListDropdown = forwardRef<HTMLUListElement, Props>(
           ({ flags: { svg }, name: { common }, idd }, index) => {
             const countryCode = common.includes("United States")
               ? idd.root
-              : idd.root + idd.suffixes[0];
+              : idd.root + idd.suffixes[0]
 
             return (
               <li
                 role="option"
                 key={index}
                 onClick={() => handleChange({ svg, countryCode })}
-                className="flex items-center gap-4 px-4 active:bg-blue-300 hover:bg-slate-200 cursor-pointer py-2"
+                className="flex cursor-pointer items-center gap-4 px-4 py-2 hover:bg-slate-200 active:bg-blue-300"
               >
-                <div className="w-8 h-4 md:w-10 md:h-6">
+                <div className="h-4 w-8 md:h-6 md:w-10">
                   <img
                     src={svg}
-                    className="w-full h-full object-cover"
+                    className="h-full w-full object-cover"
                     alt={common}
                   />
                 </div>
@@ -44,12 +44,12 @@ const CountriesListDropdown = forwardRef<HTMLUListElement, Props>(
                   {common} {countryCode !== "undefined" && `(${countryCode})`}
                 </option>
               </li>
-            );
-          }
+            )
+          },
         )}
       </ul>
-    );
-  }
-);
+    )
+  },
+)
 
-export default CountriesListDropdown;
+export default CountriesListDropdown

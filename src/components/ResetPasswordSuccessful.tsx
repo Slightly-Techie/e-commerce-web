@@ -1,19 +1,19 @@
-import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import Button from "./Button";
-import SetupAccountLayout from "./SetupAccountLayout";
-import { ButtonType } from "../types";
-import Confetti from "react-confetti-explosion";
+import { useEffect, useState } from "react"
+import Confetti from "react-confetti-explosion"
+import { useNavigate } from "react-router-dom"
+import { ButtonType } from "../types"
+import Button from "./Button"
+import SetupAccountLayout from "./SetupAccountLayout"
 
 const ResetPasswordSuccessful = () => {
-  const navigate = useNavigate();
-  const [popConfetti, setPopConfetti] = useState(false);
+  const navigate = useNavigate()
+  const [popConfetti, setPopConfetti] = useState(false)
 
   useEffect(() => {
-    const pop = setTimeout(() => setPopConfetti(true), 200);
+    const pop = setTimeout(() => setPopConfetti(true), 200)
 
-    return () => clearTimeout(pop);
-  }, []);
+    return () => clearTimeout(pop)
+  }, [])
 
   return (
     <SetupAccountLayout
@@ -23,7 +23,7 @@ const ResetPasswordSuccessful = () => {
       icon={
         <>
           <img
-            className="w-[107px] mx-auto"
+            className="mx-auto w-[107px]"
             src="/assets/icons/faint-check.svg"
             alt="..."
           />
@@ -35,13 +35,13 @@ const ResetPasswordSuccessful = () => {
       <Button
         btnType={ButtonType.primary}
         onClick={() => {
-          navigate("/login");
+          navigate("/login")
         }}
       >
         Login to your account
       </Button>
     </SetupAccountLayout>
-  );
-};
+  )
+}
 
-export default ResetPasswordSuccessful;
+export default ResetPasswordSuccessful

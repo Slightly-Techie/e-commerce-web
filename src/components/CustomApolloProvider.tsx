@@ -1,12 +1,12 @@
-import { ApolloProvider } from "@apollo/client";
-import useClient from "../hooks/useClient";
+import { ApolloProvider } from "@apollo/client"
+import useClient from "../hooks/useClient"
 
 export default function CustomApolloProvider({
   children,
 }: {
-  children: React.ReactNode;
+  children: React.ReactNode
 }) {
-  const { client } = useClient();
+  const { client } = useClient()
 
-  return <ApolloProvider client={client}>{children}</ApolloProvider>;
+  return <ApolloProvider client={client}>{children}</ApolloProvider>
 }

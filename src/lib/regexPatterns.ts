@@ -8,4 +8,4 @@ export const REGEXPATTERNS = {
   verificationCode: /^\d{6}$/,
   username: /^[a-zA-Z0-9_.-]{3,}$/,
   number: /^[0-9]+$/,
-};
+}

@@ -1,8 +1,8 @@
-import { forwardRef } from "react";
+import { forwardRef } from "react"
 
 type CheckboxProps = React.HTMLAttributes<HTMLInputElement> & {
-  labelText: string;
-};
+  labelText: string
+}
 
 const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
   ({ labelText, ...props }, ref) => {
@@ -13,10 +13,10 @@ const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
 
         <span className="pl-4">{labelText}</span>
       </label>
-    );
-  }
-);
+    )
+  },
+)
 
-Checkbox.displayName = "Checkbox";
+Checkbox.displayName = "Checkbox"
 
-export default Checkbox;
+export default Checkbox

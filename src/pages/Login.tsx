@@ -1,5 +1,5 @@
-import AuthLayout from "../components/AuthLayout";
-import LoginForm from "../components/LoginForm";
+import AuthLayout from "../components/AuthLayout"
+import LoginForm from "../components/LoginForm"
 
 export const Login = () => {
   return (
@@ -9,6 +9,5 @@ export const Login = () => {
     >
       <LoginForm />
     </AuthLayout>
-  );
-};
-
+  )
+}

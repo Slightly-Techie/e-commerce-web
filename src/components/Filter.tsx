@@ -1,28 +1,20 @@
-import React, { useState } from "react";
+import { ButtonType, FilterFormFields } from "@/types"
+import React, { useState } from "react"
+import { Controller, SubmitHandler, useForm } from "react-hook-form"
+import Button from "./Button"
+import PriceRangeSlider from "./PriceRangeSlider"
+import SelectButton from "./formElements/SelectButtons"
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from "./ui/accordion";
-import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "./ui/sheet";
-import { Controller, SubmitHandler, useForm } from "react-hook-form";
-import { ButtonType, FilterFormFields } from "@/types";
-import PriceRangeSlider from "./PriceRangeSlider";
-import SelectButton from "./formElements/SelectButtons";
-import Button from "./Button";
+} from "./ui/accordion"
 
 export default function Filters() {
-  const [loading, setloading] = useState(false);
-  const [isCollapsed, setIsCollapsed] = useState(false);
-  const { register, handleSubmit, control } = useForm<FilterFormFields>();
+  const [loading, setloading] = useState(false)
+  const [isCollapsed, setIsCollapsed] = useState(false)
+  const { register, handleSubmit, control } = useForm<FilterFormFields>()
   const categories = [
     "computing",
     "books",
@@ -30,7 +22,7 @@ export default function Filters() {
     "Mobile phones & Tablets",
     "Games",
     "Accessories",
-  ];
+  ]
   const discounts = [
     "no discount",
     "10%-20%",
@@ -38,11 +30,15 @@ export default function Filters() {
     "41%-60%",
     "61%-80%",
     "*1% or more",
-  ];
+  ]
 
   const onSubmit: SubmitHandler<FilterFormFields> = (data) => {
-    console.log(data);
-  };
+    console.log(() => {
+      setloading(true)
+      data
+      setloading(false)
+    })
+  }
   return (
     <>
       {isCollapsed && (
@@ -57,12 +53,12 @@ export default function Filters() {
       )}
       <form
         data-collapsed={isCollapsed}
-        className={`group data-[collapsed=true]:w-0 data-[collapsed=true]:p-0 data-[collapsed=true]:z-[-1]  fixed rounded-2xl h-[90vh] w-[19.5rem] border  md:py-6 md:px-4 bg-white  z-20 transition-all `}
+        className={`group fixed z-20 h-[90vh]  w-[19.5rem] rounded-2xl border bg-white transition-all  data-[collapsed=true]:z-[-1] data-[collapsed=true]:w-0 data-[collapsed=true]:p-0  md:px-4 md:py-6 `}
         onSubmit={handleSubmit(onSubmit)}
       >
-        <div className="group-[[data-collapsed=true]]:hidden flex flex-col justify-start">
+        <div className="flex flex-col justify-start group-[[data-collapsed=true]]:hidden">
           <div
-            className="flex w-full mb-2"
+            className="mb-2 flex w-full"
             onClick={() => setIsCollapsed(true)}
           >
             <img src="/assets/icons/filter-lines.svg" alt="" />
@@ -79,7 +75,7 @@ export default function Filters() {
             defaultValue={["Categories", "Price (GH¢)", "Discount Percentage"]}
           >
             <FilterSection label="Categories">
-              <div className="flex flex-wrap w-full gap-4 rounded-xl">
+              <div className="flex w-full flex-wrap gap-4 rounded-xl">
                 {categories &&
                   categories.map((value: string) => (
                     <SelectButton
@@ -111,7 +107,7 @@ export default function Filters() {
               />
             </FilterSection>
             <FilterSection label="Discount Percentage">
-              <div className="flex flex-wrap w-full gap-4 rounded-xl">
+              <div className="flex w-full flex-wrap gap-4 rounded-xl">
                 {discounts &&
                   discounts.map((value: string) => (
                     <SelectButton
@@ -126,7 +122,7 @@ export default function Filters() {
             </FilterSection>
           </Accordion>
           <Button
-            className="w-full mt-4"
+            className="mt-4 w-full"
             btnType={loading ? ButtonType.disabled : ButtonType.primary}
           >
             {loading ? "Filtering..." : "Filter"}
@@ -134,20 +130,20 @@ export default function Filters() {
         </div>
       </form>
     </>
-  );
+  )
 }
 
 const FilterSection = ({
   label,
   children,
 }: {
-  label: string;
-  children: React.ReactNode;
+  label: string
+  children: React.ReactNode
 }) => {
   return (
     <AccordionItem className="font-bold" value={label}>
       <AccordionTrigger>{label}</AccordionTrigger>
       <AccordionContent>{children}</AccordionContent>
     </AccordionItem>
-  );
-};
+  )
+}

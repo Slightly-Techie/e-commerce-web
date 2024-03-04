@@ -1,11 +1,11 @@
-import VerifyCodeForm from "../components/VerifyCodeForm";
+import VerifyCodeForm from "../components/VerifyCodeForm"
 
-import AuthLayout from "../components/AuthLayout";
-import SetupAccountRouter from "../components/SetupAccountRouter";
-import { useSignupStageStore } from "../store/signupStageStore";
+import AuthLayout from "../components/AuthLayout"
+import SetupAccountRouter from "../components/SetupAccountRouter"
+import { useSignupStageStore } from "../store/signupStageStore"
 
 const VerifySignupCode = () => {
-  const { changeStage } = useSignupStageStore();
+  const { changeStage } = useSignupStageStore()
 
   return (
     <AuthLayout
@@ -18,8 +18,7 @@ const VerifySignupCode = () => {
         />
       </SetupAccountRouter>
     </AuthLayout>
-  );
-};
+  )
+}
 
-export default VerifySignupCode;
-
+export default VerifySignupCode

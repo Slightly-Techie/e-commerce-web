@@ -1,15 +1,15 @@
-import VerifyCodeForm from "../components/VerifyCodeForm";
-import AuthLayout from "../components/AuthLayout";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom"
+import AuthLayout from "../components/AuthLayout"
+import VerifyCodeForm from "../components/VerifyCodeForm"
 
 const VerifyCode = () => {
-  const navigate = useNavigate();
+  const navigate = useNavigate()
 
   return (
     <AuthLayout>
       <VerifyCodeForm handleFormSubmit={() => navigate("/")} />
     </AuthLayout>
-  );
-};
+  )
+}
 
-export default VerifyCode;
+export default VerifyCode

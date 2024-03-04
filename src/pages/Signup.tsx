@@ -1,6 +1,6 @@
-import AuthLayout from "../components/AuthLayout";
-import CreateAccountForm from "../components/CreateAccountForm";
-import SetupAccountRouter from "../components/SetupAccountRouter";
+import AuthLayout from "../components/AuthLayout"
+import CreateAccountForm from "../components/CreateAccountForm"
+import SetupAccountRouter from "../components/SetupAccountRouter"
 
 const Signup = () => {
   return (
@@ -12,7 +12,7 @@ const Signup = () => {
         <CreateAccountForm />
       </SetupAccountRouter>
     </AuthLayout>
-  );
-};
+  )
+}
 
-export default Signup;
+export default Signup

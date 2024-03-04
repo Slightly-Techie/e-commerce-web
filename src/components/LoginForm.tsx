@@ -1,41 +1,41 @@
-import { useLoginMutation } from "@/__generated__/gql";
-import { SubmitHandler, useForm } from "react-hook-form";
-import { Link, useNavigate } from "react-router-dom";
-import { REGEXPATTERNS } from "../lib/regexPatterns";
-import { useAlertStore } from "../store/alertStore";
-import { useSignupStageStore } from "../store/signupStageStore";
-import { useUserStore } from "../store/userStore";
-import { AlertType, ButtonType, FormHelperType } from "../types";
-import Alert from "./Alert";
-import Button from "./Button";
-import Checkbox from "./formElements/Checkbox";
-import Form from "./formElements/Form";
-import FormHelper from "./formElements/FormHelper";
-import Input from "./formElements/Input";
-import InputGroup from "./formElements/InputGroup";
-import Label from "./formElements/Label";
+import { useLoginMutation } from "@/__generated__/gql"
+import { SubmitHandler, useForm } from "react-hook-form"
+import { Link, useNavigate } from "react-router-dom"
+import { REGEXPATTERNS } from "../lib/regexPatterns"
+import { useAlertStore } from "../store/alertStore"
+import { useSignupStageStore } from "../store/signupStageStore"
+import { useUserStore } from "../store/userStore"
+import { AlertType, ButtonType, FormHelperType } from "../types"
+import Alert from "./Alert"
+import Button from "./Button"
+import Checkbox from "./formElements/Checkbox"
+import Form from "./formElements/Form"
+import FormHelper from "./formElements/FormHelper"
+import Input from "./formElements/Input"
+import InputGroup from "./formElements/InputGroup"
+import Label from "./formElements/Label"
 
 type FormValues = {
-  email: string;
-  password: string;
-};
+  email: string
+  password: string
+}
 
 const LoginForm = () => {
-  const [loginUser, { loading }] = useLoginMutation();
-  const { showAlert } = useAlertStore();
-  const { login, updateToken } = useUserStore();
-  const navigate = useNavigate();
+  const [loginUser, { loading }] = useLoginMutation()
+  const { showAlert } = useAlertStore()
+  const { login, updateToken } = useUserStore()
+  const navigate = useNavigate()
 
   const {
     handleSubmit,
     register,
     formState: { errors },
-  } = useForm<FormValues>();
+  } = useForm<FormValues>()
 
-  const { changeStage } = useSignupStageStore();
+  const { changeStage } = useSignupStageStore()
 
   const onSubmit: SubmitHandler<FormValues> = (formData) => {
-    console.log("logging in");
+    console.log("logging in")
 
     loginUser({
       variables: {
@@ -46,30 +46,30 @@ const LoginForm = () => {
       },
     })
       .then(({ data }) => {
-        console.log({ data });
+        console.log({ data })
 
-        const user = data?.login?.user;
-        const errors = data?.login?.errors;
-        const token = data?.login?.token;
+        const user = data?.login?.user
+        const errors = data?.login?.errors
+        const token = data?.login?.token
 
         if (user) {
-          login({ user: user, token: String(token) });
-          updateToken(String(token));
+          login({ user: user, token: String(token) })
+          updateToken(String(token))
           showAlert({
             alertType: AlertType.success,
             alertText: "Login successful",
-          });
+          })
 
           if (!user.emailConfirmed) {
-            changeStage("verify code");
+            changeStage("verify code")
 
             showAlert({
               alertType: AlertType.error,
               alertText: "Please verify your account",
-            });
+            })
           }
-          navigate("/");
-          return;
+          navigate("/")
+          return
         }
 
         if (errors) {
@@ -77,18 +77,18 @@ const LoginForm = () => {
             showAlert({
               alertType: AlertType.error,
               alertText: err.message || err.property,
-            });
-          });
+            })
+          })
         }
       })
       .catch((err) => {
-        console.log({ err });
+        console.log({ err })
         showAlert({
           alertType: AlertType.error,
           alertText: "Request failed",
-        });
-      });
-  };
+        })
+      })
+  }
 
   return (
     <Form title="Welcome Back" onSubmit={handleSubmit(onSubmit)}>
@@ -166,7 +166,7 @@ const LoginForm = () => {
         {loading ? "Logging in..." : "Login"}
       </Button>
     </Form>
-  );
-};
+  )
+}
 
-export default LoginForm;
+export default LoginForm

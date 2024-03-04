@@ -1,5 +1,5 @@
-import { CodegenConfig } from "@graphql-codegen/cli";
-import "dotenv/config";
+import { CodegenConfig } from "@graphql-codegen/cli"
+import "dotenv/config"
 
 const config: CodegenConfig = {
   overwrite: true,
@@ -26,6 +26,6 @@ const config: CodegenConfig = {
       },
     },
   },
-};
+}
 
-export default config;
+export default config
