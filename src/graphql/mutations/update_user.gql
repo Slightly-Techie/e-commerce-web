@@ -1,0 +1,12 @@
+mutation UpdataUser($input: UpdateUserInput!) {
+  updateUser(input: $input) {
+    clientMutationId
+    errors {
+      ...ErrorFields
+    }
+    status
+    user {
+      ...UserFields
+    }
+  }
+}

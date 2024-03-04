@@ -1,25 +1,24 @@
+import { useCreateUserMutation } from "@/__generated__/gql";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import Form from "../components/formElements/Form";
 import Input from "../components/formElements/Input";
+import { REGEXPATTERNS } from "../lib/regexPatterns";
+import { TextSizeStyles } from "../lib/styles";
+import { useAlertStore } from "../store/alertStore";
+import { useSignupStageStore } from "../store/signupStageStore";
+import { useUserStore } from "../store/userStore";
 import {
   AlertType,
   ButtonType,
   FormHelperType,
   SignupFormFields,
+  TextSize,
 } from "../types";
-import { TextSize } from "../types";
 import Alert from "./Alert";
-import { TextSizeStyles } from "../lib/styles";
 import Button from "./Button";
-import { useForm, SubmitHandler } from "react-hook-form";
 import FormHelper from "./formElements/FormHelper";
 import InputGroup from "./formElements/InputGroup";
-import { REGEXPATTERNS } from "../lib/regexPatterns";
-import { useMutation } from "@apollo/client";
-import { CREATE_USER } from "../lib/queries";
-import { useSignupStageStore } from "../store/signupStageStore";
-import { useUserStore } from "../store/userStore";
-import { useAlertStore } from "../store/alertStore";
 
 const CreateAccountForm = () => {
   const {
@@ -31,21 +30,25 @@ const CreateAccountForm = () => {
   const { changeStage } = useSignupStageStore();
   const { login } = useUserStore();
 
-  const [createUser, { error, loading }] = useMutation(CREATE_USER);
+  const [createUser, { error, loading }] = useCreateUserMutation();
 
   const onSubmit: SubmitHandler<SignupFormFields> = (data) => {
     createUser({
       variables: {
         input: {
           email: data.email,
-          password: data.password,
           username: data.username,
+          password: data.password,
         },
       },
     })
       .then(({ data }) => {
-        if (data.createUser.user) {
-          login({ user: data.createUser.user, token: data.createUser.token });
+        const user = data?.createUser?.user;
+        const token = data?.createUser?.token;
+        const errors = data?.createUser?.errors;
+
+        if (user) {
+          login({ user: user, token: String(token) });
           showAlert({
             alertType: AlertType.info,
             alertText: "Account details captured",
@@ -54,15 +57,13 @@ const CreateAccountForm = () => {
           return;
         }
 
-        if (data.createUser.errors) {
-          data.createUser.errors.forEach(
-            (err: { message: string; property: string }) => {
-              showAlert({
-                alertType: AlertType.error,
-                alertText: err.property,
-              });
-            }
-          );
+        if (errors) {
+          errors.forEach((err) => {
+            showAlert({
+              alertType: AlertType.error,
+              alertText: err.property,
+            });
+          });
         }
       })
       .catch(() => {
@@ -172,11 +173,11 @@ const CreateAccountForm = () => {
 
       <p className={"text-gray500 " + TextSizeStyles[TextSize.small]}>
         By using STMarket, you are agreeing to our{" "}
-        <Link to="#" className="underline underline-offset-[6px] text-primary">
+        <Link to="#" className="text-primary underline underline-offset-[6px]">
           privacy policy
         </Link>{" "}
         and{" "}
-        <Link to="#" className="underline underline-offset-[6px] text-primary">
+        <Link to="#" className="text-primary underline underline-offset-[6px]">
           terms of service.
         </Link>
       </p>

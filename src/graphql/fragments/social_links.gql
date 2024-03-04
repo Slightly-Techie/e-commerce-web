@@ -1,0 +1,8 @@
+fragment SocialLinksFields on SocialLinks {
+  github
+  instagram
+  linkedin
+  twitter
+  website
+  youtube
+}

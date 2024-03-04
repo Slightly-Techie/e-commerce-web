@@ -1,0 +1,9 @@
+mutation VerifyResetToken($input: VerifyResetTokenInput!) {
+  verifyResetToken(input: $input) {
+    errors {
+      ...ErrorFields
+    }
+    status
+    success
+  }
+}

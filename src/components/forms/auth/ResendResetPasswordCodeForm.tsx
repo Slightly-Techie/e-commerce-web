@@ -1,22 +1,21 @@
-import Form from "../../formElements/Form";
-import Input from "../../formElements/Input";
+import { useForgotPasswordMutation } from "@/__generated__/gql";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { useLocation } from "react-router-dom";
+import { REGEXPATTERNS } from "../../../lib/regexPatterns";
+import { useAlertStore } from "../../../store/alertStore";
+import { useResetPasswordStageStore } from "../../../store/resetPasswordStageStore";
 import {
-  ForgotPasswordFormFields,
-  ButtonType,
-  FormHelperType,
   AlertType,
+  ButtonType,
+  ForgotPasswordFormFields,
+  FormHelperType,
 } from "../../../types";
 import Alert from "../../Alert";
 import Button from "../../Button";
-import { useForm, SubmitHandler } from "react-hook-form";
+import Form from "../../formElements/Form";
 import FormHelper from "../../formElements/FormHelper";
+import Input from "../../formElements/Input";
 import InputGroup from "../../formElements/InputGroup";
-import { REGEXPATTERNS } from "../../../lib/regexPatterns";
-import { useMutation } from "@apollo/client";
-import { FORGOT_PASSWORD } from "../../../lib/queries";
-import { useAlertStore } from "../../../store/alertStore";
-import { useLocation } from "react-router-dom";
-import { useResetPasswordStageStore } from "../../../store/resetPasswordStageStore";
 
 const ResendResetPasswordCodeForm = () => {
   const {
@@ -28,7 +27,7 @@ const ResendResetPasswordCodeForm = () => {
   const { showAlert } = useAlertStore();
   const location = useLocation();
   const data = location.state;
-  const [forgottenPasswordSubmit, { loading }] = useMutation(FORGOT_PASSWORD);
+  const [forgottenPasswordSubmit, { loading }] = useForgotPasswordMutation();
 
   const { changeStage } = useResetPasswordStageStore();
 
@@ -38,22 +37,23 @@ const ResendResetPasswordCodeForm = () => {
         input: { email: data.email },
       },
     }).then(({ data }) => {
-      if (data.forgotPassword.success) {
+      const success = data?.forgotPassword?.success;
+      const errors = data?.forgotPassword?.errors;
+
+      if (success) {
         showAlert({
           alertType: AlertType.success,
           alertText: "Email sent successfully",
         });
         reset();
         changeStage("code");
-      } else {
-        data.forgotPassword.errors.forEach(
-          ({ message }: { message: string; property: string }) => {
-            showAlert({
-              alertType: AlertType.error,
-              alertText: message,
-            });
-          }
-        );
+      } else if (errors) {
+        errors.forEach((err) => {
+          showAlert({
+            alertType: AlertType.error,
+            alertText: err.message || err.property,
+          });
+        });
       }
     });
   };
@@ -106,4 +106,3 @@ const ResendResetPasswordCodeForm = () => {
   );
 };
 export default ResendResetPasswordCodeForm;
-

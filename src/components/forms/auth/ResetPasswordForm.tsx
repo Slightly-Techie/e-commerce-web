@@ -1,22 +1,21 @@
-import Form from "../../formElements/Form";
-import Input from "../../formElements/Input";
-import {
-  ResetPasswordFormFields,
-  ButtonType,
-  FormHelperType,
-  AlertType,
-} from "../../../types";
-import { TextSize } from "../../../types";
-import { TextSizeStyles } from "../../../lib/styles";
-import Button from "../../Button";
-import { useForm, SubmitHandler } from "react-hook-form";
-import FormHelper from "../../formElements/FormHelper";
-import InputGroup from "../../formElements/InputGroup";
+import { useResetPasswordMutation } from "@/__generated__/gql";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { REGEXPATTERNS } from "../../../lib/regexPatterns";
-import { useMutation } from "@apollo/client";
-import { RESET_PASSWORD } from "../../../lib/queries";
+import { TextSizeStyles } from "../../../lib/styles";
 import { useAlertStore } from "../../../store/alertStore";
 import { useResetPasswordStageStore } from "../../../store/resetPasswordStageStore";
+import {
+  AlertType,
+  ButtonType,
+  FormHelperType,
+  ResetPasswordFormFields,
+  TextSize,
+} from "../../../types";
+import Button from "../../Button";
+import Form from "../../formElements/Form";
+import FormHelper from "../../formElements/FormHelper";
+import Input from "../../formElements/Input";
+import InputGroup from "../../formElements/InputGroup";
 
 const ResetPasswordForm = ({ code }: { code: number | null }) => {
   const {
@@ -27,7 +26,7 @@ const ResetPasswordForm = ({ code }: { code: number | null }) => {
     formState: { errors },
   } = useForm<ResetPasswordFormFields>();
   const { showAlert } = useAlertStore();
-  const [forgottenPasswordSubmit, { loading }] = useMutation(RESET_PASSWORD);
+  const [forgottenPasswordSubmit, { loading }] = useResetPasswordMutation();
 
   const { changeStage } = useResetPasswordStageStore();
 
@@ -36,30 +35,39 @@ const ResetPasswordForm = ({ code }: { code: number | null }) => {
     forgottenPasswordSubmit({
       variables: {
         input: {
-          resetToken: code,
+          resetToken: String(code),
           newPassword: password,
           passwordConfirmation: confirm_password,
         },
       },
-    }).then(({ data }) => {
-      if (data.resetPassword.success) {
-        showAlert({
-          alertType: AlertType.success,
-          alertText: "password reset successfully",
-        });
-        reset();
-        changeStage("successful");
-      } else {
-        data.forgotPassword.errors.forEach(
-          ({ message }: { message: string; property: string }) => {
+    })
+      .then(({ data }) => {
+        const success = data?.resetPassword?.success;
+        const errors = data?.resetPassword?.errors;
+
+        if (success) {
+          showAlert({
+            alertType: AlertType.success,
+            alertText: "Password reset successfully",
+          });
+          reset();
+          changeStage("successful");
+        } else if (errors) {
+          errors.forEach((err) => {
             showAlert({
               alertType: AlertType.error,
-              alertText: message,
+              alertText: err.message || err.property,
             });
-          }
-        );
-      }
-    });
+          });
+        }
+      })
+      .catch((err) => {
+        console.log({ err });
+        showAlert({
+          alertType: AlertType.error,
+          alertText: "Request failed",
+        });
+      });
   };
 
   return (
@@ -123,4 +131,3 @@ const ResetPasswordForm = ({ code }: { code: number | null }) => {
   );
 };
 export default ResetPasswordForm;
-

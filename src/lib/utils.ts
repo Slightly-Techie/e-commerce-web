@@ -1,7 +1,7 @@
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
-import { REGEXPATTERNS } from "./regexPatterns";
 import { Country } from "../types";
+import { REGEXPATTERNS } from "./regexPatterns";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -35,7 +35,7 @@ export const fetchCountries = async (): Promise<Country[]> => {
 };
 
 export const sortCountries: (countries: Country[]) => Country[] = (
-  countries
+  countries,
 ) => {
   const sorted = countries
     .filter((value) => value.idd.root && value.name.common.length < 20)
@@ -54,3 +54,7 @@ export const convertTime = (time: number): { mins: string; secs: string } => {
 
   return { mins: padd(calcMins), secs: padd(calcSecs) };
 };
+
+export function getApiUrl() {
+  return import.meta.env.VITE_API_URL;
+}

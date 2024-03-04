@@ -1,5 +1,5 @@
+import { User } from "@/__generated__/graphql";
 import { create } from "zustand";
-import { User } from "../types";
 import { devtools, persist } from "zustand/middleware";
 
 type UserArgs = { user: User; token: string };
@@ -22,7 +22,7 @@ export const useUserStore = create<StoreState>()(
         logout: () => set(() => ({ token: null, user: null })),
         updateToken: (token) => set(() => ({ token })),
       }),
-      { name: "userStore" }
-    )
-  )
+      { name: "userStore" },
+    ),
+  ),
 );

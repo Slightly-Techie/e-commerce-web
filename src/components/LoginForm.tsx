@@ -1,20 +1,19 @@
-import { useMutation } from "@apollo/client";
+import { useLoginMutation } from "@/__generated__/gql";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { Link, useNavigate } from "react-router-dom";
+import { REGEXPATTERNS } from "../lib/regexPatterns";
+import { useAlertStore } from "../store/alertStore";
+import { useSignupStageStore } from "../store/signupStageStore";
+import { useUserStore } from "../store/userStore";
 import { AlertType, ButtonType, FormHelperType } from "../types";
 import Alert from "./Alert";
 import Button from "./Button";
 import Checkbox from "./formElements/Checkbox";
 import Form from "./formElements/Form";
+import FormHelper from "./formElements/FormHelper";
 import Input from "./formElements/Input";
 import InputGroup from "./formElements/InputGroup";
 import Label from "./formElements/Label";
-import { LOGIN } from "../lib/queries";
-import { SubmitHandler, useForm } from "react-hook-form";
-import { useAlertStore } from "../store/alertStore";
-import { REGEXPATTERNS } from "../lib/regexPatterns";
-import FormHelper from "./formElements/FormHelper";
-import { useUserStore } from "../store/userStore";
-import { Link, useNavigate } from "react-router-dom";
-import { useSignupStageStore } from "../store/signupStageStore";
 
 type FormValues = {
   email: string;
@@ -22,7 +21,7 @@ type FormValues = {
 };
 
 const LoginForm = () => {
-  const [loginUser, { loading }] = useMutation(LOGIN);
+  const [loginUser, { loading }] = useLoginMutation();
   const { showAlert } = useAlertStore();
   const { login, updateToken } = useUserStore();
   const navigate = useNavigate();
@@ -36,45 +35,58 @@ const LoginForm = () => {
   const { changeStage } = useSignupStageStore();
 
   const onSubmit: SubmitHandler<FormValues> = (formData) => {
+    console.log("logging in");
+
     loginUser({
       variables: {
-        input: { password: formData.password, email: formData.email },
+        input: {
+          password: formData.password,
+          email: formData.email,
+        },
       },
     })
       .then(({ data }) => {
-        if (data.login.user) {
-          login({ user: data.login.user, token: data.login.token });
-          updateToken(data.login.token);
+        console.log({ data });
+
+        const user = data?.login?.user;
+        const errors = data?.login?.errors;
+        const token = data?.login?.token;
+
+        if (user) {
+          login({ user: user, token: String(token) });
+          updateToken(String(token));
           showAlert({
             alertType: AlertType.success,
             alertText: "Login successful",
           });
+
+          if (!user.emailConfirmed) {
+            changeStage("verify code");
+
+            showAlert({
+              alertType: AlertType.error,
+              alertText: "Please verify your account",
+            });
+          }
           navigate("/");
           return;
         }
 
-        if (!data.login.user.emailConfirmed) {
-          changeStage("verify code");
-
-          showAlert({
-            alertType: AlertType.error,
-            alertText: "Please verify your account",
+        if (errors) {
+          errors.forEach((err) => {
+            showAlert({
+              alertType: AlertType.error,
+              alertText: err.message || err.property,
+            });
           });
         }
-
-        if (data.login.errors) {
-          data.login.errors.forEach(
-            (err: { message: string; property: string }) => {
-              showAlert({
-                alertType: AlertType.error,
-                alertText: err.message,
-              });
-            }
-          );
-        }
       })
-      .catch(() => {
-        showAlert({ alertType: AlertType.error, alertText: "Request failed" });
+      .catch((err) => {
+        console.log({ err });
+        showAlert({
+          alertType: AlertType.error,
+          alertText: "Request failed",
+        });
       });
   };
 
@@ -84,6 +96,8 @@ const LoginForm = () => {
         For ST Members. Please double-check that you are using the same email
         address that you used to sign up for CRM.
       </Alert>
+
+      <p>schema: {import.meta.env.VITE_API_URL}</p>
 
       <div className="space-y-4">
         <InputGroup>
@@ -130,7 +144,7 @@ const LoginForm = () => {
       </div>
 
       <div className="flex justify-between">
-        <div className="space-x-3 flex items-start">
+        <div className="flex items-start space-x-3">
           <Checkbox id="remember" labelText="Remember me" />
         </div>
 
@@ -156,4 +170,3 @@ const LoginForm = () => {
 };
 
 export default LoginForm;
-
