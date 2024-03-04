@@ -1,5 +1,5 @@
 export interface CompSVGProps {
-  pathsD: string[];
+  pathsD: string[]
 }
 
 export function CompSVG({ pathsD, ...props }: CompSVGProps) {
@@ -24,5 +24,5 @@ export function CompSVG({ pathsD, ...props }: CompSVGProps) {
         />
       ))}
     </svg>
-  );
+  )
 }

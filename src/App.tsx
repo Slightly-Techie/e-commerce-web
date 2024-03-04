@@ -1,21 +1,21 @@
-import { Routes, Route } from "react-router-dom";
-import Signup from "./pages/Signup";
-import { Login } from "./pages/Login";
-import ForgotPassword from "./pages/ForgotPassword";
-import SetupAccount from "./pages/SetupAccount";
-import VerifySignupCode from "./pages/VerifySignupCode";
-import STMemberSetup from "./components/STMemberSetup";
-import NonSTMemberSetup from "./components/NonSTMemberSetup";
-import AccountSetupComplete from "./components/AccountSetupComplete";
-import ResetPassword from "./pages/ResetPassword";
-import { loadErrorMessages, loadDevMessages } from "@apollo/client/dev";
-import NonSTError from "./components/NonSTError";
-import HomePage from "./pages/HomePage";
-import VerifyCode from "./pages/VerifyCode";
+import { loadDevMessages, loadErrorMessages } from "@apollo/client/dev"
+import { Route, Routes } from "react-router-dom"
+import AccountSetupComplete from "./components/AccountSetupComplete"
+import NonSTError from "./components/NonSTError"
+import NonSTMemberSetup from "./components/NonSTMemberSetup"
+import STMemberSetup from "./components/STMemberSetup"
+import ForgotPassword from "./pages/ForgotPassword"
+import HomePage from "./pages/HomePage"
+import { Login } from "./pages/Login"
+import ResetPassword from "./pages/ResetPassword"
+import SetupAccount from "./pages/SetupAccount"
+import Signup from "./pages/Signup"
+import VerifyCode from "./pages/VerifyCode"
+import VerifySignupCode from "./pages/VerifySignupCode"
 
 // Adds messages only in a dev environment
-loadDevMessages();
-loadErrorMessages();
+loadDevMessages()
+loadErrorMessages()
 
 function App() {
   return (
@@ -40,8 +40,7 @@ function App() {
         element={<AccountSetupComplete />}
       ></Route>
     </Routes>
-  );
+  )
 }
 
-export default App;
-
+export default App

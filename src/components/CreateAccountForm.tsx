@@ -1,36 +1,36 @@
-import { useCreateUserMutation } from "@/__generated__/gql";
-import { SubmitHandler, useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
-import Form from "../components/formElements/Form";
-import Input from "../components/formElements/Input";
-import { REGEXPATTERNS } from "../lib/regexPatterns";
-import { TextSizeStyles } from "../lib/styles";
-import { useAlertStore } from "../store/alertStore";
-import { useSignupStageStore } from "../store/signupStageStore";
-import { useUserStore } from "../store/userStore";
+import { useCreateUserMutation } from "@/__generated__/gql"
+import { SubmitHandler, useForm } from "react-hook-form"
+import { Link } from "react-router-dom"
+import Form from "../components/formElements/Form"
+import Input from "../components/formElements/Input"
+import { REGEXPATTERNS } from "../lib/regexPatterns"
+import { TextSizeStyles } from "../lib/styles"
+import { useAlertStore } from "../store/alertStore"
+import { useSignupStageStore } from "../store/signupStageStore"
+import { useUserStore } from "../store/userStore"
 import {
   AlertType,
   ButtonType,
   FormHelperType,
   SignupFormFields,
   TextSize,
-} from "../types";
-import Alert from "./Alert";
-import Button from "./Button";
-import FormHelper from "./formElements/FormHelper";
-import InputGroup from "./formElements/InputGroup";
+} from "../types"
+import Alert from "./Alert"
+import Button from "./Button"
+import FormHelper from "./formElements/FormHelper"
+import InputGroup from "./formElements/InputGroup"
 
 const CreateAccountForm = () => {
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<SignupFormFields>();
+  } = useForm<SignupFormFields>()
 
-  const { changeStage } = useSignupStageStore();
-  const { login } = useUserStore();
+  const { changeStage } = useSignupStageStore()
+  const { login } = useUserStore()
 
-  const [createUser, { error, loading }] = useCreateUserMutation();
+  const [createUser, { error, loading }] = useCreateUserMutation()
 
   const onSubmit: SubmitHandler<SignupFormFields> = (data) => {
     createUser({
@@ -43,18 +43,18 @@ const CreateAccountForm = () => {
       },
     })
       .then(({ data }) => {
-        const user = data?.createUser?.user;
-        const token = data?.createUser?.token;
-        const errors = data?.createUser?.errors;
+        const user = data?.createUser?.user
+        const token = data?.createUser?.token
+        const errors = data?.createUser?.errors
 
         if (user) {
-          login({ user: user, token: String(token) });
+          login({ user: user, token: String(token) })
           showAlert({
             alertType: AlertType.info,
             alertText: "Account details captured",
-          });
-          changeStage("verify code");
-          return;
+          })
+          changeStage("verify code")
+          return
         }
 
         if (errors) {
@@ -62,19 +62,19 @@ const CreateAccountForm = () => {
             showAlert({
               alertType: AlertType.error,
               alertText: err.property,
-            });
-          });
+            })
+          })
         }
       })
       .catch(() => {
         showAlert({
           alertType: AlertType.error,
           alertText: String(error?.message),
-        });
-      });
-  };
+        })
+      })
+  }
 
-  const { showAlert } = useAlertStore();
+  const { showAlert } = useAlertStore()
 
   return (
     <Form title="Create Account" onSubmit={handleSubmit(onSubmit)}>
@@ -182,7 +182,7 @@ const CreateAccountForm = () => {
         </Link>
       </p>
     </Form>
-  );
-};
+  )
+}
 
-export default CreateAccountForm;
+export default CreateAccountForm

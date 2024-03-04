@@ -1,21 +1,21 @@
-import { useForgotPasswordMutation } from "@/__generated__/gql";
-import { SubmitHandler, useForm } from "react-hook-form";
-import { useLocation } from "react-router-dom";
-import { REGEXPATTERNS } from "../../../lib/regexPatterns";
-import { useAlertStore } from "../../../store/alertStore";
-import { useResetPasswordStageStore } from "../../../store/resetPasswordStageStore";
+import { useForgotPasswordMutation } from "@/__generated__/gql"
+import { SubmitHandler, useForm } from "react-hook-form"
+import { useLocation } from "react-router-dom"
+import { REGEXPATTERNS } from "../../../lib/regexPatterns"
+import { useAlertStore } from "../../../store/alertStore"
+import { useResetPasswordStageStore } from "../../../store/resetPasswordStageStore"
 import {
   AlertType,
   ButtonType,
   ForgotPasswordFormFields,
   FormHelperType,
-} from "../../../types";
-import Alert from "../../Alert";
-import Button from "../../Button";
-import Form from "../../formElements/Form";
-import FormHelper from "../../formElements/FormHelper";
-import Input from "../../formElements/Input";
-import InputGroup from "../../formElements/InputGroup";
+} from "../../../types"
+import Alert from "../../Alert"
+import Button from "../../Button"
+import Form from "../../formElements/Form"
+import FormHelper from "../../formElements/FormHelper"
+import Input from "../../formElements/Input"
+import InputGroup from "../../formElements/InputGroup"
 
 const ResendResetPasswordCodeForm = () => {
   const {
@@ -23,13 +23,13 @@ const ResendResetPasswordCodeForm = () => {
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm<ForgotPasswordFormFields>();
-  const { showAlert } = useAlertStore();
-  const location = useLocation();
-  const data = location.state;
-  const [forgottenPasswordSubmit, { loading }] = useForgotPasswordMutation();
+  } = useForm<ForgotPasswordFormFields>()
+  const { showAlert } = useAlertStore()
+  const location = useLocation()
+  const data = location.state
+  const [forgottenPasswordSubmit, { loading }] = useForgotPasswordMutation()
 
-  const { changeStage } = useResetPasswordStageStore();
+  const { changeStage } = useResetPasswordStageStore()
 
   const onSubmit: SubmitHandler<ForgotPasswordFormFields> = (data) => {
     forgottenPasswordSubmit({
@@ -37,26 +37,26 @@ const ResendResetPasswordCodeForm = () => {
         input: { email: data.email },
       },
     }).then(({ data }) => {
-      const success = data?.forgotPassword?.success;
-      const errors = data?.forgotPassword?.errors;
+      const success = data?.forgotPassword?.success
+      const errors = data?.forgotPassword?.errors
 
       if (success) {
         showAlert({
           alertType: AlertType.success,
           alertText: "Email sent successfully",
-        });
-        reset();
-        changeStage("code");
+        })
+        reset()
+        changeStage("code")
       } else if (errors) {
         errors.forEach((err) => {
           showAlert({
             alertType: AlertType.error,
             alertText: err.message || err.property,
-          });
-        });
+          })
+        })
       }
-    });
-  };
+    })
+  }
 
   return (
     <Form title="Resend reset password code" onSubmit={handleSubmit(onSubmit)}>
@@ -103,6 +103,6 @@ const ResendResetPasswordCodeForm = () => {
         I have my code
       </Button>
     </Form>
-  );
-};
-export default ResendResetPasswordCodeForm;
+  )
+}
+export default ResendResetPasswordCodeForm

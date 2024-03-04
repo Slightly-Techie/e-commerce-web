@@ -1,67 +1,67 @@
-import { useForgotPasswordMutation } from "@/__generated__/gql";
-import { SubmitHandler, useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
-import { REGEXPATTERNS } from "../../../lib/regexPatterns";
-import { useAlertStore } from "../../../store/alertStore";
+import { useForgotPasswordMutation } from "@/__generated__/gql"
+import { SubmitHandler, useForm } from "react-hook-form"
+import { useNavigate } from "react-router-dom"
+import { REGEXPATTERNS } from "../../../lib/regexPatterns"
+import { useAlertStore } from "../../../store/alertStore"
 import {
   AlertType,
   ButtonType,
   ForgotPasswordFormFields,
   FormHelperType,
-} from "../../../types";
-import Alert from "../../Alert";
-import Button from "../../Button";
-import Form from "../../formElements/Form";
-import FormHelper from "../../formElements/FormHelper";
-import Input from "../../formElements/Input";
-import InputGroup from "../../formElements/InputGroup";
+} from "../../../types"
+import Alert from "../../Alert"
+import Button from "../../Button"
+import Form from "../../formElements/Form"
+import FormHelper from "../../formElements/FormHelper"
+import Input from "../../formElements/Input"
+import InputGroup from "../../formElements/InputGroup"
 
 const ForgotPasswordForm = () => {
-  const navigate = useNavigate();
+  const navigate = useNavigate()
   const {
     register,
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm<ForgotPasswordFormFields>();
-  const { showAlert } = useAlertStore();
+  } = useForm<ForgotPasswordFormFields>()
+  const { showAlert } = useAlertStore()
 
-  const [forgottenPasswordSubmit, { loading }] = useForgotPasswordMutation();
+  const [forgottenPasswordSubmit, { loading }] = useForgotPasswordMutation()
 
   const onSubmit: SubmitHandler<ForgotPasswordFormFields> = (data) => {
-    const { email } = data;
+    const { email } = data
     forgottenPasswordSubmit({
       variables: {
         input: { email },
       },
     })
       .then(({ data }) => {
-        const success = data?.forgotPassword?.success;
-        const errors = data?.forgotPassword?.errors;
+        const success = data?.forgotPassword?.success
+        const errors = data?.forgotPassword?.errors
 
         if (success) {
           showAlert({
             alertType: AlertType.success,
             alertText: "Email sent successfully",
-          });
-          reset();
-          navigate("/reset-password", { state: { email } });
+          })
+          reset()
+          navigate("/reset-password", { state: { email } })
         } else if (errors) {
           errors.forEach((err) => {
             showAlert({
               alertType: AlertType.error,
               alertText: err.message || err.property,
-            });
-          });
+            })
+          })
         }
       })
       .catch(() => {
         showAlert({
           alertType: AlertType.error,
           alertText: "Request failed",
-        });
-      });
-  };
+        })
+      })
+  }
 
   return (
     <Form title="Forgot password?" onSubmit={handleSubmit(onSubmit)}>
@@ -100,6 +100,6 @@ const ForgotPasswordForm = () => {
         {loading ? "Sending..." : "Continue"}
       </Button>
     </Form>
-  );
-};
-export default ForgotPasswordForm;
+  )
+}
+export default ForgotPasswordForm

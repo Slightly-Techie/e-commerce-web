@@ -1,17 +1,17 @@
-import { useNavigate } from "react-router-dom";
-import Button from "./Button";
-import SetupAccountLayout from "./SetupAccountLayout";
-import { useSignupStageStore } from "../store/signupStageStore";
+import { useNavigate } from "react-router-dom"
+import { useSignupStageStore } from "../store/signupStageStore"
+import Button from "./Button"
+import SetupAccountLayout from "./SetupAccountLayout"
 
 const NonSTError = () => {
-  const navigate = useNavigate();
-  const { changeStage } = useSignupStageStore();
+  const navigate = useNavigate()
+  const { changeStage } = useSignupStageStore()
 
   return (
     <SetupAccountLayout
       icon={
         <img
-          className="w-[107px] mx-auto"
+          className="mx-auto w-[107px]"
           src="/assets/icons/monkey.svg"
           alt="..."
         />
@@ -22,14 +22,14 @@ const NonSTError = () => {
     >
       <Button
         onClick={() => {
-          changeStage("setup non st account");
-          navigate("/setup-account/non-st-member");
+          changeStage("setup non st account")
+          navigate("/setup-account/non-st-member")
         }}
       >
         Sign up as a Non ST Member
       </Button>
     </SetupAccountLayout>
-  );
-};
+  )
+}
 
-export default NonSTError;
+export default NonSTError

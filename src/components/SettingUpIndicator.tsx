@@ -1,11 +1,11 @@
-import { cn } from "../lib/utils";
+import { cn } from "../lib/utils"
 
 const SettingUpIndicator = ({
   loading = true,
   error = false,
 }: {
-  loading?: boolean;
-  error?: boolean;
+  loading?: boolean
+  error?: boolean
 }) => {
   return (
     <svg
@@ -27,7 +27,7 @@ const SettingUpIndicator = ({
         <path d="M155.715 27.0987C157.155 25.4877 159.635 25.3438 161.185 26.8494C171.695 37.0561 179.703 49.5565 184.58 63.3711C185.3 65.4089 184.132 67.6016 182.066 68.2366C180.001 68.8716 177.82 67.708 177.093 65.6729C172.644 53.218 165.418 41.9377 155.964 32.6886C154.419 31.1772 154.274 28.7097 155.715 27.0987Z" />
       </mask>
       <path
-        className={cn(loading ? "animate-spin-slow origin-center" : "hidden")}
+        className={cn(loading ? "origin-center animate-spin-slow" : "hidden")}
         d="M155.715 27.0987C157.155 25.4877 159.635 25.3438 161.185 26.8494C171.695 37.0561 179.703 49.5565 184.58 63.3711C185.3 65.4089 184.132 67.6016 182.066 68.2366C180.001 68.8716 177.82 67.708 177.093 65.6729C172.644 53.218 165.418 41.9377 155.964 32.6886C154.419 31.1772 154.274 28.7097 155.715 27.0987Z"
         stroke="#16A34A"
         stroke-width="16"
@@ -39,7 +39,7 @@ const SettingUpIndicator = ({
         r="53.5"
         className={cn(
           "transition-all duration-500",
-          error ? "fill-error500" : "fill-[#16A34A]"
+          error ? "fill-error500" : "fill-[#16A34A]",
         )}
       />
       <path
@@ -50,8 +50,7 @@ const SettingUpIndicator = ({
         stroke-linejoin="round"
       />
     </svg>
-  );
-};
+  )
+}
 
-export default SettingUpIndicator;
-
+export default SettingUpIndicator

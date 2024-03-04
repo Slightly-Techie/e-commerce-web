@@ -1,10 +1,10 @@
-import { FormHelperTypeStyles } from "../../lib/styles";
-import { cn } from "../../lib/utils";
-import { FormHelperType } from "../../types";
+import { FormHelperTypeStyles } from "../../lib/styles"
+import { cn } from "../../lib/utils"
+import { FormHelperType } from "../../types"
 
 type FormHelperProps = React.HTMLAttributes<HTMLParagraphElement> & {
-  type?: FormHelperType;
-};
+  type?: FormHelperType
+}
 
 const FormHelper = ({
   className,
@@ -15,7 +15,7 @@ const FormHelper = ({
     <p className={cn("text-xs", FormHelperTypeStyles[type], className)}>
       {props.children}
     </p>
-  );
-};
+  )
+}
 
-export default FormHelper;
+export default FormHelper

@@ -1,21 +1,21 @@
-import { useResetPasswordMutation } from "@/__generated__/gql";
-import { SubmitHandler, useForm } from "react-hook-form";
-import { REGEXPATTERNS } from "../../../lib/regexPatterns";
-import { TextSizeStyles } from "../../../lib/styles";
-import { useAlertStore } from "../../../store/alertStore";
-import { useResetPasswordStageStore } from "../../../store/resetPasswordStageStore";
+import { useResetPasswordMutation } from "@/__generated__/gql"
+import { SubmitHandler, useForm } from "react-hook-form"
+import { REGEXPATTERNS } from "../../../lib/regexPatterns"
+import { TextSizeStyles } from "../../../lib/styles"
+import { useAlertStore } from "../../../store/alertStore"
+import { useResetPasswordStageStore } from "../../../store/resetPasswordStageStore"
 import {
   AlertType,
   ButtonType,
   FormHelperType,
   ResetPasswordFormFields,
   TextSize,
-} from "../../../types";
-import Button from "../../Button";
-import Form from "../../formElements/Form";
-import FormHelper from "../../formElements/FormHelper";
-import Input from "../../formElements/Input";
-import InputGroup from "../../formElements/InputGroup";
+} from "../../../types"
+import Button from "../../Button"
+import Form from "../../formElements/Form"
+import FormHelper from "../../formElements/FormHelper"
+import Input from "../../formElements/Input"
+import InputGroup from "../../formElements/InputGroup"
 
 const ResetPasswordForm = ({ code }: { code: number | null }) => {
   const {
@@ -24,14 +24,14 @@ const ResetPasswordForm = ({ code }: { code: number | null }) => {
     watch,
     reset,
     formState: { errors },
-  } = useForm<ResetPasswordFormFields>();
-  const { showAlert } = useAlertStore();
-  const [forgottenPasswordSubmit, { loading }] = useResetPasswordMutation();
+  } = useForm<ResetPasswordFormFields>()
+  const { showAlert } = useAlertStore()
+  const [forgottenPasswordSubmit, { loading }] = useResetPasswordMutation()
 
-  const { changeStage } = useResetPasswordStageStore();
+  const { changeStage } = useResetPasswordStageStore()
 
   const onSubmit: SubmitHandler<ResetPasswordFormFields> = (data) => {
-    const { password, confirm_password } = data;
+    const { password, confirm_password } = data
     forgottenPasswordSubmit({
       variables: {
         input: {
@@ -42,33 +42,33 @@ const ResetPasswordForm = ({ code }: { code: number | null }) => {
       },
     })
       .then(({ data }) => {
-        const success = data?.resetPassword?.success;
-        const errors = data?.resetPassword?.errors;
+        const success = data?.resetPassword?.success
+        const errors = data?.resetPassword?.errors
 
         if (success) {
           showAlert({
             alertType: AlertType.success,
             alertText: "Password reset successfully",
-          });
-          reset();
-          changeStage("successful");
+          })
+          reset()
+          changeStage("successful")
         } else if (errors) {
           errors.forEach((err) => {
             showAlert({
               alertType: AlertType.error,
               alertText: err.message || err.property,
-            });
-          });
+            })
+          })
         }
       })
       .catch((err) => {
-        console.log({ err });
+        console.log({ err })
         showAlert({
           alertType: AlertType.error,
           alertText: "Request failed",
-        });
-      });
-  };
+        })
+      })
+  }
 
   return (
     <Form title="Reset password" onSubmit={handleSubmit(onSubmit)}>
@@ -128,6 +128,6 @@ const ResetPasswordForm = ({ code }: { code: number | null }) => {
         Reset Password
       </Button>
     </Form>
-  );
-};
-export default ResetPasswordForm;
+  )
+}
+export default ResetPasswordForm

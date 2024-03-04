@@ -1,6 +1,6 @@
-import signature from "../assets/images/signature.png";
-import Text from "../components/Text";
-import { TextSize } from "../types";
+import signature from "../assets/images/signature.png"
+import Text from "../components/Text"
+import { TextSize } from "../types"
 
 const HomePage = () => {
   return (
@@ -24,7 +24,7 @@ const HomePage = () => {
         </div>
       </div>
     </>
-  );
-};
+  )
+}
 
-export default HomePage;
+export default HomePage

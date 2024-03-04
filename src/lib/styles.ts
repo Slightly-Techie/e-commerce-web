@@ -1,6 +1,5 @@
-import { ButtonSize, FormHelperType, ShadowType } from "./../types";
-import { AlertType, ButtonType } from "../types";
-import { TextSize } from "../types";
+import { AlertType, ButtonType, TextSize } from "../types"
+import { ButtonSize, FormHelperType, ShadowType } from "./../types"
 
 // Alerts
 export const AlertTypeStyles = {
@@ -9,7 +8,7 @@ export const AlertTypeStyles = {
   [AlertType.error]: "border-error500 bg-error50 text-primary",
   [AlertType.success]:
     "border-success600 text-error500 bg-success50 text-primary",
-};
+}
 
 // Buttons
 export const ButtonTypeStyles = {
@@ -18,18 +17,18 @@ export const ButtonTypeStyles = {
   [ButtonType.disabled]:
     "hover:bg-gray50 text-gray400 border-transparent cursor-not-allowed",
   [ButtonType.secondary]: "border-gray300 text-primaryLight",
-};
+}
 
 export const ButtonSizeStyles = {
   [ButtonSize.small]: "px-6 w-fit",
   [ButtonSize.full]: "w-full",
-};
+}
 
 // Form Helper
 export const FormHelperTypeStyles = {
   [FormHelperType.error]: "text-red-500",
   [FormHelperType.info]: "text-primary",
-};
+}
 
 // Typography
 export const TextSizeStyles = {
@@ -39,7 +38,7 @@ export const TextSizeStyles = {
   [TextSize.large]: "text-xl",
   [TextSize.heading4]: "font-bold text-4xl",
   [TextSize.heading5]: "font-bold text-[34px]",
-};
+}
 
 export const ShadowTypeStyles = {
   [ShadowType.xs]: "shadow-[0px_1px_2px_0px_rgba(15,23,42,0.06)]",
@@ -53,4 +52,4 @@ export const ShadowTypeStyles = {
     "shadow-[0px_20px_25px_-5px_rgba(15,23,42,0.10),0px_10px_10px_0px_rgba(15,23,42,0.05)]",
   [ShadowType.xxl]: "shadow-[0px_25px_50px_-12px_rgba(15,23,42,0.05)]",
   [ShadowType.xxxl]: "shadow-[0px_30px_60px_-12px_rgba(15,23,42,0.25)]",
-};
+}

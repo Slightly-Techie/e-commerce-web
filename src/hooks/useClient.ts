@@ -1,13 +1,13 @@
 // import { useCallback, useState, useEffect } from "react";
-import { client, getClient } from "../lib/apollo-config";
-import { useUserStore } from "../store/userStore";
+import { client, getClient } from "../lib/apollo-config"
+import { useUserStore } from "../store/userStore"
 
 const useClient = () => {
-  const { token } = useUserStore();
+  const { token } = useUserStore()
 
-  const authorisedClient = getClient(token);
+  const authorisedClient = getClient(token)
 
-  return { client: token ? authorisedClient : client };
-};
+  return { client: token ? authorisedClient : client }
+}
 
-export default useClient;
+export default useClient

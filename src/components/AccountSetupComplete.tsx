@@ -1,21 +1,21 @@
-import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import Button from "./Button";
-import SetupAccountLayout from "./SetupAccountLayout";
-import { ButtonType } from "../types";
-import { useSignupStageStore } from "../store/signupStageStore";
-import Confetti from "react-confetti-explosion";
+import { useEffect, useState } from "react"
+import Confetti from "react-confetti-explosion"
+import { useNavigate } from "react-router-dom"
+import { useSignupStageStore } from "../store/signupStageStore"
+import { ButtonType } from "../types"
+import Button from "./Button"
+import SetupAccountLayout from "./SetupAccountLayout"
 
 const AccountSetupComplete = () => {
-  const navigate = useNavigate();
-  const [popConfetti, setPopConfetti] = useState(false);
-  const { changeStage } = useSignupStageStore();
+  const navigate = useNavigate()
+  const [popConfetti, setPopConfetti] = useState(false)
+  const { changeStage } = useSignupStageStore()
 
   useEffect(() => {
-    const pop = setTimeout(() => setPopConfetti(true), 200);
+    const pop = setTimeout(() => setPopConfetti(true), 200)
 
-    return () => clearTimeout(pop);
-  }, []);
+    return () => clearTimeout(pop)
+  }, [])
 
   return (
     <SetupAccountLayout
@@ -24,7 +24,7 @@ const AccountSetupComplete = () => {
       icon={
         <>
           <img
-            className="w-[107px] mx-auto"
+            className="mx-auto w-[107px]"
             src="/assets/icons/done.svg"
             alt="..."
           />
@@ -36,15 +36,14 @@ const AccountSetupComplete = () => {
       <Button
         btnType={ButtonType.primary}
         onClick={() => {
-          navigate("/");
-          changeStage("enter details");
+          navigate("/")
+          changeStage("enter details")
         }}
       >
         Start shopping now
       </Button>
     </SetupAccountLayout>
-  );
-};
+  )
+}
 
-export default AccountSetupComplete;
-
+export default AccountSetupComplete

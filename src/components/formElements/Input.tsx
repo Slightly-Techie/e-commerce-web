@@ -1,17 +1,17 @@
-import { useState, forwardRef } from "react";
-import { cn } from "../../lib/utils";
-import { HiOutlineEyeOff, HiOutlineEye } from "react-icons/hi";
-import Label from "./Label";
+import { forwardRef, useState } from "react"
+import { HiOutlineEye, HiOutlineEyeOff } from "react-icons/hi"
+import { cn } from "../../lib/utils"
+import Label from "./Label"
 
 type InputProps = React.InputHTMLAttributes<HTMLInputElement> & {
-  icon?: React.ReactNode;
-  label?: string;
-};
+  icon?: React.ReactNode
+  label?: string
+}
 
 const Input = forwardRef<HTMLInputElement, InputProps>(
   ({ className, icon, label, ...props }, ref) => {
-    const [isFocused, setIsFocused] = useState(false);
-    const [customType, setCustomType] = useState("password");
+    const [isFocused, setIsFocused] = useState(false)
+    const [customType, setCustomType] = useState("password")
 
     return (
       <>
@@ -19,17 +19,17 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
 
         <div
           className={cn(
-            "rounded-[4px] border flex items-center",
+            "flex items-center rounded-[4px] border",
             isFocused ? "border-gray-500" : "border-gray300",
-            className
+            className,
           )}
         >
           {icon && (
             <label
               htmlFor={props.id}
               className={cn(
-                "self-stretch grid place-content-center cursor-pointer w-8 flex-shrink-0 mx-2",
-                isFocused ? "text-gray-500" : "text-gray300"
+                "mx-2 grid w-8 flex-shrink-0 cursor-pointer place-content-center self-stretch",
+                isFocused ? "text-gray-500" : "text-gray300",
               )}
             >
               {icon}
@@ -43,9 +43,9 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
             onFocus={() => setIsFocused(true)}
             onBlur={() => setIsFocused(false)}
             className={cn(
-              "placeholder:text-gray-300 border-none bg-transparent border flex-1 w-full py-3 outline-none pr-4",
+              "w-full flex-1 border border-none bg-transparent py-3 pr-4 outline-none placeholder:text-gray-300",
               props.type !== "password" ? "pr-4" : "pr-1",
-              !icon && "pl-4"
+              !icon && "pl-4",
             )}
           />
 
@@ -55,10 +55,10 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
               className="pr-2 text-primary"
               onClick={() => {
                 if (customType === "password") {
-                  setCustomType("text");
+                  setCustomType("text")
                 }
                 if (customType === "text") {
-                  setCustomType("password");
+                  setCustomType("password")
                 }
               }}
             >
@@ -71,10 +71,9 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
           )}
         </div>
       </>
-    );
-  }
-);
+    )
+  },
+)
 
-Input.displayName = "Input";
-export default Input;
-
+Input.displayName = "Input"
+export default Input

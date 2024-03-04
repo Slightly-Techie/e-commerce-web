@@ -1,22 +1,21 @@
-import { useNavigate } from "react-router-dom";
-import { Link } from "react-router-dom";
-import Text from "./Text";
-import { ButtonType, TextSize } from "../types";
-import Button from "./Button";
+import { Link, useNavigate } from "react-router-dom"
+import { ButtonType, TextSize } from "../types"
+import Button from "./Button"
+import Text from "./Text"
 
 type AuthLayoutProps = {
-  buttonText?: string;
-  buttonRoute?: string;
-  children: React.ReactNode;
-};
+  buttonText?: string
+  buttonRoute?: string
+  children: React.ReactNode
+}
 
 const AuthLayout = ({ children, buttonRoute, buttonText }: AuthLayoutProps) => {
-  const navigate = useNavigate();
+  const navigate = useNavigate()
 
   return (
-    <div className="text-white bg-[url(assets/images/sign-up-bg.jpg)] bg-cover bg-center bg-no-repeat">
-      <div className="max-w-screen-xl px-[40px] lg:px-[60px] mx-auto grid grid-cols-2 min-h-screen">
-        <div className="pt-[200px] pb-8 flex justify-between flex-col">
+    <div className="bg-[url(assets/images/sign-up-bg.jpg)] bg-cover bg-center bg-no-repeat text-white">
+      <div className="mx-auto grid min-h-screen max-w-screen-xl grid-cols-2 px-[40px] lg:px-[60px]">
+        <div className="flex flex-col justify-between pb-8 pt-[200px]">
           <div className="space-y-4">
             <Text size={TextSize.large}>Welcome to</Text>
             <h1 className="  max-w-[460px] text-5xl leading-[50px] md:text-[70px] md:leading-[84px]">
@@ -39,12 +38,12 @@ const AuthLayout = ({ children, buttonRoute, buttonText }: AuthLayoutProps) => {
         </div>
 
         <div className="py-8">
-          <div className="grid header place-content-end">
+          <div className="header grid place-content-end">
             {buttonText && buttonRoute && (
               <Button
                 btnType={ButtonType.secondary}
                 onClick={() => navigate(buttonRoute)}
-                className="text-white w-fit"
+                className="w-fit text-white"
               >
                 {buttonText}
               </Button>
@@ -55,7 +54,7 @@ const AuthLayout = ({ children, buttonRoute, buttonText }: AuthLayoutProps) => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default AuthLayout;
+export default AuthLayout
