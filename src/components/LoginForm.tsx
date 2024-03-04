@@ -97,8 +97,6 @@ const LoginForm = () => {
         address that you used to sign up for CRM.
       </Alert>
 
-      <p>schema: {import.meta.env.VITE_BASE_URL}</p>
-
       <div className="space-y-4">
         <InputGroup>
           <Label htmlFor="email">Email</Label>
