@@ -1,8 +1,9 @@
 {
   "compilerOptions": {
-    "target": "ES2020",
+    "target": "ESNext",
+    "types": ["vite/client"],
     "useDefineForClassFields": true,
-    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "lib": ["ES2020", "DOM", "DOM.Iterable", "ESNext"],
     "module": "ESNext",
     "skipLibCheck": true,
     "baseUrl": ".",
@@ -13,7 +14,7 @@
       "services/*": ["./src/services/*"],
       "hooks/*": ["./src/hooks/*"],
       "store/*": ["./src/store/*"],
-      "lib/*": ["./src/lib/*"],
+      "lib/*": ["./src/lib/*"]
     },
 
     /* Bundler mode */
@@ -30,6 +31,6 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["src"],
+  "include": ["src", "codegen.ts"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

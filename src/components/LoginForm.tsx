@@ -1,20 +1,20 @@
 import { useMutation } from "@apollo/client";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { Link, useNavigate } from "react-router-dom";
+import { LOGIN } from "../lib/queries";
+import { REGEXPATTERNS } from "../lib/regexPatterns";
+import { useAlertStore } from "../store/alertStore";
+import { useSignupStageStore } from "../store/signupStageStore";
+import { useUserStore } from "../store/userStore";
 import { AlertType, ButtonType, FormHelperType } from "../types";
 import Alert from "./Alert";
 import Button from "./Button";
 import Checkbox from "./formElements/Checkbox";
 import Form from "./formElements/Form";
+import FormHelper from "./formElements/FormHelper";
 import Input from "./formElements/Input";
 import InputGroup from "./formElements/InputGroup";
 import Label from "./formElements/Label";
-import { LOGIN } from "../lib/queries";
-import { SubmitHandler, useForm } from "react-hook-form";
-import { useAlertStore } from "../store/alertStore";
-import { REGEXPATTERNS } from "../lib/regexPatterns";
-import FormHelper from "./formElements/FormHelper";
-import { useUserStore } from "../store/userStore";
-import { Link, useNavigate } from "react-router-dom";
-import { useSignupStageStore } from "../store/signupStageStore";
 
 type FormValues = {
   email: string;
@@ -69,7 +69,7 @@ const LoginForm = () => {
                 alertType: AlertType.error,
                 alertText: err.message,
               });
-            }
+            },
           );
         }
       })
@@ -84,6 +84,8 @@ const LoginForm = () => {
         For ST Members. Please double-check that you are using the same email
         address that you used to sign up for CRM.
       </Alert>
+
+      <p>schema: {import.meta.env.VITE_API_URL}</p>
 
       <div className="space-y-4">
         <InputGroup>
@@ -156,4 +158,3 @@ const LoginForm = () => {
 };
 
 export default LoginForm;
-
