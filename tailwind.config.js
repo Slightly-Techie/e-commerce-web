@@ -49,7 +49,7 @@ export default {
         success600: "#16A34A",
         success700: "#15803D",
         // Warning
-        warning50: "#FFFFBEB",
+        warning50: "#FFFBEB",
         warning100: "#FEF3C7",
         warning200: "#FDE68A",
         warning300: "#FCD34D",
@@ -125,4 +125,4 @@ export default {
     },
   },
   plugins: [require("tailwindcss-animate")],
-};
+}
