@@ -205,7 +205,7 @@ function ProductDetailCard({ detail }: { detail: ProductDetailCardProps }) {
 }
 
 const imageUrl =
-  "https://cdn.videocardz.com/1/2021/03/XPS-13-9305-2-768x489.jpg";
+  "https://i.ibb.co/BNSTzWT/XPS-13-9305-2-768x489-removebg-preview.png";
 
 export const SampleProduct: Product = {
   id: "1",
