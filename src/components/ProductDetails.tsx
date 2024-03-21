@@ -12,7 +12,7 @@ import {
   CarouselPrevious,
 } from "./ui/carousel";
 import { Product } from "@/types";
-import { useState } from "react";
+import { SetStateAction, useState } from "react";
 
 function ProductDetails({ product }: { product: Product }) {
   const [currentImage, setCurrentImage] = useState(product.images[0]);
@@ -77,7 +77,7 @@ function ProductDetailFooter({ product }: { product: Product }) {
   return (
     <div className="grid lg:grid-cols-3 gap-16 lg:gap-24">
       {/* left */}
-      <div className="flex flex-col pl-6 col-span-2">
+      <div className="flex flex-col pl-6 lg:col-span-2">
         <div className="flex rounded-3xl p-4">
           <ProductCarousel images={product.images} />
         </div>
@@ -98,7 +98,7 @@ function ProductDetailFooter({ product }: { product: Product }) {
         </div>
       </div>
       {/* right */}
-      <div className="flex flex-col w-full ">
+      <div className="flex flex-col w-full">
         <ProductDetailCard
           detail={{
             name: product.name,
@@ -121,7 +121,10 @@ function ProductCarousel({ images }: { images: Readonly<string[]> }) {
           <CarouselItem key={index} className="pl-4 md:basis-1/4">
             <div
               className="w-full h-full bg-slate-300 p-4 rounded-xl"
-              onClick={() => console.log("clicked")}
+              onClick={() => {
+                // TODO: Implement image change
+                return console.log("clicked");
+              }}
             >
               <img
                 src={image}
