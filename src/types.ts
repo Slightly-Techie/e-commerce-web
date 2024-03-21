@@ -137,3 +137,28 @@ export type UserSignupDetails = Pick<User, "email" | "username"> & {
 };
 
 export type AlertArgs = { alertType: AlertType; alertText: string };
+
+interface Review {
+  rating: number;
+  review: string;
+  user: User;
+}
+
+export interface Product {
+  categories: string;
+  createdAt?: Date;
+  description: string;
+  discountPercentage: number;
+  id: string;
+  inStock: boolean;
+  isDiscounted: boolean;
+  name: string;
+  price: number;
+  images: string[];
+  published: boolean;
+  ratings: number;
+  reviews: Review[];
+  specification: string;
+  updatedAt?: Date;
+  viewsCount: number;
+}
